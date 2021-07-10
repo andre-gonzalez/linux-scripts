@@ -1,5 +1,5 @@
 #!/bin/sh
-sudo pacman -S discord spotifyd vaultwarden 
+sudo pacman -S nvidia xorg xorg-xinit nitrogen discord spotifyd vaultwarden 
 
 yay -S brave-bin authy obsidian
 
