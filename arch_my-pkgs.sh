@@ -3,7 +3,7 @@
 sudo pacman -S nvidia xorg xorg-xinit nitrogen discord spotifyd vaultwarden 
 
 #Packages from aur
-yay -S brave-bin authy obsidian
+yay -S brave-bin authy obsidian lf
 
 
 #Dwm with st and dmenu
