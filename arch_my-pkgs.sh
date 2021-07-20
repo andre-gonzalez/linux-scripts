@@ -1,9 +1,9 @@
 #!/bin/sh
 #Packages from arch linux repository
-sudo pacman -S nvidia xorg xorg-xinit nitrogen discord spotifyd vaultwarden 
+sudo pacman -S nvidia xorg xorg-xinit nitrogen discord spotifyd vaultwarden ranger
 
 #Packages from aur
-yay -S brave-bin authy obsidian lf
+yay -S brave-bin authy obsidian 
 
 
 #Dwm with st and dmenu
