@@ -7,7 +7,7 @@ yay -S brave-bin authy obsidian
 
 
 #Dwm with st and dmenu
-git clone https://git.suckless.org/dwm
+git clone https://github.com/Andre-gonzalez/my_dwm.git
 git clone https://git.suckless.org/st
 git clone https://git.suckless.org/dmenu
 
