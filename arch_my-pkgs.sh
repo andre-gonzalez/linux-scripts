@@ -3,7 +3,7 @@
 sudo pacman -S nvidia xorg xorg-xinit nitrogen discord spotifyd vaultwarden ranger github-cli picom xautolock cronie
 
 #Packages from aur
-yay -S brave-bin authy obsidian xflux
+yay -S brave-bin authy obsidian xflux slack-desktop
 
 cd .config
 #Dwm with st and dmenu
