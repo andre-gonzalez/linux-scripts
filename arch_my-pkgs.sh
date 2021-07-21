@@ -11,7 +11,7 @@ git clone https://github.com/Andre-gonzalez/my_dwm.git
 git clone https://git.suckless.org/st
 git clone https://git.suckless.org/dmenu
 
-# MoveStack, fakefullscreen, noborder, pertag
+#alpha_patch, alpha_focus_highlight_patch, scrollback_patch, scrollback_mouse_patch, vim_browse_patch
 # maybe attachbottom se eu não gostar de uma nova janela aparecer na esquerda no tiling mode
 
 
