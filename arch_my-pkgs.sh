@@ -1,6 +1,6 @@
 #!/bin/sh
 #Packages from arch linux repository
-sudo pacman -S nvidia xorg xorg-xinit nitrogen discord spotifyd vaultwarden ranger github-cli picom xautolock cronie git
+sudo pacman -S nvidia xorg xorg-xinit nitrogen discord spotifyd ranger github-cli picom xautolock cronie git
 
 #Packages from aur
 yay -S brave-bin authy obsidian xflux slack-desktop
@@ -26,4 +26,4 @@ git clone https://github.com/Andre-gonzalez/my_slock.git
 #patches i use are: capscolor and dpms
 
 #etc.
-# To-do: Sync Gdrive, Configurar bluetooth
+# To-do: Sync Gdrive, Configurar bluetooth, dmenu bitwarden
