@@ -1,9 +1,9 @@
 #!/bin/sh
 #Packages from arch linux repository
-sudo pacman -S nvidia xorg xorg-xinit nitrogen discord spotifyd ranger github-cli picom xautolock cronie git
+sudo pacman -S nvidia xorg xorg-xinit nitrogen discord spotifyd ranger github-cli picom xautolock cronie git dbeaver anki p7zip
 
 #Packages from aur
-yay -S brave-bin authy obsidian xflux slack-desktop
+yay -S brave-bin authy obsidian xflux slack-desktop popcorntime-bin
 
 cd .config
 #Dwm with st and dmenu
