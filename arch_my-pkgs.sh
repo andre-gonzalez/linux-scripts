@@ -5,11 +5,16 @@ sudo pacman -S nvidia xorg xorg-xinit nitrogen discord spotifyd vaultwarden rang
 #Packages from aur
 yay -S brave-bin authy obsidian 
 
-
+cd .config
 #Dwm with st and dmenu
 git clone https://github.com/Andre-gonzalez/my_dwm.git
 git clone https://git.suckless.org/st
 git clone https://git.suckless.org/dmenu
+gh repo clone Andre-gonzalez/my-dwm-bar
+git clone git://git.suckless.org/dwmstatus
+cd dwmstatus
+make
+make PREFIX=/usr install
 
 #alpha_patch, alpha_focus_highlight_patch, scrollback_patch, scrollback_mouse_patch, vim_browse_patch
 # maybe attachbottom se eu não gostar de uma nova janela aparecer na esquerda no tiling mode
