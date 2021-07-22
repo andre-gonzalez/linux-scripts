@@ -1,6 +1,6 @@
 #!/bin/sh
 #Packages from arch linux repository
-sudo pacman -S nvidia xorg xorg-xinit nitrogen discord spotifyd vaultwarden ranger github-cli picom
+sudo pacman -S nvidia xorg xorg-xinit nitrogen discord spotifyd vaultwarden ranger github-cli picom xautolock
 
 #Packages from aur
 yay -S brave-bin authy obsidian 
@@ -21,9 +21,8 @@ make PREFIX=/usr install
 
 
 #slock to block the screen 
-git clone https://github.com/bakkeby/slock-flexipatch.git
+git clone https://github.com/Andre-gonzalez/my_slock.git
 #xautolock if you want to block the screen after a specific period of time
-sudo pacman -S xautolock
 #patches i use are: capscolor and dpms
 
 #etc.
