@@ -1,6 +1,6 @@
 #!/bin/sh
 #Packages from arch linux repository
-sudo pacman -S nvidia xorg xorg-xinit nitrogen discord spotifyd vaultwarden ranger github-cli picom xautolock
+sudo pacman -S nvidia xorg xorg-xinit nitrogen discord spotifyd vaultwarden ranger github-cli picom xautolock cronie
 
 #Packages from aur
 yay -S brave-bin authy obsidian xflux
