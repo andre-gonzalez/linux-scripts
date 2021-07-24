@@ -1,0 +1,6 @@
+#!/bin/sh
+bluetoothctl
+
+turn on
+
+connect CC:98:8B:C1:5C:78
