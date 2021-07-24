@@ -26,4 +26,4 @@ git clone https://github.com/Andre-gonzalez/my_slock.git
 #patches i use are: capscolor and dpms
 
 #etc.
-# To-do: Sync Gdrive, Configurar bluetooth, dmenu bitwarden, configurar atalhos de teclado para abrir os seguintes programas no dwm (ranger, brave e obsidian), ajustar horário da máquina, fazer configuração de mirror do pacman e colocar parallel downloads no pacman, colocar teclar de ajuste de volume e brilho para funcionar
+# To-do: Sync Gdrive, dmenu bitwarden, configurar atalhos de teclado para abrir os seguintes programas no dwm (ranger, brave e obsidian), fazer configuração de mirror do pacman e colocar parallel downloads no pacman, colocar teclar de ajuste de volume e brilho para funcionar 
