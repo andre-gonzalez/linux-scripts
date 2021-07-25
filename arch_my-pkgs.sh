@@ -40,4 +40,12 @@ pacman -Qdt | sudo pacman -Rns
 sudo pacman -Sc
 
 #etc.
-# To-do: Sync Gdrive, dmenu bitwarden, configurar atalhos de teclado para abrir os seguintes programas no dwm (ranger, brave e obsidian), fazer configuração de mirror do pacman e colocar parallel downloads no pacman, colocar teclar de ajuste de volume e brilho para funcionar 
+# To-do:
+# 	1. Sync Gdrive,
+#	2. dmenu bitwarden,
+#	3. configurar atalhos de teclado para abrir os seguintes programas no dwm (ranger, brave e obsidian),
+#	4. fazer configuração de mirror do pacman e colocar parallel downloads no pacman,
+#	5. colocar teclas de ajuste de volume
+#	6. colocar teclas de ajuste de brilho para funcionar 
+#	7. configurar cron jobs para atualizar os packages no arch
+#	8. configurar cron job para fazer limpeza do cache de aplicativos
