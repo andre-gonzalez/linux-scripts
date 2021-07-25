@@ -34,7 +34,7 @@ https://github.com/ankitects/anki/releases/download/2.1.44/anki-2.1.44-linux.tar
 #sudo ./install.sh
 
 #unistall unnedded dependencies
-pacman -Qdt | sudo pacman -Rs
+pacman -Qdt | sudo pacman -Rns
 
 
 #etc.
