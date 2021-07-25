@@ -5,7 +5,7 @@ sudo pacman -Syu
 sudo pacman -S nvidia xorg xorg-xinit nitrogen discord spotifyd ranger github-cli picom xautolock cronie git dbeaver anki p7zip
 
 #Packages from aur
-yay -S brave-bin authy obsidian xflux slack-desktop popcorntime-bin
+yay -S brave-bin authy obsidian xflux slack-desktop popcorntime-bin grive
 
 cd .config
 #Dwm with st and dmenu
@@ -39,15 +39,14 @@ pacman -Qdt | sudo pacman -Rns
 #remove cache from old packages
 sudo pacman -Sc
 
+#editar o arquivo .bash_profile para adicionar a linha do startx
+
 #etc.
 # To-do:
-# 	1. Sync Gdrive,
+# 	1. Sync Gdrive, -- doing, testing Vgrive
 #	2. dmenu bitwarden,
 #	3. configurar atalhos de teclado para abrir os seguintes programas no dwm (ranger, brave e obsidian),
 #	4. fazer configuração de mirror do pacman e colocar parallel downloads no pacman,
 #	5. colocar teclas de ajuste de volume
 #	6. colocar teclas de ajuste de brilho para funcionar 
-#	7. configurar cron jobs para atualizar os packages no arch
-#	8. configurar cron job para fazer limpeza do cache de aplicativos
-#	9. configurar para o computador dar startx automaticamente após o login
 #      10. configurar o vimrc
