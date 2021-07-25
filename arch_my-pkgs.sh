@@ -36,6 +36,8 @@ https://github.com/ankitects/anki/releases/download/2.1.44/anki-2.1.44-linux.tar
 #unistall unnedded dependencies
 pacman -Qdt | sudo pacman -Rns
 
+#remove cache from old packages
+sudo pacman -Sc
 
 #etc.
 # To-do: Sync Gdrive, dmenu bitwarden, configurar atalhos de teclado para abrir os seguintes programas no dwm (ranger, brave e obsidian), fazer configuração de mirror do pacman e colocar parallel downloads no pacman, colocar teclar de ajuste de volume e brilho para funcionar 
