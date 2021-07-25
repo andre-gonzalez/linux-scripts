@@ -1,4 +1,6 @@
 #!/bin/sh
+#Sync and update packages already installed
+sudo pacman -Syu
 #Packages from arch linux repository
 sudo pacman -S nvidia xorg xorg-xinit nitrogen discord spotifyd ranger github-cli picom xautolock cronie git dbeaver anki p7zip
 
