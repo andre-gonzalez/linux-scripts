@@ -25,5 +25,11 @@ git clone https://github.com/Andre-gonzalez/my_slock.git
 #xautolock if you want to block the screen after a specific period of time
 #patches i use are: capscolor and dpms
 
+#Anki download
+https://github.com/ankitects/anki/releases/download/2.1.44/anki-2.1.44-linux.tar.bz2
+#After installation do the following:
+#cd anki-2.1.44-linux.tar.bz2
+#sudo ./install.sh
+
 #etc.
 # To-do: Sync Gdrive, dmenu bitwarden, configurar atalhos de teclado para abrir os seguintes programas no dwm (ranger, brave e obsidian), fazer configuração de mirror do pacman e colocar parallel downloads no pacman, colocar teclar de ajuste de volume e brilho para funcionar 
