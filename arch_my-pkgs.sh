@@ -49,3 +49,5 @@ sudo pacman -Sc
 #	6. colocar teclas de ajuste de brilho para funcionar 
 #	7. configurar cron jobs para atualizar os packages no arch
 #	8. configurar cron job para fazer limpeza do cache de aplicativos
+#	9. configurar para o computador dar startx automaticamente após o login
+#      10. configurar o vimrc
