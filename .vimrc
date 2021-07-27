@@ -1,3 +1,6 @@
+" Turn syntax highlighting on.
+syntax on
+
 :set number relativenumber
 
 :augroup numbertoggle
