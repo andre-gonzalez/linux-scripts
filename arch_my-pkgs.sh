@@ -1,5 +1,5 @@
 #!/bin/sh
-#Sync and update packages already installed
+#sync and update packages already installed
 sudo pacman -Syu
 #Packages from arch linux repository
 sudo pacman -S nvidia xorg xorg-xinit nitrogen discord spotifyd ranger github-cli picom xautolock cronie git dbeaver anki p7zip
@@ -19,7 +19,7 @@ make
 make PREFIX=/usr install
 
 #alpha_patch, alpha_focus_highlight_patch, scrollback_patch, scrollback_mouse_patch, vim_browse_patch
-# maybe attachbottom se eu não gostar de uma nova janela aparecer na esquerda no tiling mode
+# maybe attachbottom se eu nÃ£o gostar de uma nova janela aparecer na esquerda no tiling mode
 
 
 #slock to block the screen 
@@ -46,7 +46,6 @@ sudo pacman -Sc
 # 	1. Sync Gdrive, -- doing, testing Vgrive
 #	2. dmenu bitwarden,
 #	3. configurar atalhos de teclado para abrir os seguintes programas no dwm (ranger, brave e obsidian),
-#	4. fazer configura��o de mirror do pacman e colocar parallel downloads no pacman,
+#	4. fazer configuração de mirror do pacman e colocar parallel downloads no pacman,
 #	5. colocar teclas de ajuste de volume
 #	6. colocar teclas de ajuste de brilho para funcionar 
-#      10. configurar o vimrc
