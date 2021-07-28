@@ -48,6 +48,9 @@ if [ -d /etc/X11/xinit/xinitrc.d ] ; then
  unset f
 fi
 
+#Keybinds for audio and backlight
+xbindkeys
+
 # DWM Status
 /home/frank/.config/dwm-bar/dwm_bar.sh &
 

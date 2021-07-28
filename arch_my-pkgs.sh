@@ -2,7 +2,7 @@
 #sync and update packages already installed
 sudo pacman -Syu
 #Packages from arch linux repository
-sudo pacman -S nvidia xorg xorg-xinit nitrogen discord spotifyd ranger github-cli picom xautolock cronie git dbeaver anki p7zip
+sudo pacman -S nvidia xorg xorg-xinit nitrogen discord spotifyd ranger github-cli picom xautolock cronie git dbeaver anki p7zip xbindkeys
 
 #Packages from aur
 yay -S brave-bin authy obsidian xflux slack-desktop popcorntime-bin grive
@@ -47,5 +47,4 @@ sudo pacman -Sc
 #	2. dmenu bitwarden,
 #	3. configurar atalhos de teclado para abrir os seguintes programas no dwm (ranger, brave e obsidian),
 #	4. fazer configuração de mirror do pacman e colocar parallel downloads no pacman,
-#	5. colocar teclas de ajuste de volume
 #	6. colocar teclas de ajuste de brilho para funcionar 
