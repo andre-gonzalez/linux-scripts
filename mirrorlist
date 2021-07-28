@@ -8,7 +8,7 @@
 # Retrieved:  2021-07-28 01:50:14 UTC
 # Last Check: 2021-07-28 01:28:43 UTC
 
-# save it in /etc/pacman.d/mirrorlist
+# save it in /etc/pacman.d/mirrorlist, after that do a sudo pacman -Syy
 ## Brazil - Generated on 2021-07-28 on https://archlinux.org/mirrorlist/
 Server = http://br.mirror.archlinux-br.org/$repo/os/$arch
 Server = http://archlinux.c3sl.ufpr.br/$repo/os/$arch
