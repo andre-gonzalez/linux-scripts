@@ -5,7 +5,7 @@ sudo pacman -Syu
 sudo pacman -S nvidia xorg xorg-xinit nitrogen discord spotifyd ranger github-cli picom xautolock cronie git dbeaver anki p7zip xbindkeys
 
 #Packages from aur
-yay -S brave-bin authy obsidian xflux slack-desktop popcorntime-bin grive
+yay -S brave-bin authy obsidian xflux slack-desktop popcorntime-bin grive anki-git
 
 cd .config
 #Dwm with st and dmenu
@@ -26,12 +26,6 @@ make PREFIX=/usr install
 git clone https://github.com/Andre-gonzalez/my_slock.git
 #xautolock if you want to block the screen after a specific period of time
 #patches i use are: capscolor and dpms
-
-#Anki download
-https://github.com/ankitects/anki/releases/download/2.1.44/anki-2.1.44-linux.tar.bz2
-#After installation do the following:
-#cd anki-2.1.44-linux.tar.bz2
-#sudo ./install.sh
 
 #unistall unnedded dependencies
 pacman -Qdt | sudo pacman -Rns
