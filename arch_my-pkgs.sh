@@ -47,3 +47,4 @@ sudo pacman -Sc
 #	2. dmenu bitwarden,
 #	3. configurar atalhos de teclado para abrir os seguintes programas no dwm (ranger, brave e obsidian),
 #	6. colocar teclas de ajuste de brilho para funcionar 
+# 7. Elaborar forma de fazer backup consistente de todos os arquivos relevantes (configurações + Google Drive)
