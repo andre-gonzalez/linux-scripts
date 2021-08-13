@@ -43,3 +43,4 @@ sudo pacman -Sc
 #	6. colocar teclas de ajuste de brilho para funcionar 
 #	7. Elaborar forma de fazer backup consistente de todos os arquivos relevantes (configurações + Google Drive)
 #	8. Fazer configuração para não precisar de sudo para desligar e reiniciar o computador (ver video luke e ver se tem outro comando que eu posso fazer o mesmo)
+#   9. Addicioanr o hide vacant tags na minha build do dwm
