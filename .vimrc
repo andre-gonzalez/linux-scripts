@@ -15,3 +15,15 @@ set number relativenumber
 set incsearch
 
 set scrolloff=8
+
+" Added the dracula theme
+packadd! dracula
+syntax enable
+colorscheme dracula
+
+"enable plugins
+call plug#begin('~/.vim/autoload/plug.vim')
+
+Plug 'gabrielelana/vim-markdown'
+
+call plug#end()
