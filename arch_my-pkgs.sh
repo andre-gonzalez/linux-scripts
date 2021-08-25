@@ -5,7 +5,7 @@ sudo pacman -Syu
 sudo pacman -S nvidia xorg xorg-xinit nitrogen discord spotifyd ranger github-cli picom xautolock cronie git dbeaver anki p7zip xbindkeys htop python-pip feh
 
 #Packages from aur
-yay -S brave-bin authy obsidian xflux slack-desktop popcorntime-bin grive anki-git spotify
+yay -S brave-bin authy obsidian xflux slack-desktop popcorntime-bin grive anki-git spotify insync
 
 cd .config
 #Dwm with st and dmenu
@@ -42,3 +42,4 @@ sudo pacman -Sc
 #	3. configurar atalhos de teclado para abrir os seguintes programas no dwm (ranger, brave e obsidian),
 #	6. colocar teclas de ajuste de brilho para funcionar 
 #	7. Elaborar forma de fazer backup consistente de todos os arquivos relevantes (configurações + Google Drive)
+#	8. Aprender a configurar o ranger para ter preview e abrir os aquivos com os programas que eu definr
