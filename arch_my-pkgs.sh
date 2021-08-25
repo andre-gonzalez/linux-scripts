@@ -44,3 +44,5 @@ sudo pacman -Sc
 #	7. Elaborar forma de fazer backup consistente de todos os arquivos relevantes (configurações + Google Drive)
 #	8. Aprender a configurar o ranger para ter preview e abrir os aquivos com os programas que eu definr
 #	9. Configurar o Dbeaver
+#  10. Entender porque o crontab não está funcionando
+#  11. Configurar o Insync para iniciar junto com o computador
