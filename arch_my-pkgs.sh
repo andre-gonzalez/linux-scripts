@@ -21,7 +21,7 @@ make PREFIX=/usr install
 #alpha_patch, alpha_focus_highlight_patch, scrollback_patch, scrollback_mouse_patch, vim_browse_patch
 # maybe attachbottom se eu nÃ£o gostar de uma nova janela aparecer na esquerda no tiling mode
 
-
+cd ~/.config
 #slock to block the screen 
 git clone https://github.com/Andre-gonzalez/my_slock.git
 #xautolock if you want to block the screen after a specific period of time
@@ -43,3 +43,4 @@ sudo pacman -Sc
 #	6. colocar teclas de ajuste de brilho para funcionar 
 #	7. Elaborar forma de fazer backup consistente de todos os arquivos relevantes (configurações + Google Drive)
 #	8. Aprender a configurar o ranger para ter preview e abrir os aquivos com os programas que eu definr
+#	9. Configurar o Dbeaver
