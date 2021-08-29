@@ -1,10 +1,11 @@
 #!/bin/sh
+# manually update pacman.conf first
 #unistall archo-install-scripts because it will not be necessary again
 sudo pacman -R arch-install-scripts amd-ucode archinstall brltty nano
 #sync and update packages already installed
 sudo pacman -Syu
 #Packages from arch linux repository
-sudo pacman -S nvidia xorg xorg-xinit nitrogen discord spotifyd ranger github-cli picom xautolock cronie git dbeaver anki p7zip xbindkeys htop python-pip feh dbeaver
+sudo pacman -S nvidia xorg xorg-xinit nitrogen discord spotifyd ranger github-cli picom xautolock cronie git dbeaver anki p7zip xbindkeys htop python-pip feh dbeaver wine wine-mono
 
 #Packages from aur
 yay -S brave-bin authy obsidian xflux slack-desktop popcorntime-bin grive anki-git spotify insync vscodium-bin
@@ -65,3 +66,4 @@ sudo pacman -Sc
 #	8. Aprender a configurar o ranger para ter preview e abrir os aquivos com os programas que eu definr
 #	9. Configurar o Dbeaver
 #  10. Entender porque o crontab não está funcionando
+#  11. Terminar configurações do st e salvar no meu github
