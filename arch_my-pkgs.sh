@@ -9,25 +9,45 @@ sudo pacman -S nvidia xorg xorg-xinit nitrogen discord spotifyd ranger github-cl
 #Packages from aur
 yay -S brave-bin authy obsidian xflux slack-desktop popcorntime-bin grive anki-git spotify insync vscodium-bin
 
-cd .config
-#Dwm with st and dmenu
+# Now we are entering .config to install and configur the programs i use
+cd ~/.config
+
+#Dwm
+#patches i am using: alpha_patch, alpha_focus_highlight_patch, scrollback_patch, scrollback_mouse_patch, vim_browse_patch
 git clone https://github.com/Andre-gonzalez/my_dwm.git
+cd my_dwm
+sudo make clean install
+cd ..
+
+#st
 git clone https://git.suckless.org/st
+cd st
+sudo make clean install
+cd ..
+
+#dmenu
 git clone https://git.suckless.org/dmenu
-gh repo clone Andre-gonzalez/my-dwm-bar
+cd dmenu
+sudo make clean install
+cd ..
+
+#dwm-bar
 git clone git://git.suckless.org/dwmstatus
 cd dwmstatus
 make
 make PREFIX=/usr install
+cd ..
+gh repo clone Andre-gonzalez/my-dwm-bar
+cd my-dwm-bar
+sudo make clean install
+cd ..
 
-#alpha_patch, alpha_focus_highlight_patch, scrollback_patch, scrollback_mouse_patch, vim_browse_patch
-# maybe attachbottom se eu nÃ£o gostar de uma nova janela aparecer na esquerda no tiling mode
-
-cd ~/.config
 #slock to block the screen 
-git clone https://github.com/Andre-gonzalez/my_slock.git
-#xautolock if you want to block the screen after a specific period of time
 #patches i use are: capscolor and dpms
+#xautolock if you want to block the screen after a specific period of time
+git clone https://github.com/Andre-gonzalez/my_slock.git
+cd my_slock
+sudo make clean install
 
 #unistall unnedded dependencies
 pacman -Qdt | sudo pacman -Rns
