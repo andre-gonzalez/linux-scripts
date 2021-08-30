@@ -29,6 +29,13 @@ packadd! dracula
 syntax enable
 colorscheme dracula
 
+" save undo trees in files
+set undofile
+set undodir=~/.vim/undo
+
+" number of undo saved
+set undolevels=10000 
+
 "enable plugins
 call plug#begin()
 
