@@ -58,9 +58,6 @@ sudo pacman -Sc
 
 #mundando o promt do teminal para um mais simples
 
-PS1="\W -> "
-
-
 #editar o arquivo .bash_profile para adicionar a linha do startx
 
 #etc.
