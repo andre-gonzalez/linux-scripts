@@ -16,6 +16,10 @@ set incsearch
 
 set scrolloff=8
 
+" Ignore case in search
+set ignorecase
+set smartcase
+
 " Added the dracula theme
 packadd! dracula
 syntax enable
