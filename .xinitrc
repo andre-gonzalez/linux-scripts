@@ -60,6 +60,9 @@ picom -f &
 #Wallpaper
 nitrogen --restore &
 
+# unclutter to make the mouse dissapear when not using it
+unclutter &
+
 # Loop
 while true; do
 	dwm > /dev/null 2>&1
