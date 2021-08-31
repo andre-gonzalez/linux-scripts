@@ -56,6 +56,13 @@ pacman -Qdt | sudo pacman -Rns
 #remove cache from old packages
 sudo pacman -Sc
 
+#Moving the conectar-xm3-sh script to the /usr/local/bin folder so it can be executed by dmenu
+cd ~/arch_setup
+cp conectar-xm3.sh /usr/local/bin
+cd /usr/local/bin
+chmod +x conectar-xm3
+cd ~
+
 #editar o arquivo .bash_profile para adicionar a linha do startx
 
 #etc.
