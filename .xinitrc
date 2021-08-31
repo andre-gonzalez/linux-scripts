@@ -66,6 +66,9 @@ unclutter &
 # insync start
 insync start
 
+# change esc with caps lock
+setxkbmap -option caps:escape
+
 # Loop
 while true; do
 	dwm > /dev/null 2>&1
