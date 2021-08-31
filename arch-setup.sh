@@ -5,10 +5,10 @@ sudo pacman -R arch-install-scripts amd-ucode archinstall brltty nano
 #sync and update packages already installed
 sudo pacman -Syu
 #Packages from arch linux repository
-sudo pacman -S nvidia xorg xorg-xinit nitrogen discord spotifyd ranger github-cli picom xautolock cronie git dbeaver anki p7zip xbindkeys htop python-pip feh dbeaver vlc scrot unclutter
+sudo pacman -S nvidia xorg xorg-xinit nitrogen spotifyd ranger github-cli picom xautolock cronie git dbeaver anki p7zip xbindkeys htop python-pip feh dbeaver vlc scrot unclutter
 
 #Packages from aur
-yay -S brave-bin authy obsidian xflux slack-desktop popcorntime-bin grive anki-git spotify insync vscodium-bin
+yay -S brave-bin authy obsidian xflux slack-desktop popcorntime-bin anki-git spotify insync vscodium-bin
 
 # Now we are entering .config to install and configur the programs i use
 cd ~/.config
@@ -55,8 +55,6 @@ pacman -Qdt | sudo pacman -Rns
 
 #remove cache from old packages
 sudo pacman -Sc
-
-#mundando o promt do teminal para um mais simples
 
 #editar o arquivo .bash_profile para adicionar a linha do startx
 
