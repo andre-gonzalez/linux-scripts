@@ -21,8 +21,8 @@ sudo make clean install
 cd ..
 
 #st
-git clone https://git.suckless.org/st
-cd st
+git clone https://github.com/Andre-gonzalez/my-st.git
+cd my-st
 sudo make clean install
 cd ..
 
@@ -49,6 +49,7 @@ cd ..
 git clone https://github.com/Andre-gonzalez/my_slock.git
 cd my_slock
 sudo make clean install
+cd ..
 
 #unistall unnedded dependencies
 pacman -Qdt | sudo pacman -Rns
