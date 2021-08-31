@@ -68,7 +68,6 @@ insync start
 
 # change esc with caps lock
 setxkbmap -option caps:escape
-setxkbmap -option escape:caps
 
 # Loop
 while true; do
