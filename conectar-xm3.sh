@@ -1,4 +1,5 @@
 #!/bin/sh
+#Copy it to /usr/local/bin in order to execute iit with dmenu
 #Turn bluetooth on
 bluetoothctl power on
 
