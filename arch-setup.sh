@@ -74,4 +74,4 @@ cd ~
 #	8. Aprender a configurar o ranger para ter preview e abrir os aquivos com os programas que eu definr
 #	9. Configurar o Dbeaver
 #  10. Entender porque o crontab não está funcionando
-#  11. Terminar configurações do st e salvar no meu github
+#  11. Configurar o excel no wine
