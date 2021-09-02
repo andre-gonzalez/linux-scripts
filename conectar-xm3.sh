@@ -5,4 +5,5 @@ bluetoothctl power on
 
 #coonect to the headset
 bluetoothctl connect CC:98:8B:C1:5C:78
+sleep 5s
 bluetoothctl connect CC:98:8B:C1:5C:78
