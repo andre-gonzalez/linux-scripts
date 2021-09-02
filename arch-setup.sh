@@ -75,3 +75,4 @@ cd ~
 #	9. Configurar o Dbeaver
 #  10. Entender porque o crontab não está funcionando
 #  11. Configurar o excel no wine
+#  12. Configure trash system in arch (check if does solve the insync one way deletion problem)
