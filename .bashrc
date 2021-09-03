@@ -6,7 +6,7 @@
 [[ $- != *i* ]] && return
 
 alias ls='ls --color=auto'
-PS1='\W $ '
+PS1='\W > '
 
 ########
 #ALCI
