@@ -64,13 +64,13 @@ nitrogen --restore &
 unclutter &
 
 # insync start
-insync start
+insync start &
 
 # change esc with caps lock
-setxkbmap -option caps:escape
+setxkbmap -option caps:escape &
 
 # start xflux so the screen get orange in the night
-xflux -l -23 -g -43.4
+xflux -l -23 -g -43.4 &
 
 # Loop
 while true; do
