@@ -1,3 +1,2 @@
-*/10 19 * * * xflux - l -23 -g -43.3
 0 * * * * pacman -Syu 
 0 */3 * * * pacman -Sc
