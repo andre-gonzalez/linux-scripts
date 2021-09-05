@@ -36,6 +36,9 @@ set undodir=~/.vim/undo
 " number of undo saved
 set undolevels=10000 
 
+" Enable spell checking
+set spell spelllang=en
+
 "enable plugins
 call plug#begin()
 
@@ -48,5 +51,7 @@ Plug 'Yggdroot/indentLine'
 Plug 'tpope/vim-surround'
 
 Plug 'preservim/nerdtree'
+
+Plug 'vim-scripts/dbext.vim'
 
 call plug#end()
