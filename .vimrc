@@ -21,7 +21,7 @@ set scrolloff=8
 set ignorecase
 set smartcase
 
-"allows you to pase in vim with the mouse
+"allows you to paste in vim with the mouse
 set mouse=a
 
 " Added the dracula theme
@@ -38,6 +38,10 @@ set undolevels=10000
 
 " Enable spell checking
 set spell spelllang=en
+
+"Search down into subfolders
+"Provides tab-completion for all file-related tasks
+set path+=**
 
 "enable plugins
 call plug#begin()
