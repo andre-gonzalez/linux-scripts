@@ -64,6 +64,10 @@ cd /usr/local/bin
 chmod +x conectar-xm3
 cd ~
 
+# Enable cron in systemd
+sudo systemctl enable cronie.service --now
+
+
 #editar o arquivo .bash_profile para adicionar a linha do startx
 
 #etc.
@@ -72,7 +76,6 @@ cd ~
 #	3. configurar atalhos de teclado para abrir os seguintes programas no dwm (ranger, brave e obsidian),
 #	6. colocar teclas de ajuste de brilho para funcionar 
 #	8. Aprender a configurar o ranger para ter preview e abrir os aquivos com os programas que eu definr
-#	9. Configurar o Dbeaver
 #  10. Entender porque o crontab não está funcionando
 #  11. Configurar o excel no wine
 #  12. Configure trash system in arch (check if does solve the insync one way deletion problem)
