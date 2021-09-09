@@ -68,6 +68,14 @@ cd ~
 sudo systemctl enable cronie.service --now
 
 
+#Instalar o google cloud SDK
+cd ~/.config
+curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-356.0.0-linux-x86_64.tar.gz
+tar google-cloud-sdk-356.0.0-linux-x86_64.tar.gz
+rm  google-cloud-sdk-356.0.0-linux-x86_64.tar.gz
+cd google-cloud-sdk
+./google-cloud-sdk/install.sh
+
 #editar o arquivo .bash_profile para adicionar a linha do startx
 
 #etc.
