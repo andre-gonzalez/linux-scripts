@@ -50,7 +50,7 @@ cd ..
 gh repo clone Andre-gonzalez/my-dwm-bar
 cd my-dwm-bar
 sudo make clean install
-cd ..
+cd ~/.config
 
 #slock to block the screen 
 #patches i use are: capscolor and dpms
