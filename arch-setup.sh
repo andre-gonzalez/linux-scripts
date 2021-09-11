@@ -8,7 +8,7 @@ sudo pacman -Syu
 sudo pacman -S nvidia xorg xorg-xinit xorg-xseroot nitrogen spotifyd ranger github-cli picom xautolock cronie git  anki p7zip xbindkeys htop python-pip feh dbeaver vlc scrot unclutter bluez-tools bluez-utils make
 
 #Copying xinitrc file do the home directory
-cp /etc/X11/xinit/xinitrc ~/.xinitrc
+cp ~/arch_setup/xinitrc ~/.xinitrc
 
 #Packages from aur
 yay -S brave-bin authy obsidian xflux slack-desktop popcorntime-bin anki-git spotify insync vscodium-bin
