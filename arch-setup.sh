@@ -7,6 +7,9 @@ sudo pacman -Syu
 #Packages from arch linux repository
 sudo pacman -S nvidia xorg xorg-xinit xorg-xseroot nitrogen spotifyd ranger github-cli picom xautolock cronie git  anki p7zip xbindkeys htop python-pip feh dbeaver vlc scrot unclutter bluez-tools bluez-utils make
 
+#Copying xinitrc file do the home directory
+cp /etc/X11/xinit/xinitrc ~/.xinitrc
+
 #Packages from aur
 yay -S brave-bin authy obsidian xflux slack-desktop popcorntime-bin anki-git spotify insync vscodium-bin
 
