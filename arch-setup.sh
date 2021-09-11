@@ -5,7 +5,7 @@ sudo pacman -R arch-install-scripts amd-ucode archinstall brltty nano
 #sync and update packages already installed
 sudo pacman -Syu
 #Packages from arch linux repository
-sudo pacman -S nvidia xorg xorg-xinit xorg-xseroot nitrogen spotifyd ranger github-cli picom xautolock cronie git  anki p7zip xbindkeys htop python-pip feh dbeaver vlc scrot unclutter bluez-tools bluez-utils make
+sudo pacman -S nvidia xorg xorg-xinit xorg-xseroot nitrogen spotifyd ranger github-cli picom xautolock cronie git  anki p7zip xbindkeys htop python-pip feh dbeaver vlc scrot unclutter bluez-tools bluez-utils make base-devel
 
 #Copying dot files to the home directory
 cp ~/arch_setup/.xinitrc ~/.xinitrc
@@ -85,7 +85,6 @@ rm  google-cloud-sdk-356.0.0-linux-x86_64.tar.gz
 cd google-cloud-sdk
 ./google-cloud-sdk/install.sh
 
-#editar o arquivo .bash_profile para adicionar a linha do startx
 
 #etc.
 # To-do:
