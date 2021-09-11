@@ -1,5 +1,5 @@
 #!/bin/sh
-# manually update pacman.conf first
+# manually update pacman.conf first in the etc/pacman.conf
 #unistall archo-install-scripts because it will not be necessary again
 sudo pacman -R arch-install-scripts amd-ucode archinstall brltty nano
 #sync and update packages already installed
