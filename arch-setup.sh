@@ -13,8 +13,9 @@ cp ~/arch_setup/.bash_profile ~/.bash_profile
 cp ~/arch_setup/.bashrc ~/.bashrc
 cp ~/arch_setup/.insync-git-ignore ~/.insync-git-ignore
 cp ~/arch_setup/.vimrc ~/.vimrc
-cp ~/arch_setup/.vim ~/.vim
+cp -r ~/arch_setup/.vim ~/.vim
 cp ~/arch_setup/.xbindkeysrc ~/.xbindkeysrc
+
 #Packages from aur
 yay -S brave-bin authy obsidian xflux slack-desktop popcorntime-bin anki-git spotify insync vscodium-bin
 
