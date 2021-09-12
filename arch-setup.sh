@@ -1,5 +1,8 @@
 #!/bin/sh
 # manually update pacman.conf first in the etc/pacman.conf
+sudo cp ~/arch_setup/pacman.conf /etc/pacman.conf
+#update mirror list
+sudo cp ~/arch_setup/mirrorlist /etc/pacman.d/mirrorlist 
 #unistall archo-install-scripts because it will not be necessary again
 sudo pacman -R arch-install-scripts amd-ucode archinstall brltty nano
 #sync and update packages already installed
@@ -15,6 +18,13 @@ cp ~/arch_setup/.insync-git-ignore ~/.insync-git-ignore
 cp ~/arch_setup/.vimrc ~/.vimrc
 cp -r ~/arch_setup/.vim ~/.vim
 cp ~/arch_setup/.xbindkeysrc ~/.xbindkeysrc
+cp ~/arch_setup/.gitconfig ~/.gitconfig
+
+#Install Yay
+cd ~/.config
+git clone https://aur.archlinux.org/yay-git.git
+cd yay-git
+makepkg -si
 
 #Packages from aur
 yay -S brave-bin authy obsidian xflux slack-desktop popcorntime-bin anki-git spotify insync vscodium-bin
@@ -42,12 +52,12 @@ sudo make clean install
 cd ..
 
 #dwm-bar
-git clone git://git.suckless.org/dwmstatus
+git clone https://git.suckless.org/dwmstatus
 cd dwmstatus
 make
 make PREFIX=/usr install
 cd ..
-gh repo clone Andre-gonzalez/my-dwm-bar
+git clone https://github.com/Andre-gonzalez/my-dwm-bar
 cd my-dwm-bar
 sudo make clean install
 cd ~/.config
