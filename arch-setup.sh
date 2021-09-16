@@ -78,9 +78,9 @@ sudo pacman -Sc
 
 #Moving the conectar-xm3-sh script to the /usr/local/bin folder so it can be executed by dmenu
 cd ~/arch_setup
-cp conectar-xm3.sh /usr/local/bin
+cp conectar-xm3.sh conectar-redmi.sh scrot-copy-to-clipboard.sh /usr/local/bin
 cd /usr/local/bin
-chmod +x conectar-xm3
+chmod +x conectar-xm3.sh conectar-redmi.sh scrot-copy-to-clipboard.sh
 cd ~
 
 # Enable cron in systemd
