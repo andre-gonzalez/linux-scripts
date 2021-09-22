@@ -8,7 +8,7 @@ sudo pacman -R arch-install-scripts amd-ucode archinstall brltty nano
 #sync and update packages already installed
 sudo pacman -Syu
 #Packages from arch linux repository
-sudo pacman -S nvidia xorg xorg-xinit xorg-xsetroot nitrogen spotifyd ranger github-cli picom xautolock cronie git  anki p7zip xbindkeys htop python-pip feh dbeaver vlc scrot unclutter bluez-tools bluez-utils make base-devel
+sudo pacman -S nvidia xorg xorg-xinit xorg-xsetroot nitrogen spotifyd ranger github-cli picom xautolock cronie git  anki p7zip xbindkeys htop python-pip feh dbeaver vlc scrot unclutter bluez-tools bluez-utils make base-devel unzip
 
 #Copying dot files to the home directory
 cp ~/arch_setup/.xinitrc ~/.xinitrc
