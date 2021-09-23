@@ -20,7 +20,6 @@ if [ -f '/home/frank/.config/google-cloud-sdk/path.bash.inc' ]; then . '/home/fr
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/home/frank/.config/google-cloud-sdk/completion.bash.inc' ]; then . '/home/frank/.config/google-cloud-sdk/completion.bash.inc'; fi
-i
 
 # Alias for ranger
 alias r="ranger"
