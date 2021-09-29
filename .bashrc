@@ -41,4 +41,5 @@ alias pipefy="cd ~/eureciclo/salesops/pipefy"
 alias slack="cd ~/eureciclo/salesops/slack-bot"
 alias ..="cd .."
 alias edownloads="cd ~/eureciclo/downloads"
+alias database="cd ~/eureciclo/salesops/database"
 #To reload .bashrc use ->  source ~/.bashrc
