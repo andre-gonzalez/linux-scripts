@@ -95,6 +95,20 @@ rm  google-cloud-sdk-356.0.0-linux-x86_64.tar.gz
 cd google-cloud-sdk
 ./google-cloud-sdk/install.sh
 
+#bluetooth configuration
+sudo pacman -S bluez bluez-utils pulseaudio-bluetooth pulseaudio
+modprobe btusb
+sudo systemctl start bluetooth.service
+sudo systemctl enable bluetooth.service
+bluetoothctl power on
+bluetoothctl agent on
+bluetoothctl default-agent
+#making bluetooth automatically start after start a computer
+#open the file below
+#sudo vim /etc/bluetooth/main.conf
+#Set AutoEnable=true
+pulseaudio --start
+# use pavucontrol to switch audio
 
 #etc.
 # To-do:
