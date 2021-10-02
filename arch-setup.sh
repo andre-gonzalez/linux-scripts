@@ -27,7 +27,7 @@ cd yay-git
 makepkg -si
 
 #Packages from aur
-yay -S brave-bin authy obsidian xflux slack-desktop popcorntime-bin anki-git spotify insync vscodium-bin
+yay -S brave-bin authy obsidian xflux slack-desktop popcorntime-bin anki-git spotify insync vscodium-bin google-cloud-sdk google-cloud-sdk-engine-python google-cloud-sdk-app-engine-python-extras
 
 # Now we are entering .config to install and configur the programs i use
 cd ~/.config
@@ -112,10 +112,7 @@ pulseaudio --start
 
 #etc.
 # To-do:
-#	2. dmenu bitwarden,
-#	3. configurar atalhos de teclado para abrir os seguintes programas no dwm (ranger, brave e obsidian),
-#	6. colocar teclas de ajuste de brilho para funcionar 
-#	8. Aprender a configurar o ranger para ter preview e abrir os aquivos com os programas que eu definr
-#  10. Entender porque o crontab não está funcionando
-#  11. Configurar o excel no wine
-#  12. Configure trash system in arch (check if does solve the insync one way deletion problem)
+#	1. dmenu bitwarden,
+#	2. Aprender a configurar o ranger para ter preview e abrir os aquivos com os programas que eu definr
+#   3. Entender porque o crontab não está funcionando
+#	4. Configurar na dwm-bar para mostrar a força do sinal wi-fi e qual ele está conectado 
