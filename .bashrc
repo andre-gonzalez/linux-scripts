@@ -41,6 +41,10 @@ alias v="vim"
 alias b="brightnessctl s"
 #To reload .bashrc use ->  source ~/.bashrc
 
+#auto cd. Moving around without the need to type cd
+shopt -s autocd
+
+
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '/home/frank/.config/google-cloud-sdk/path.bash.inc' ]; then . '/home/frank/.config/google-cloud-sdk/path.bash.inc'; fi
 
