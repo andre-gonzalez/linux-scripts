@@ -38,6 +38,7 @@ alias edownloads="cd ~/eureciclo/downloads"
 alias database="cd ~/eureciclo/salesops/database"
 alias tar="tar -xf"
 alias v="vim"
+alias b="brightnessctl s"
 #To reload .bashrc use ->  source ~/.bashrc
 
 # The next line updates PATH for the Google Cloud SDK.
