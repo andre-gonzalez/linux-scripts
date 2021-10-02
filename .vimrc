@@ -62,5 +62,6 @@ Plug 'morhetz/gruvbox'
 
 call plug#end()
 
+set clipboard=unnamed
 set background=dark
 colorscheme gruvbox
