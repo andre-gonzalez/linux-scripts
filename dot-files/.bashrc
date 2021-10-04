@@ -15,12 +15,6 @@ alias evb='sudo systemctl enable --now vboxservice.service'
 export EDITOR='/usr/bin/vim'
 export VISUAL='/usr/bin/vim'
 
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/home/frank/.config/google-cloud-sdk/path.bash.inc' ]; then . '/home/frank/.config/google-cloud-sdk/path.bash.inc'; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f '/home/frank/.config/google-cloud-sdk/completion.bash.inc' ]; then . '/home/frank/.config/google-cloud-sdk/completion.bash.inc'; fi
-
 # Alias
 alias r="ranger"
 alias l="ls -CF"
@@ -42,4 +36,18 @@ alias slack="cd ~/eureciclo/salesops/slack-bot"
 alias ..="cd .."
 alias edownloads="cd ~/eureciclo/downloads"
 alias database="cd ~/eureciclo/salesops/database"
+alias tar="tar -xf"
+alias v="vim"
+alias b="brightnessctl s"
+alias p="python3"
 #To reload .bashrc use ->  source ~/.bashrc
+
+#auto cd. Moving around without the need to type cd
+shopt -s autocd
+
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/home/frank/.config/google-cloud-sdk/path.bash.inc' ]; then . '/home/frank/.config/google-cloud-sdk/path.bash.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/home/frank/.config/google-cloud-sdk/completion.bash.inc' ]; then . '/home/frank/.config/google-cloud-sdk/completion.bash.inc'; fi
