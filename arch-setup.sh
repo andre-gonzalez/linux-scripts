@@ -8,7 +8,7 @@ sudo pacman -R arch-install-scripts amd-ucode archinstall brltty nano
 #sync and update packages already installed
 sudo pacman -Syu
 #Packages from arch linux repository
-sudo pacman -S --noconfirm nvidia xorg xorg-xinit xorg-xsetroot nitrogen spotifyd ranger github-cli picom xautolock cronie git  anki p7zip xbindkeys htop python-pip feh dbeaver vlc scrot unclutter bluez-tools bluez-utils make base-devel unzip remmina xclip ttf-nerd-fonts-symbols-mono gvim	
+sudo pacman -S --noconfirm nvidia xorg xorg-xinit xorg-xsetroot nitrogen spotifyd ranger github-cli picom xautolock cronie git  anki p7zip xbindkeys htop python-pip feh dbeaver vlc scrot unclutter bluez-tools bluez-utils make base-devel unzip remmina xclip ttf-nerd-fonts-symbols-mono gvim brightnessctl
 
 #Copying dot files to the home directory
 cp ~/arch_setup/.xinitrc ~/.xinitrc
@@ -116,3 +116,4 @@ pulseaudio --start
 #	2. Aprender a configurar o ranger para ter preview e abrir os aquivos com os programas que eu definr
 #   3. Entender porque o crontab não está funcionando
 #	4. Configurar na dwm-bar para mostrar a força do sinal wi-fi e qual ele está conectado 
+#   5. Configurar para a barra do dwm responder as mudanças no volume
