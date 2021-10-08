@@ -112,8 +112,6 @@ pulseaudio --start
 
 #etc.
 # To-do:
-#	1. dmenu bitwarden,
-#	2. Aprender a configurar o ranger para ter preview e abrir os aquivos com os programas que eu definr
 #   3. Entender porque o crontab não está funcionando
 #	4. Configurar na dwm-bar para mostrar a força do sinal wi-fi e qual ele está conectado 
 #   5. Configurar para a barra do dwm responder as mudanças no volume
