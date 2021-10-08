@@ -77,10 +77,13 @@ xflux -l -23 -g -43.4 &
 #start clipmenud
 clipmenud &
 
+#fast scroll with j and k in vim
+xset r rate 300 50
+
 # Loop
 while true; do
 	dwm > /dev/null 2>&1
 done
 
 #Execute DWM
-exec dwm
+exec dwm 
