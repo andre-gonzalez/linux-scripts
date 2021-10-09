@@ -8,7 +8,7 @@ sudo pacman -R arch-install-scripts amd-ucode archinstall brltty nano
 #sync and update packages already installed
 sudo pacman -Syu
 #Packages from arch linux repository
-sudo pacman -S --noconfirm nvidia xorg xorg-xinit xorg-xsetroot nitrogen spotifyd ranger github-cli picom xautolock cronie git  anki p7zip xbindkeys htop python-pip feh dbeaver vlc scrot unclutter bluez-tools bluez-utils make base-devel unzip remmina xclip ttf-nerd-fonts-symbols-mono gvim brightnessctl alsa-utils
+sudo pacman -S --noconfirm nvidia xorg xorg-xinit xorg-xsetroot nitrogen spotifyd ranger github-cli picom xautolock cronie git  anki p7zip xbindkeys htop python-pip feh dbeaver vlc scrot unclutter bluez-tools bluez-utils make base-devel unzip remmina xclip ttf-nerd-fonts-symbols-mono gvim brightnessctl alsa-utils flatpak
 
 #Copying dot files to the home directory
 cp ~/arch_setup/.xinitrc ~/.xinitrc
@@ -28,6 +28,9 @@ makepkg -si
 
 #Packages from aur
 yay -S brave-bin authy obsidian xflux slack-desktop popcorntime-bin anki-git spotify insync vscodium-bin google-cloud-sdk google-cloud-sdk-engine-python google-cloud-sdk-app-engine-python-extras
+
+#installing spotify using flatpak
+flatpak install flathub com.spotify.Client
 
 # Now we are entering .config to install and configur the programs i use
 cd ~/.config
