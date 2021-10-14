@@ -120,5 +120,3 @@ pulseaudio --start
 # To-do:
 #   3. Entender porque o crontab não está funcionando
 #	4. Configurar na dwm-bar para mostrar a força do sinal wi-fi e qual ele está conectado 
-#   5. Configurar para a barra do dwm responder as mudanças no volume
-#   6. Desinstalar o snap
