@@ -25,9 +25,9 @@ set smartcase
 set mouse=a
 
 " Added the dracula theme
-packadd! dracula
-syntax enable
-colorscheme dracula
+"packadd! dracula
+"syntax enable
+"colorscheme dracula
 
 " save undo trees in files
 set undofile
@@ -58,4 +58,12 @@ Plug 'preservim/nerdtree'
 
 Plug 'vim-scripts/dbext.vim'
 
+Plug 'morhetz/gruvbox'
+
+Plug 'rentalcustard/exuberant-ctags'
+
 call plug#end()
+
+set clipboard=unnamed
+set background=dark
+colorscheme gruvbox
