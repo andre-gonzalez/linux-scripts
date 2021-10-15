@@ -40,6 +40,10 @@ alias tar="tar -xf"
 alias v="vim"
 alias b="brightnessctl s"
 alias p="python3"
+alias ga="git add"
+alias gc="git commit -m"
+alias gp="git push -u origin"
+
 #To reload .bashrc use ->  source ~/.bashrc
 
 #auto cd. Moving around without the need to type cd
