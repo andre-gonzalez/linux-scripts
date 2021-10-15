@@ -43,12 +43,17 @@ alias p="python3"
 alias ga="git add"
 alias gc="git commit -m"
 alias gp="git push -u origin"
+alias mirror="sudo reflector -f 30 -l 30 --number 10 --verbose --save /etc/pacman.d/mirrorlist" #get fastest mirrors
 
 #To reload .bashrc use ->  source ~/.bashrc
 
 #auto cd. Moving around without the need to type cd
 shopt -s autocd
+shopt -s cdspell #aurocorrects cd misspellings
+shopt -s expand_aliases #expand aliases
 
+#ignore upper and lowercase when TAB completion
+bind "set completion-ignore-case on"
 
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '/home/frank/.config/google-cloud-sdk/path.bash.inc' ]; then . '/home/frank/.config/google-cloud-sdk/path.bash.inc'; fi
