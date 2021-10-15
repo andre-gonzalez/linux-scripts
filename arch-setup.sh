@@ -1,8 +1,8 @@
 #!/bin/sh
 # manually update pacman.conf first in the etc/pacman.conf
 sudo cp ~/arch_setup/pacman.conf /etc/pacman.conf
-#update mirror list
-sudo cp ~/arch_setup/mirrorlist /etc/pacman.d/mirrorlist 
+#update mirror list with the fastest mirrors
+sudo reflector -f 30 -l 30 --number 10 --verbose --save /etc/pacman.d/mirrorlist
 #unistall archo-install-scripts because it will not be necessary again
 sudo pacman -R arch-install-scripts amd-ucode archinstall brltty nano
 #sync and update packages already installed
