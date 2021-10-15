@@ -1,36 +1,34 @@
-nvidia
-xorg
-xorg-xinit
-xorg-xsetroot
-nitrogen
-spotifyd
-ranger
-github-cli
-picom
-xautolock
-cronie
-git
-anki
-p7zip
-xbindkeys
-htop
-python-pip
-feh
-dbeaver
-vlc
-scrot
-unclutter
-bluez-tools
-bluez-utils
-make
-base-devel
-unzip
-remmina
-xclip
-ttf-nerd-fonts-symbols-mono
-gvim
-brightnessctl
-alsa-utils
-pavucontrol
-lxappearance
-arc-gtk-theme
+nvidia #video driver for nvidia
+xorg-server #x for using applications and install dwm later
+xorg-xinit #.xinit file so i can bring my .xinitrc file later
+xorg-xsetroot #xsetroot so i can have updates on my status bar in dwm
+xorg-xrandr # to change display resolution
+nitrogen #background for x
+spotifyd #terminal based spotify client
+ranger #terminal file manager
+github-cli #github cli 
+picom #compositor needed so i can have transparency
+xautolock #to set the device to autolock after an amount of time. Will use with slock
+cronie #crontab to schedule tasks
+git #git so i can version code
+anki #flahscard application to memorize stuff
+xbindkeys #necessary to use keyboard keys to adjust volume and backlight
+htop #task manager
+python-pip #pyhton packages installer
+feh #terminal based image visualization tool
+dbeaver #database tool
+scrot #tool for print the screen
+unclutter #hide the mouse automatically after some period of inactivity
+bluez-tools #necessary for bluetooth
+bluez-utils #necessary for bluetooth
+base-devel #a lot of packages necessary for development
+unzip #simple unzip tool
+remmina #necessary to rdp to virtual machines
+xclip 
+ttf-nerd-fonts-symbols-mono #mono-font
+gvim #graphical vim. I only download to have the copy to clipboard options
+brightnessctl #tool to adjust screen brightness
+alsa-utils #tool to adjust volume
+pavucontrol #graphical tool to adjust speakrs and microphone
+lxappearance #To configure theme for GTK applications. I personally use it to use dark themes on them
+arc-gtk-theme #theme for GTK applications. I install so I can have dark mode for this kind of applications
