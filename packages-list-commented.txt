@@ -11,7 +11,6 @@ picom #compositor needed so i can have transparency
 xautolock #to set the device to autolock after an amount of time. Will use with slock
 cronie #crontab to schedule tasks
 git #git so i can version code
-anki #flahscard application to memorize stuff
 xbindkeys #necessary to use keyboard keys to adjust volume and backlight
 htop #task manager
 python-pip #pyhton packages installer
@@ -24,7 +23,7 @@ bluez-utils #necessary for bluetooth
 base-devel #a lot of packages necessary for development
 unzip #simple unzip tool
 remmina #necessary to rdp to virtual machines
-xclip 
+xclip #clipboard tool
 ttf-nerd-fonts-symbols-mono #mono-font
 gvim #graphical vim. I only download to have the copy to clipboard options
 brightnessctl #tool to adjust screen brightness
