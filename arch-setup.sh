@@ -15,17 +15,17 @@ sudo pacman -Syu
 sudo pacman --noconfirm --needed -Sy $(<packages-list.txt)
 
 #Copying dot files to the home directory
-cp ~/arch_setup/dot-files/.xinitrc ~/.xinitrc
-cp ~/arch_setup/dot-files/.bash_profile ~/.bash_profile
-cp ~/arch_setup/dot-files/.bashrc ~/.bashrc
-cp ~/arch_setup/dot-files/.insync-git-ignore ~/.insync-git-ignore
-cp ~/arch_setup/dot-files/.vimrc ~/.vimrc
-cp -r ~/arch_setup/dot-files/.vim ~/.vim
-cp ~/arch_setup/dot-files/.xbindkeysrc ~/.xbindkeysrc
-cp ~/arch_setup/dot-files/.gitconfig ~/.gitconfig
+cp /home/frank/arch_setup/dot-files/.xinitrc ~/.xinitrc
+cp /home/frank/arch_setup/dot-files/.bash_profile ~/.bash_profile
+cp /home/frank/arch_setup/dot-files/.bashrc ~/.bashrc
+cp /home/frank/arch_setup/dot-files/.insync-git-ignore ~/.insync-git-ignore
+cp /home/frank/arch_setup/dot-files/.vimrc ~/.vimrc
+cp -r /home/frank/arch_setup/dot-files/.vim ~/.vim
+cp /home/frank/arch_setup/dot-files/.xbindkeysrc ~/.xbindkeysrc
+cp /home/frank/arch_setup/dot-files/.gitconfig ~/.gitconfig
 
 #Install Yay
-cd ~/.config
+cd /home/frank/.config
 git clone https://aur.archlinux.org/yay-git.git
 cd yay-git
 makepkg -si
@@ -34,7 +34,7 @@ makepkg -si
 yay --noconfirm --needed -Sy $(<aur-packages-list.txt) 
 
 # Now we are entering .config to install and configur the programs i use
-cd ~/.config
+cd /home/frank/.config
 
 #Dwm
 #patches i am using: alpha_patch, alpha_focus_highlight_patch, scrollback_patch, scrollback_mouse_patch, vim_browse_patch
@@ -64,7 +64,7 @@ cd ..
 git clone https://github.com/Andre-gonzalez/my-dwm-bar
 cd my-dwm-bar
 sudo make clean install
-cd ~/.config
+cd /home/frank/.config
 
 #slock to block the screen 
 #patches i use are: capscolor and dpms
@@ -81,17 +81,16 @@ pacman -Qdt | sudo pacman -Rns
 sudo pacman -Sc
 
 #Moving the conectar-xm3-sh script to the /usr/local/bin folder so it can be executed by dmenu
-cd ~/arch_setup
+cd /home/frank/arch_setup
 cp conectar-xm3.sh conectar-redmi.sh scrot-copy-to-clipboard.sh /usr/local/bin
 cd /usr/local/bin
 chmod +x conectar-xm3.sh conectar-redmi.sh scrot-copy-to-clipboard.sh
-cd ~
+cd /home/frank
 
 # Enable cron in systemd
 sudo systemctl enable cronie.service --now
 
 #bluetooth configuration
-sudo pacman -S bluez bluez-utils pulseaudio-bluetooth pulseaudio
 modprobe btusb
 sudo systemctl start bluetooth.service
 sudo systemctl enable bluetooth.service
@@ -107,5 +106,6 @@ pulseaudio --start
 
 #etc.
 # To-do:
-#   3. Entender porque o crontab não está funcionando
-#	4. Configurar na dwm-bar para mostrar a força do sinal wi-fi e qual ele está conectado 
+#   1. Entender porque o crontab não está funcionando
+#	2. Configurar na dwm-bar para mostrar a força do sinal wi-fi e qual ele está conectado 
+#   3. Mover 
