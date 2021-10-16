@@ -17,7 +17,7 @@ export VISUAL='/usr/bin/vim'
 
 # Alias
 alias r="ranger"
-alias l="ls -CF"
+alias l="ls --color -h --group-directories-first"
 alias mv="mv -i"
 alias rm="trash -i"
 alias cp="cp -i"
