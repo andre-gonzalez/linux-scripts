@@ -1,24 +1,28 @@
 #!/bin/sh
+
 # manually update pacman.conf first in the etc/pacman.conf
-sudo cp ~/arch_setup/pacman.conf /etc/pacman.conf
+
 #update mirror list with the fastest mirrors
 sudo reflector -f 30 -l 30 --number 10 --verbose --save /etc/pacman.d/mirrorlist
+
 #unistall archo-install-scripts because it will not be necessary again
 sudo pacman -R arch-install-scripts amd-ucode archinstall brltty nano
+
 #sync and update packages already installed
 sudo pacman -Syu
+
 #Packages from arch linux repository
 sudo pacman --noconfirm --needed -Sy $(<packages-list.txt)
 
 #Copying dot files to the home directory
-cp ~/arch_setup/.xinitrc ~/.xinitrc
-cp ~/arch_setup/.bash_profile ~/.bash_profile
-cp ~/arch_setup/.bashrc ~/.bashrc
-cp ~/arch_setup/.insync-git-ignore ~/.insync-git-ignore
-cp ~/arch_setup/.vimrc ~/.vimrc
-cp -r ~/arch_setup/.vim ~/.vim
-cp ~/arch_setup/.xbindkeysrc ~/.xbindkeysrc
-cp ~/arch_setup/.gitconfig ~/.gitconfig
+cp ~/arch_setup/dot-files/.xinitrc ~/.xinitrc
+cp ~/arch_setup/dot-files/.bash_profile ~/.bash_profile
+cp ~/arch_setup/dot-files/.bashrc ~/.bashrc
+cp ~/arch_setup/dot-files/.insync-git-ignore ~/.insync-git-ignore
+cp ~/arch_setup/dot-files/.vimrc ~/.vimrc
+cp -r ~/arch_setup/dot-files/.vim ~/.vim
+cp ~/arch_setup/dot-files/.xbindkeysrc ~/.xbindkeysrc
+cp ~/arch_setup/dot-files/.gitconfig ~/.gitconfig
 
 #Install Yay
 cd ~/.config
