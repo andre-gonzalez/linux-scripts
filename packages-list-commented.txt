@@ -35,3 +35,5 @@ pavucontrol #graphical tool to adjust speakrs and microphone
 lxappearance #To configure theme for GTK applications. I personally use it to use dark themes on them
 arc-gtk-theme #theme for GTK applications. I install so I can have dark mode for this kind of applications
 doas #lighter alternative to sudo
+connman #command-line network manager that works with dwm-bar
+wpa_supplicant #connman dependecie requeres for Wi-Fi

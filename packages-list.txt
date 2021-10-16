@@ -35,3 +35,5 @@ pavucontrol
 lxappearance 
 arc-gtk-theme 
 opendoas
+connman
+wpa_supplicant
