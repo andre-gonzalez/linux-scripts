@@ -5,17 +5,16 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-alias ls='ls --color=auto'
 PS1='\W > '
 
 ########
 #ALCI
 ########
-alias evb='sudo systemctl enable --now vboxservice.service'
 export EDITOR='/usr/bin/vim'
 export VISUAL='/usr/bin/vim'
 
 # Alias
+alias evb='sudo systemctl enable --now vboxservice.service'
 alias r="ranger"
 alias l="ls --color -h --group-directories-first"
 alias mv="mv -i"
