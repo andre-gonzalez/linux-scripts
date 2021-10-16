@@ -18,8 +18,11 @@ feh
 dbeaver 
 scrot 
 unclutter 
+bluez 
 bluez-tools 
 bluez-utils 
+pulseaudio-bluetooth 
+pulseaudio 
 base-devel 
 unzip 
 remmina 

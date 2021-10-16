@@ -18,8 +18,11 @@ feh #terminal based image visualization tool
 dbeaver #database tool
 scrot #tool for print the screen
 unclutter #hide the mouse automatically after some period of inactivity
+bluez #necessary for bluetooth
 bluez-tools #necessary for bluetooth
 bluez-utils #necessary for bluetooth
+pulseaudio-bluetooth #necessary for bluetooth
+pulseaudio #tool to manage audio
 base-devel #a lot of packages necessary for development
 unzip #simple unzip tool
 remmina #necessary to rdp to virtual machines
