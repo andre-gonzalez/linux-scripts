@@ -45,6 +45,7 @@ alias gc="git commit -m"
 alias gp="git push -u origin"
 alias mirror="sudo reflector -f 30 -l 30 --number 10 --verbose --save /etc/pacman.d/mirrorlist" #get fastest mirrors
 alias sudo="doas"
+alias sudoedit="doas rvim"
 
 #To reload .bashrc use ->  source ~/.bashrc
 
