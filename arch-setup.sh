@@ -12,17 +12,8 @@ sudo pacman -R arch-install-scripts amd-ucode archinstall brltty nano
 sudo pacman -Syu
 
 #Packages from arch linux repository
-sudo pacman --noconfirm --needed -Sy $(<packages-list.txt)
+sudo pacman --noconfirm --needed -S $(<packages-list.txt)
 
-#Copying dot files to the home directory
-cp /home/frank/arch_setup/dot-files/.xinitrc ~/.xinitrc
-cp /home/frank/arch_setup/dot-files/.bash_profile ~/.bash_profile
-cp /home/frank/arch_setup/dot-files/.bashrc ~/.bashrc
-cp /home/frank/arch_setup/dot-files/.insync-git-ignore ~/.insync-git-ignore
-cp /home/frank/arch_setup/dot-files/.vimrc ~/.vimrc
-cp -r /home/frank/arch_setup/dot-files/.vim ~/.vim
-cp /home/frank/arch_setup/dot-files/.xbindkeysrc ~/.xbindkeysrc
-cp /home/frank/arch_setup/dot-files/.gitconfig ~/.gitconfig
 
 #Install Yay
 cd /home/frank/.config
@@ -79,6 +70,16 @@ pacman -Qdt | sudo pacman -Rns
 
 #remove cache from old packages
 sudo pacman -Sc
+
+#Copying dot files to the home directory
+cp /home/frank/arch_setup/dot-files/.xinitrc ~/.xinitrc
+cp /home/frank/arch_setup/dot-files/.bash_profile ~/.bash_profile
+cp /home/frank/arch_setup/dot-files/.bashrc ~/.bashrc
+cp /home/frank/arch_setup/dot-files/.insync-git-ignore ~/.insync-git-ignore
+cp /home/frank/arch_setup/dot-files/.vimrc ~/.vimrc
+cp -r /home/frank/arch_setup/dot-files/.vim ~/.vim
+cp /home/frank/arch_setup/dot-files/.xbindkeysrc ~/.xbindkeysrc
+cp /home/frank/arch_setup/dot-files/.gitconfig ~/.gitconfig
 
 #Moving the conectar-xm3-sh script to the /usr/local/bin folder so it can be executed by dmenu
 cd /home/frank/arch_setup
