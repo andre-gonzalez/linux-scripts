@@ -107,5 +107,3 @@ pulseaudio --start
 #etc.
 # To-do:
 #   1. Entender porque o crontab não está funcionando
-#	2. Configurar na dwm-bar para mostrar a força do sinal wi-fi e qual ele está conectado 
-#   3. Mover 
