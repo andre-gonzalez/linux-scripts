@@ -33,12 +33,6 @@ makepkg -si
 #Packages from aur
 yay --noconfirm --needed -Sy $(<aur-packages-list.txt) 
 
-#installing spotify using snap
-	#first you need to enable snapd in systemd
-	systemctl start snapd.service
-	#then you can install spotify
-	sudo snap install spotify
-
 # Now we are entering .config to install and configur the programs i use
 cd ~/.config
 
