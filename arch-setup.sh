@@ -27,7 +27,7 @@ cd yay-git
 makepkg -si
 
 #Packages from aur
-yay -S brave-bin authy obsidian xflux slack-desktop popcorntime-bin anki-git spotify insync vscodium-bin google-cloud-sdk google-cloud-sdk-engine-python google-cloud-sdk-app-engine-python-extras
+yay --noconfirm --needed -Sy $(<aur-packages-list.txt) 
 
 #installing spotify using snap
 	#first you need to enable snapd in systemd

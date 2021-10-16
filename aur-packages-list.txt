@@ -8,6 +8,6 @@ spotify
 insync
 vscodium-bin
 google-cloud-sdk
-google-cloud-sdk-engine-python
+google-cloud-sdk-app-engine-python
 google-cloud-sdk-app-engine-python-extras
 stremio
