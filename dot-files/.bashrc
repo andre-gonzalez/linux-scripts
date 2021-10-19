@@ -14,7 +14,7 @@ export EDITOR='/usr/bin/vim'
 export VISUAL='/usr/bin/vim'
 
 # Alias
-alias evb='sudo systemctl enable --now vboxservice.service'
+alias evb='doas systemctl enable --now vboxservice.service'
 alias r="ranger"
 alias l="ls --color -h --group-directories-first"
 alias mv="mv -i"
@@ -42,10 +42,12 @@ alias p="python3"
 alias ga="git add"
 alias gc="git commit -m"
 alias gp="git push -u origin"
-alias mirror="sudo reflector -f 30 -l 30 --number 10 --verbose --save /etc/pacman.d/mirrorlist" #get fastest mirrors
+alias mirror="doas reflector -f 30 -l 30 --number 10 --verbose --save /etc/pacman.d/mirrorlist" #get fastest mirrors
 alias sudo="doas"
 alias sudoedit="doas rvim"
-
+alias pms="doas pacman -S"
+alias pmu="doas pacman -Syu"
+alias pmr="doas pacman -Rns"
 #To reload .bashrc use ->  source ~/.bashrc
 
 #auto cd. Moving around without the need to type cd
