@@ -48,6 +48,7 @@ alias sudoedit="doas rvim"
 alias pms="doas pacman -S"
 alias pmu="doas pacman -Syu"
 alias pmr="doas pacman -Rns"
+alias vobsidian="cd gdrive-pessoal/pessoal/obsidian"
 #To reload .bashrc use ->  source ~/.bashrc
 
 #auto cd. Moving around without the need to type cd
