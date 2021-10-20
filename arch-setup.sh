@@ -14,7 +14,6 @@ sudo pacman -Syu
 #Packages from arch linux repository
 sudo pacman --noconfirm --needed -S $(<packages-list.txt)
 
-
 #Install Yay
 cd /home/frank/.config
 git clone https://aur.archlinux.org/yay-git.git
@@ -107,4 +106,7 @@ pulseaudio --start
 
 #etc.
 # To-do:
-#   1. Entender porque o crontab não está funcionando
+# 1.Add the scrollback support to st
+# 2.Config spotifytui and spotifyd
+# 3.Try Zsh
+
