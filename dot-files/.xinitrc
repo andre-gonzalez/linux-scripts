@@ -72,7 +72,7 @@ insync start &
 setxkbmap -option caps:escape &
 
 # start xflux so the screen get orange in the night
-xflux -l -23 -g -43.4 &
+xflux -l -23 -g -43.4 -k 2000 &
 
 #start clipmenud
 clipmenud &
