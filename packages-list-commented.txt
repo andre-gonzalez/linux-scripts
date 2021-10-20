@@ -37,3 +37,4 @@ arc-gtk-theme #theme for GTK applications. I install so I can have dark mode for
 doas #lighter alternative to sudo
 connman #command-line network manager that works with dwm-bar
 wpa_supplicant #connman dependecie requeres for Wi-Fi
+pamixer #necessary to show volume in dwm-bar when using pulseaudio

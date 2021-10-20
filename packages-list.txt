@@ -37,3 +37,4 @@ arc-gtk-theme
 opendoas
 connman
 wpa_supplicant
+pamixer
