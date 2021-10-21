@@ -27,6 +27,7 @@ alias trabalho="cd ~/gdrive-pessoal/trabalho"
 alias estudo="cd ~/gdrive-pessoal/estudo"
 alias ~="cd ~"
 alias arch-setup="cd ~/gdrive-pessoal/pessoal/programação/arch_setup"
+alias dot-files="cd ~/gdrive-pessoal/pessoal/programação/arch_setup/dot-files"
 alias downloads="cd ~/gdrive-pessoal/downloads"
 alias fotos="cd ~/gdrive-pessoal/pessoal/fotos"
 alias hubspot="cd ~/eureciclo/salesops/hubspot"
@@ -49,7 +50,8 @@ alias pms="doas pacman -S"
 alias pmu="doas pacman -Syu"
 alias pmr="doas pacman -Rns"
 alias vobsidian="cd gdrive-pessoal/pessoal/obsidian"
-alias organizar="cd gdrive-pessoal/pessoal/obsidian/_organizar"
+alias organizar="cd /home/frank/gdrive-pessoal/pessoal/obsidian/_organizar
+"
 
 #To reload .bashrc use ->  source ~/.bashrc
 
