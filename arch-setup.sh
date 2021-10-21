@@ -109,4 +109,4 @@ pulseaudio --start
 # 1.Add the scrollback support to st
 # 2.Config spotifytui and spotifyd
 # 3.Try Zsh
-
+# 4.Learn to config keyboard shortcut to run programs
