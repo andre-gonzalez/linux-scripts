@@ -80,6 +80,9 @@ clipmenud &
 #fast scroll with j and k in vim
 xset r rate 300 50
 
+# Fix a bug in the bluetooth	
+rfkill unblock all
+
 # Loop
 while true; do
 	dwm > /dev/null 2>&1
