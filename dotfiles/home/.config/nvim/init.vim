@@ -38,6 +38,9 @@ set spell spelllang=en
 "Provides tab-completion for all file-related tasks
 set path+=**
 
+" consider only 100 columns until break line
+setl tw=100
+
 "enable plugins
 call plug#begin()
 
