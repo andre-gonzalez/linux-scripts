@@ -40,3 +40,4 @@ wpa_supplicant #connman dependecie requeres for Wi-Fi
 pamixer #necessary to show volume in dwm-bar when using pulseaudio
 ripgrep #necessary to use telescope in nvim
 fd #necessary to use telescope in nvim
+fzf #Fuzzy finder in the terminal that i use to open vim files

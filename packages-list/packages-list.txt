@@ -40,3 +40,4 @@ wpa_supplicant
 pamixer
 ripgrep
 fd
+fzf
