@@ -8,11 +8,8 @@ sudo reflector -f 30 -l 30 --number 10 --verbose --save /etc/pacman.d/mirrorlist
 #unistall archo-install-scripts because it will not be necessary again
 sudo pacman -R arch-install-scripts amd-ucode archinstall brltty nano
 
-#sync and update packages already installed
-sudo pacman -Syu
-
-#Packages from arch linux repository
-sudo pacman --noconfirm --needed -S $(<packages-list/packages-list.txt)
+#Sync and update packages already installed and installing new software from arch linux repository
+sudo pacman --noconfirm --needed -Syu $(<packages-list/packages-list.txt)
 
 #Install Yay
 cd /home/frank/.config
@@ -71,24 +68,16 @@ pacman -Qdt | sudo pacman -Rns
 sudo pacman -Sc
 
 #Copying dot files to the home directory
-cp /home/frank/arch-setup/dotfiles/.xinitrc ~/.xinitrc
-cp /home/frank/arch-setup/dotfiles/.bash_profile ~/.bash_profile
-cp /home/frank/arch-setup/dotfiles/.bashrc ~/.bashrc
-cp /home/frank/arch-setup/dotfiles/.insync-git-ignore ~/.insync-git-ignore
-cp /home/frank/arch-setup/dotfiles/.vimrc ~/.vimrc
-cp -r /home/frank/arch-setup/dotfiles/.vim ~/.vim
-cp /home/frank/arch-setup/dotfiles/.xbindkeysrc ~/.xbindkeysrc
-cp /home/frank/arch-setup/dotfiles/.gitconfig ~/.gitconfig
+cp -a /home/frank/arch-setup/dotfiles/home/. /home/frank/
 
-#Moving the conectar-xm3-sh script to the /usr/local/bin folder so it can be executed by dmenu
-cd /home/frank/arch-setup/scripts-dmenu
-cp conectar-xm3.sh conectar-redmi.sh scrot-copy-to-clipboard.sh /usr/local/bin
-cd /usr/local/bin
-chmod +x conectar-xm3.sh conectar-redmi.sh scrot-copy-to-clipboard.sh
-cd /home/frank
+#Copying some config files to the etc/ directory
+cp -a /home/frank/arch-setup/dotfiles/etc/. /etc/
+
+#Moving scripts to run the directory that dmenu looks for scripts to execute
+cp /home/frank/arch-setup/scripts-dmenu/. /usr/local/bin
 
 # Enable cron in systemd
-sudo systemctl enable cronie.service --now
+#sudo systemctl enable cronie.service --now
 
 #bluetooth configuration
 modprobe btusb
