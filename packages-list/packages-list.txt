@@ -39,3 +39,4 @@ connman
 wpa_supplicant
 pamixer
 ripgrep
+fd
