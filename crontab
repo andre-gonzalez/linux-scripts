@@ -1,2 +1,0 @@
-0 * * * * pacman -Syu 
-0 */3 * * * pacman -Sc
