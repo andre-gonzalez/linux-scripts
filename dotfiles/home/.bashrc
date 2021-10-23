@@ -15,7 +15,9 @@ PS1="\W\033[00;32m\]\$(git_branch)\[\033[00m\] > "
 ########
 export EDITOR='/usr/bin/nvim'
 export VISUAL='/usr/bin/nvim'
-
+export FZF_DEFAULT_COMMAND="fd . $HOME"
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_ALT_C_COMMAND="fd -t d . $HOME"
 # Alias
 alias evb='doas systemctl enable --now vboxservice.service'
 alias r="ranger"
@@ -53,9 +55,8 @@ alias pms="doas pacman -S"
 alias pmu="doas pacman -Syu"
 alias pmr="doas pacman -Rns"
 alias vobsidian="cd gdrive-pessoal/pessoal/obsidian"
-alias organizar="cd /home/frank/gdrive-pessoal/pessoal/obsidian/_organizar
-"
-
+alias organizar="cd /home/frank/gdrive-pessoal/pessoal/obsidian/_organizar"
+alias vo="fzf | xargs -r $EDITOR"
 #To reload .bashrc use ->  source ~/.bashrc
 
 #auto cd. Moving around without the need to type cd
