@@ -10,8 +10,8 @@ PS1='\W > '
 ########
 #ALCI
 ########
-export EDITOR='/usr/bin/vim'
-export VISUAL='/usr/bin/vim'
+export EDITOR='/usr/bin/nvim'
+export VISUAL='/usr/bin/nvim'
 
 # Alias
 alias evb='doas systemctl enable --now vboxservice.service'
