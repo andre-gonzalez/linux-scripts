@@ -1,1 +1,1 @@
-st ranger
+st -e ranger
