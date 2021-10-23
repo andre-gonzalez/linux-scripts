@@ -24,11 +24,6 @@ set smartcase
 "allows you to paste in vim with the mouse
 set mouse=a
 
-" Added the dracula theme
-"packadd! dracula
-"syntax enable
-"colorscheme dracula
-
 " save undo trees in files
 set undofile
 set undodir=~/.vim/undo
@@ -50,22 +45,29 @@ Plug 'gabrielelana/vim-markdown'
 
 Plug 'vim-airline/vim-airline'
 
+Plug 'tpope/vim-fugitive'
+
 Plug 'Yggdroot/indentLine'
 
 Plug 'tpope/vim-surround'
 
 Plug 'preservim/nerdtree'
 
-Plug 'vim-scripts/dbext.vim'
-
 Plug 'morhetz/gruvbox'
 
 Plug 'rentalcustard/exuberant-ctags'
 
+" telescope requirements
+Plug 'nvim-treesitter/nvim-treesitter'
+Plug 'nvim-lua/popup.nvim'
+Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-telescope/telescope-fzy-native.nvim'
 
 call plug#end()
-
+nnoremap <Leader>f :lua require('telescope.builtin').find_files()<CR>
+nnoremap <Leader>f :lua require('telescope.builtin').find_files()<CR>
+nnoremap <leader>n :NERDTreeFocus<CR>
 set clipboard=unnamed
 set background=dark
 colorscheme gruvbox
