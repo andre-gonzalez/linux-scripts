@@ -11,3 +11,4 @@ google-cloud-sdk #Necessary to send commands to GCP from the terminal
 google-cloud-sdk-app-engine-python #Necessary to send commands to GCP from the terminal
 google-cloud-sdk-app-engine-python-extras #Necessary to send commands to GCP from the terminal
 stremio #streaming service to watch movies and TV series
+dashbinsh #Run shell scripts in dash to have better performance (up to 4x compared to bash)
