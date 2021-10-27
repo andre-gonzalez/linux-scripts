@@ -59,6 +59,10 @@ Plug 'preservim/nerdtree'
 Plug 'morhetz/gruvbox'
 
 Plug 'rentalcustard/exuberant-ctags'
+" autocomplete for python
+Plug 'kiteco/vim-plugin'
+"vim in the brownser
+Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(1) } }
 
 " telescope requirements
 Plug 'nvim-treesitter/nvim-treesitter'
@@ -68,9 +72,15 @@ Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzy-native.nvim'
 
 call plug#end()
+
+" remap to run telescope with \ + f
 nnoremap <Leader>f :lua require('telescope.builtin').find_files()<CR>
-nnoremap <Leader>f :lua require('telescope.builtin').find_files()<CR>
+" remap to run nerdtree with \ + n
 nnoremap <leader>n :NERDTreeFocus<CR>
+" Set firenvim extension to ignore whats app
+let fc['https?://web.whatsapp.com/'] = {'takeover': 'never', 'priority': 1 }
 set clipboard=unnamed
 set background=dark
+let g:kite_tab_complete=1
+set completeopt+=noselect
 colorscheme gruvbox
