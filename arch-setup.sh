@@ -100,3 +100,4 @@ pulseaudio --start
 # 3.Try Zsh
 # 4.Learn to config keyboard shortcut to run programs
 # 5.Setup tmux
+# 6.Learn to change the time until the screen goes dark
