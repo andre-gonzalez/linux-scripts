@@ -44,6 +44,9 @@ setl tw=100
 "Enable copying to clipboard
 set clipboard+=unnamedplus
 
+"use S as an alias to replace all
+noremap S :%s//g<Left><Left>
+
 "enable plugins
 call plug#begin()
 
