@@ -41,6 +41,9 @@ set path+=**
 " consider only 100 columns until break line
 setl tw=100
 
+"Enable copying to clipboard
+set clipboard+=unnamedplus
+
 "enable plugins
 call plug#begin()
 
@@ -78,7 +81,7 @@ nnoremap <Leader>f :lua require('telescope.builtin').find_files()<CR>
 " remap to run nerdtree with \ + n
 nnoremap <leader>n :NERDTreeFocus<CR>
 " Set firenvim extension to ignore whats app
-let fc['https?://web.whatsapp.com/'] = {'takeover': 'never', 'priority': 1 }
+"let fc['https?://web.whatsapp.com/'] = {'takeover': 'never', 'priority': 1 }
 set clipboard=unnamed
 set background=dark
 let g:kite_tab_complete=1
