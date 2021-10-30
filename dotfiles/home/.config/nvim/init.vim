@@ -16,6 +16,9 @@ map <C-j> <C-w>j
 map <C-k> <C-w>k
 map <C-l> <C-w>l
 
+" Automatically deletes all trailing whitespace on save
+autocmd BufWritePre * %s/\s\+$//e
+
 "alternate between relative line numbers and absolute based in wich mode you are
 :set number
 :augroup numbertoggle
