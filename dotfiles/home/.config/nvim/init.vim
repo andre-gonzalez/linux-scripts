@@ -1,3 +1,10 @@
+" TO-DOs
+"	- Get a decent python and shell autocompletion working
+"	- Learn to use fugitive.vim
+"	- Learn to use LSP
+"	- Larn to use Harpoon
+"	- Rice up my experience with telescope
+"	- Learn to personalize vim-airline
 " Turn syntax highlighting on.
 syntax on
 
@@ -31,6 +38,10 @@ set incsearch
 
 set scrolloff=8
 
+"fill with the date and hour
+nmap <F3> i<C-R>=strftime("%Y-%m-%d %a %I:%M %p")<CR><Esc>
+imap <F3> <C-R>=strftime("%Y-%m-%d %a %I:%M %p")<CR>
+
 " Ignore case in search and if you type an uppercase character it will change
 " the search to a case sensitive one
 set ignorecase
@@ -44,7 +55,7 @@ set undofile
 set undodir=~/.vim/undo
 
 " number of undo saved
-set undolevels=10000 
+set undolevels=10000
 
 " Enable spell checking
 map <leader>oe :setlocal spell! spelllang=en_us<CR>
@@ -79,6 +90,8 @@ Plug 'tpope/vim-surround'
 Plug 'preservim/nerdtree'
 
 Plug 'morhetz/gruvbox'
+
+Plug 'davidhalter/jedi-vim'
 
 Plug 'rentalcustard/exuberant-ctags'
 " autocomplete for python
