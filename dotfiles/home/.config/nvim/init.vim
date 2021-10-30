@@ -39,7 +39,8 @@ set undodir=~/.vim/undo
 set undolevels=10000 
 
 " Enable spell checking
-set spell spelllang=en
+map <leader>oe :setlocal spell! spelllang=en_us<CR>
+map <leader>op :setlocal spell! spelllang=pt_br<CR>
 
 "Search down into subfolders
 "Provides tab-completion for all file-related tasks
