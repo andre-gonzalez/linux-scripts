@@ -4,15 +4,20 @@ syntax on
 " Set tab width to 4 columns.
 set tabstop=4
 
-" Enable auto completion menu after pressing TAB
+" Enable auto completion menu after pressing TAB in command mode
 set wildmenu
 
 " Make wildmenu behave like similar to Bash completion.
 set wildmode=list:longest
 
+"move between split windows using ctrl + h,j,k,l
+map <C-h> <C-w>h
+map <C-j> <C-w>j
+map <C-k> <C-w>k
+map <C-l> <C-w>l
+
 "alternate between relative line numbers and absolute based in wich mode you are
 :set number
-
 :augroup numbertoggle
 :  autocmd!
 :  autocmd BufEnter,FocusGained,InsertLeave,WinEnter * if &nu && mode() != "i" | set rnu   | endif
