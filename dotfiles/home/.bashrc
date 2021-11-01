@@ -57,6 +57,18 @@ alias pmr="doas pacman -Rns"
 alias vobsidian="cd gdrive-pessoal/pessoal/obsidian"
 alias organizar="cd /home/frank/gdrive-pessoal/pessoal/obsidian/_organizar"
 alias vo="fzf | xargs -r $EDITOR"
+
+#Change directories using fuzzy finder
+g() {
+    file=$(pwd | fd . | fzf -e) && cd "$file"
+}
+gh() {
+    file=$(fd . ~ | fzf -e) && cd "$file"
+}
+gr() {
+    file=$(fd . / | fzf -e) && cd "$file"
+}
+
 #To reload .bashrc use ->  source ~/.bashrc
 
 #auto cd. Moving around without the need to type cd
