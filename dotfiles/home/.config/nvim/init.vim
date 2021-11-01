@@ -1,11 +1,7 @@
 " TO-DOs
-"	- Get a decent python and shell autocompletion working
 "	- Learn to use fugitive.vim
-"	- Learn to use LSP
 "	- Larn to use Harpoon
-"	- Rice up my experience with telescope
 "	- Learn to personalize vim-airline
-" Turn syntax highlighting on.
 syntax on
 
 " Set tab width to 4 columns.
@@ -77,34 +73,42 @@ noremap <leader>s :%s//g<Left><Left>
 "enable plugins
 call plug#begin()
 
-Plug 'gabrielelana/vim-markdown'
+		Plug 'gabrielelana/vim-markdown'
 
-Plug 'vim-airline/vim-airline'
+		Plug 'vim-airline/vim-airline'
 
-Plug 'tpope/vim-fugitive'
+		Plug 'tpope/vim-fugitive'
 
-Plug 'Yggdroot/indentLine'
+		Plug 'Yggdroot/indentLine'
 
-Plug 'tpope/vim-surround'
+		Plug 'tpope/vim-surround'
 
-Plug 'preservim/nerdtree'
+		Plug 'preservim/nerdtree'
 
-Plug 'morhetz/gruvbox'
+		Plug 'morhetz/gruvbox'
 
-Plug 'davidhalter/jedi-vim'
+		Plug 'rentalcustard/exuberant-ctags'
+		" autocomplete for python
+		Plug 'kiteco/vim-plugin'
+		"vim in the brownser
+		Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(1) } }
 
-Plug 'rentalcustard/exuberant-ctags'
-" autocomplete for python
-Plug 'kiteco/vim-plugin'
-"vim in the brownser
-Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(1) } }
+		" telescope requirements
+		Plug 'nvim-treesitter/nvim-treesitter'
+		Plug 'nvim-lua/popup.nvim'
+		Plug 'nvim-lua/plenary.nvim'
+		Plug 'nvim-telescope/telescope.nvim'
+		Plug 'nvim-telescope/telescope-fzy-native.nvim'
 
-" telescope requirements
-Plug 'nvim-treesitter/nvim-treesitter'
-Plug 'nvim-lua/popup.nvim'
-Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-telescope/telescope.nvim'
-Plug 'nvim-telescope/telescope-fzy-native.nvim'
+		"LSP for having language servers
+		Plug 'neovim/nvim-lspconfig'
+		"To enable auto completion
+		Plug 'hrsh7th/nvim-compe'
+
+
+		"Tree sitter. Do not need the nvim-treesitter because it was already installed in the
+		"telescope requirements
+		Plug 'nvim-treesitter/playground'
 
 call plug#end()
 
@@ -119,3 +123,11 @@ set background=dark
 let g:kite_tab_complete=1
 set completeopt+=noselect
 colorscheme gruvbox
+
+
+"Plugin configuration
+source ~/.config/nvim/bash-lsp.lua
+source ~/.config/nvim/compe-config.lua
+source ~/.config/nvim/lsp-config.vim
+source ~/.config/nvim/python-lsp.lua
+
