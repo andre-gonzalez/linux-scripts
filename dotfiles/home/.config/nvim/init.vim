@@ -1,14 +1,14 @@
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " TO-DOs
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "	- Learn to use fugitive.vim
 "	- Larn to use Harpoon
 "	- Learn to personalize vim-airline
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Basics
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 		" enable syntax highlight
 		syntax on
 
@@ -61,25 +61,33 @@
 		" consider only 100 columns until break line
 		setl tw=100
 
-		"Enable copying to clipboard
+		"Enable copying to clipboard there is two lines becaus it is one for each linux clipboard
 		set clipboard+=unnamedplus
-
 		set clipboard=unnamed
+
+		" completion
+		set completeopt+=noselect
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "Plugins
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 		call plug#begin()
 
 				" Better markdown highlight and some keybinds to make easier to edit markdown files
 				Plug 'gabrielelana/vim-markdown'
+
+				"Plugin to preview markdown files in the brownser
+				Plug 'iamcco/markdown-preview.nvim'
 
 				"Set a infomative line in the bottom of the editor
 				Plug 'vim-airline/vim-airline'
 
 				" Enable git commands direct from vim
 				Plug 'tpope/vim-fugitive'
+
+				"Plugin to show + and - git signs in the text file
+				Plug 'airblade/vim-gitgutter'
 
 				" Enable line in the indent
 				Plug 'Yggdroot/indentLine'
@@ -93,10 +101,8 @@
 				" colorscheme
 				Plug 'morhetz/gruvbox'
 
-				Plug 'rentalcustard/exuberant-ctags'
 
-				" autocomplete for python
-				Plug 'kiteco/vim-plugin'
+				Plug 'rentalcustard/exuberant-ctags'
 
 				"vim in the brownser
 				Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(1) } }
@@ -113,7 +119,6 @@
 				"To enable auto completion
 				Plug 'hrsh7th/nvim-compe'
 
-
 				"Tree sitter. Do not need the nvim-treesitter because it was already installed in the
 				"telescope requirements
 				Plug 'nvim-treesitter/playground'
@@ -121,18 +126,12 @@
 				" enable jupyter notebook inside vim
 				Plug 'jupyter-vim/jupyter-vim'
 
-				"Plugin to show + and - git signs in the text file
-				Plug 'airblade/vim-gitgutter'
-
-				"Plugin to preview markdown files in the brownser
-				Plug 'iamcco/markdown-preview.nvim'
-
 		call plug#end()
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugins configuration
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 		"configuration of jupyter-vim
 		if has('nvim')
 			let g:python3_host_prog = '/usr/bin/python3'
@@ -144,10 +143,10 @@
 		"let fc['https?://web.whatsapp.com/'] = {'takeover': 'never', 'priority': 1 }
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Remaps
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-		"use S as an alias to replace all
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+		"use s as an alias to replace all
 		noremap <leader>s :%s//g<Left><Left>
 
 		"move between split windows using ctrl + h,j,k,l
@@ -174,10 +173,13 @@
 		nnoremap <leader>n :NERDTreeFocus<CR>
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugins configuration files
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+		" PLugin nvim-compe config file
 		source ~/.config/nvim/compe-config.lua
+
+		" Plugin lsp-config config file
 		source ~/.config/nvim/lsp-config.vim
 
 		"Bash completion
@@ -187,12 +189,11 @@
 		source ~/.config/nvim/python-lsp.lua
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " colorscheme configuration
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 		" Set background to dark
 		set background=dark
+
 		" My coloscheme of choice
 		colorscheme gruvbox
-
-		set completeopt+=noselect
