@@ -6,7 +6,7 @@ xorg-xrandr # to change display resolution
 nitrogen #background for x
 spotifyd #terminal based spotify client
 ranger #terminal file manager
-github-cli #github cli 
+github-cli #github cli
 picom #compositor needed so i can have transparency
 xautolock #to set the device to autolock after an amount of time. Will use with slock
 cronie #crontab to schedule tasks
@@ -41,3 +41,4 @@ pamixer #necessary to show volume in dwm-bar when using pulseaudio
 ripgrep #necessary to use telescope in nvim
 fd #necessary to use telescope in nvim
 fzf #Fuzzy finder in the terminal that i use to open vim files
+jupyter #jupyer notebook for python development
