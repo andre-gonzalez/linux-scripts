@@ -115,6 +115,9 @@ call plug#begin()
 		"Plugin to show + and - git signs in the text file
 		Plug 'airblade/vim-gitgutter'
 
+		"Plugin to preview markdown files in the brownser
+		Plug 'iamcco/markdown-preview.nvim'
+
 call plug#end()
 
 "configuration of jupyter-vim
@@ -124,8 +127,8 @@ else
     set pyxversion=3
 endif
 
-
-
+" remap to preview markdown
+nmap <Leader>p <Plug>MarkdownPreview
 " remap to run telescope with \ + f
 nnoremap <Leader>f :lua require('telescope.builtin').find_files()<CR>
 " remap to run nerdtree with \ + n
