@@ -109,8 +109,22 @@ call plug#begin()
 		"Tree sitter. Do not need the nvim-treesitter because it was already installed in the
 		"telescope requirements
 		Plug 'nvim-treesitter/playground'
+		" enable jupyter notebook inside vim
+        Plug 'jupyter-vim/jupyter-vim'
+
+		"Plugin to show + and - git signs in the text file
+		Plug 'airblade/vim-gitgutter'
 
 call plug#end()
+
+"configuration of jupyter-vim
+if has('nvim')
+    let g:python3_host_prog = '/usr/bin/python3'
+else
+    set pyxversion=3
+endif
+
+
 
 " remap to run telescope with \ + f
 nnoremap <Leader>f :lua require('telescope.builtin').find_files()<CR>
