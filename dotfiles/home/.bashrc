@@ -56,7 +56,7 @@ alias pmu="doas pacman -Syu"
 alias pmr="doas pacman -Rns"
 alias vobsidian="cd gdrive-pessoal/pessoal/obsidian"
 alias organizar="cd /home/frank/gdrive-pessoal/pessoal/obsidian/_organizar"
-alias vo="fzf | xargs -r $EDITOR"
+alias vo="pwd |fd . | fzf | xargs -r $EDITOR"
 alias cnvim="nvim ~/.config/nvim/init.vim"
 
 #Change directories using fuzzy finder
