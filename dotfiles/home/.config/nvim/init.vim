@@ -68,6 +68,10 @@
 		" completion
 		set completeopt+=noselect
 
+		" use w!! to save when you open a file in read only mode. You need to type faster so it can
+		" work
+		cnoremap w!! execute 'silent! write !sudo tee % >/dev/null' <bar> edit!
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "Plugins
