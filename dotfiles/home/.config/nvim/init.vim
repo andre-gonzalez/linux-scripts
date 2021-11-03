@@ -130,6 +130,12 @@
 				" enable jupyter notebook inside vim
 				Plug 'jupyter-vim/jupyter-vim'
 
+				"Indentation script for python
+				Plug 'vim-scripts/indentpython.vim'
+
+				"Code folding for python
+				Plug 'tmhedberg/SimpylFold'
+
 		call plug#end()
 
 
@@ -146,6 +152,9 @@
 		" Set firenvim extension to ignore whats app
 		"let fc['https?://web.whatsapp.com/'] = {'takeover': 'never', 'priority': 1 }
 
+		let g:SimpylFold_docstring_preview = 1
+		let g:SimpylFold_fold_docstring = 0
+		let b:SimpylFold_fold_docstring = 0
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Remaps
