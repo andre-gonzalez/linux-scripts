@@ -58,6 +58,7 @@ alias vobsidian="cd gdrive-pessoal/pessoal/obsidian"
 alias organizar="cd /home/frank/gdrive-pessoal/pessoal/obsidian/_organizar"
 alias vo="pwd |fd . | fzf | xargs -r $EDITOR"
 alias cnvim="nvim ~/.config/nvim/init.vim"
+alias gam="git commit -am"
 
 #Change directories using fuzzy finder
 g() {
