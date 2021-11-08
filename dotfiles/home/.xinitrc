@@ -48,10 +48,10 @@ if [ -d /etc/X11/xinit/xinitrc.d ] ; then
  unset f
 fi
 
-setxkbmap -variant ,qwerty 
+setxkbmap -variant ,qwerty
 
 #Keybinds for audio and backlight
-xbindkeys 
+xbindkeys
 
 # DWM Status
 /home/frank/.config/my-dwm-bar/dwm_bar.sh &
@@ -69,21 +69,23 @@ unclutter &
 insync start &
 
 # change esc with caps lock
-setxkbmap -option caps:escape &
+setxkbmap -option caps:escape
+# change numpad , to . (dot)
+setxkbmap -option kpdl:dot &
 
 # start xflux so the screen get orange in the night
 xflux -l -23 -g -43.4 -k 2000 &
 
 #start clipmenud
-clipmenud & 
+clipmenud &
 
 #fast scroll with j and k in vim
-xset r rate 300 50 
+xset r rate 400 50
 
 # Xautolock to lock screen after some time of inactivity
 xautolcok -time 10 -locker slock -notify 2 &
 
-# Fix a bug in the bluetooth	
+# Fix a bug in the bluetooth
 rfkill unblock all &
 
 # Loop
@@ -92,4 +94,4 @@ while true; do
 done
 
 #Execute DWM
-exec dwm 
+exec dwm
