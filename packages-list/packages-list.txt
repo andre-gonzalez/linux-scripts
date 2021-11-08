@@ -42,3 +42,4 @@ ripgrep
 fd
 fzf
 jupyter
+bc
