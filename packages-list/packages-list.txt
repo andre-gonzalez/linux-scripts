@@ -43,3 +43,4 @@ fd
 fzf
 jupyter
 bc
+baobab
