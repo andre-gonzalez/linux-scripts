@@ -18,7 +18,7 @@ cd yay-git
 makepkg -si
 
 #Packages from aur
-yay --noconfirm --needed -Sy $(<packages-list/aur-packages-list.txt) 
+yay --noconfirm --needed -Sy $(<packages-list/aur-packages-list.txt)
 
 # Now we are entering .config to install and configur the programs i use
 cd /home/frank/.config
@@ -53,7 +53,7 @@ cd my-dwm-bar
 sudo make clean install
 cd /home/frank/.config
 
-#slock to block the screen 
+#slock to block the screen
 #patches i use are: capscolor and dpms
 #xautolock if you want to block the screen after a specific period of time
 git clone https://github.com/Andre-gonzalez/my-slock.git
@@ -92,6 +92,12 @@ bluetoothctl default-agent
 #Set AutoEnable=true
 pulseaudio --start
 # use pavucontrol to switch audio
+
+# run doas nano /etc/default/grub
+# update GRUB_TIMEOUT=1
+# and GRUB_TIMEOUT_STYLE=hidden
+# then run grub-mkconfig -o /boot/grub/grub.cfg
+
 
 #etc.
 # To-do:
