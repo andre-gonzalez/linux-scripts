@@ -68,6 +68,8 @@ unclutter &
 # insync start
 insync start &
 
+# set to dvorak layout when press Alt + space
+#setxkbmap -layout br, abnt2  -variant us,dvorak -option "lv3:rwin_switch,grp:alt_space_toggle"
 # change esc with caps lock
 setxkbmap -option caps:escape
 # change numpad , to . (dot)
@@ -87,6 +89,9 @@ xautolcok -time 10 -locker slock -notify 2 &
 
 # Fix a bug in the bluetooth
 rfkill unblock all &
+
+# Multiple Monitor configuration
+xrandr --output eDP-1 --primary --mode 1920x1080 --pos 0x768 --rotate normal --output HDMI-1 --mode 1360x768 --pos 280x0 --rotate normal
 
 # Loop
 while true; do
