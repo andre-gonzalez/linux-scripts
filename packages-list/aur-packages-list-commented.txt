@@ -12,3 +12,4 @@ google-cloud-sdk-app-engine-python #Necessary to send commands to GCP from the t
 google-cloud-sdk-app-engine-python-extras #Necessary to send commands to GCP from the terminal
 stremio #streaming service to watch movies and TV series
 dashbinsh #Run shell scripts in dash to have better performance (up to 4x compared to bash)
+htim #Alternative to htop that supports vim keybinds. You can run typing htop in the terminal

@@ -12,7 +12,6 @@ xautolock #to set the device to autolock after an amount of time. Will use with 
 cronie #crontab to schedule tasks
 git #git so i can version code
 xbindkeys #necessary to use keyboard keys to adjust volume and backlight
-htop #task manager
 python-pip #pyhton packages installer
 feh #terminal based image visualization tool
 dbeaver #database tool

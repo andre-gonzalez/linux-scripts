@@ -12,7 +12,6 @@ xautolock
 cronie
 git
 xbindkeys
-htop
 python-pip
 feh
 dbeaver
