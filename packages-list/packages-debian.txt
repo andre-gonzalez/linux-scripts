@@ -26,3 +26,4 @@ fzf
 jupyter
 bc
 baobab
+build-essential
