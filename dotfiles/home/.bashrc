@@ -58,7 +58,7 @@ export FZF_ALT_C_COMMAND="fd -t d . $HOME"
 		# pacman aliases
 		alias mirror="doas reflector -f 30 -l 30 --number 10 --verbose --save /etc/pacman.d/mirrorlist" #get fastest mirrors
 		alias pms="doas pacman -S"
-		alias pmu="doas pacman -Syu"
+		alias pmu="doas pacman -Syyu"
 		alias pmr="doas pacman -Rns"
 		# vim
 		alias v="nvim"
