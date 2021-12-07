@@ -43,3 +43,4 @@ fzf
 jupyter
 bc
 baobab
+nethogs
