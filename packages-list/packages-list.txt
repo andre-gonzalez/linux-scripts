@@ -44,3 +44,7 @@ jupyter
 bc
 baobab
 nethogs
+virt-manager
+qemu
+libvirt
+lxsession

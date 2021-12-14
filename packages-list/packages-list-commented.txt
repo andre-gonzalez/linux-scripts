@@ -44,3 +44,7 @@ jupyter #jupyer notebook for python development
 bc #Calculator in the terminal
 baobab # utility to see how the disk space is been used
 nethogs #utility to check which application are using bandwitch
+virt-manager #Virtualization using KVM
+qemu #Necessary for virtualization using KVM
+libvirt #Necessary for virtualization using KVM
+lxsession #Necessary for virtualization using KVM

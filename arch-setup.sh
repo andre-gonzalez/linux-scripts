@@ -98,6 +98,9 @@ pulseaudio --start
 # and GRUB_TIMEOUT_STYLE=hidden
 # then run grub-mkconfig -o /boot/grub/grub.cfg
 
+# Configuring virtualization using KVM QEMU
+usermod --append --groups libvirt `whoami`
+
 
 #etc.
 # To-do:
