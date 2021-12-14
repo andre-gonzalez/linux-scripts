@@ -46,6 +46,7 @@ export FZF_ALT_C_COMMAND="fd -t d . $HOME"
 		alias ..="cd .."
 		alias edownloads="cd ~/eureciclo/downloads"
 		alias database="cd ~/eureciclo/salesops-dw/"
+		alias utils="cd ~/eureciclo/utils"
 		alias organizar="cd /home/frank/gdrive-pessoal/pessoal/obsidian/_organizar"
 		# doas alises
 		alias sudo="doas"
