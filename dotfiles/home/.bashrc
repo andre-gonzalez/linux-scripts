@@ -48,6 +48,7 @@ export FZF_ALT_C_COMMAND="fd -t d . $HOME"
 		alias database="cd ~/eureciclo/salesops-dw/"
 		alias utils="cd ~/eureciclo/utils"
 		alias organizar="cd /home/frank/gdrive-pessoal/pessoal/obsidian/_organizar"
+		alias scripts="cd /home/frank/gdrive-pessoal/pessoal/programação/arch-setup/scripts-dmenu"
 		# doas alises
 		alias sudo="doas"
 		alias sudoedit="doas rvim"
