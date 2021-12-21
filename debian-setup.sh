@@ -4,13 +4,14 @@
 # sudo apt install doas neovim git
 
 #Installing the apps i use
-doas apt-get install $cat(packages-list/debian/packages-debian.txt)
+doas apt-get install $(cat packages-list/debian/packages-debian.txt)
 
 /bin/bash /home/frank/arch-setup/packages-list/debian/insync-install.sh
 /bin/bash /home/frank/arch-setup/packages-list/debian/brave-install.sh
-/bin/bash /home/frank/arch-setup/packages-list/debian/dbeaver-install.sh
+#/bin/bash /home/frank/arch-setup/packages-list/debian/dbeaver-install.sh
 
 # Now we are entering .config to install and configur the programs i use
+mkdir /home/frank/.config
 cd /home/frank/.config
 
 #Dwm
