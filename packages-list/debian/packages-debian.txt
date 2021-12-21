@@ -55,3 +55,5 @@ libvirt-daemon-driver-qemu
 lxsession
 anki
 htop
+libxft-dev
+libxrandr-dev
