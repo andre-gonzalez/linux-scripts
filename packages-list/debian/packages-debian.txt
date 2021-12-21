@@ -1,7 +1,6 @@
 xorg
 nitrogen
 ranger
-gh
 xautolock
 git
 xbindkeys
@@ -11,8 +10,6 @@ scrot
 unclutter
 bluez
 bluez-tools
-bluez-utils
-pulseaudio-bluetooth
 pulseaudio
 unzip
 xclip
@@ -52,7 +49,6 @@ qemu
 libvirt-clients
 libvirt-daemon
 libvirt-daemon-driver-qemu
-lxsession
 anki
 htop
 libxft-dev
