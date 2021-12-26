@@ -53,3 +53,6 @@ anki
 htop
 libxft-dev
 libxrandr-dev
+libxcomposite-dev
+libxinerama-dev
+picom
