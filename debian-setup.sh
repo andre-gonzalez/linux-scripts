@@ -40,8 +40,8 @@ make
 make PREFIX=/usr install
 cd ..
 git clone https://github.com/Andre-gonzalez/my-dwm-bar
-cd my-dwm-bar
-doas make clean install
+#cd my-dwm-bar
+#doas make clean install
 cd /home/frank/.config
 
 #slock to block the screen
@@ -59,23 +59,23 @@ cp -a /home/frank/arch-setup/dotfiles/home/. /home/frank/
 cp -a /home/frank/arch-setup/dotfiles/etc/. /etc/
 
 #Moving scripts to run the directory that dmenu looks for scripts to execute
-cp /home/frank/arch-setup/scripts-dmenu/. /usr/local/bin
+#cp /home/frank/arch-setup/scripts-dmenu/. /usr/local/bin
 
 # Enable cron in systemd
 #doas systemctl enable cronie.service --now
 
 #bluetooth configuration
-modprobe btusb
-doas systemctl start bluetooth.service
-doas systemctl enable bluetooth.service
-bluetoothctl power on
-bluetoothctl agent on
-bluetoothctl default-agent
+#modprobe btusb
+#doas systemctl start bluetooth.service
+#doas systemctl enable bluetooth.service
+#bluetoothctl power on
+#bluetoothctl agent on
+#bluetoothctl default-agent
 #making bluetooth automatically start after start a computer
 #open the file below
 #doas vim /etc/bluetooth/main.conf
 #Set AutoEnable=true
-pulseaudio --start
+#pulseaudio --start
 # use pavucontrol to switch audio
 
 # run doas nano /etc/default/grub
@@ -84,4 +84,4 @@ pulseaudio --start
 # then run grub-mkconfig -o /boot/grub/grub.cfg
 
 # Configuring virtualization using KVM QEMU
-usermod --append --groups libvirt `whoami`
+#usermod --append --groups libvirt `whoami`
