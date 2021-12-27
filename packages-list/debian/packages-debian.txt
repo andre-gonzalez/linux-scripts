@@ -56,3 +56,4 @@ libxrandr-dev
 libxcomposite-dev
 libxinerama-dev
 picom
+iwd
