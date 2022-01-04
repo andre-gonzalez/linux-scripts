@@ -59,7 +59,7 @@
 		set path+=**
 
 		" consider only 100 columns until break line
-		setl tw=100
+		"setl tw=100
 
 		"Enable copying to clipboard there is two lines becaus it is one for each linux clipboard
 		set clipboard+=unnamedplus
@@ -72,7 +72,13 @@
 		" work
 		cnoremap w!! execute 'silent! write !sudo tee % >/dev/null' <bar> edit!
 
+		" Use <C-L> to clear the highlighting of :set hlsearch.
+		if maparg('<C-L>', 'n') ==# ''
+		  nnoremap <silent> <C-L> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
+		endif
 
+		" Syntax highlight in markdown files
+		let g:markdown_fenced_languages = ['html', 'python', 'SQL', 'vim']
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "Plugins
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
