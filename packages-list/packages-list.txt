@@ -47,4 +47,4 @@ nethogs
 virt-manager
 qemu
 libvirt
-lxsession
+spice-vdagent
