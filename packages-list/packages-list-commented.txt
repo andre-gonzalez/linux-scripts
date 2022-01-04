@@ -49,3 +49,5 @@ qemu #Necessary for virtualization using KVM
 libvirt #Necessary for virtualization using KVM
 lxsession #Necessary for virtualization using KVM
 spice-vdagent #Necessary for sharing clipboard between host and guest using KVM
+flameshot #Screenshot utility
+clipmenu #Clipboard history managment using dmenu
