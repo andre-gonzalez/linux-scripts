@@ -65,7 +65,7 @@ export FZF_ALT_C_COMMAND="fd -t d . $HOME"
 		# vim
 		alias v="nvim"
 		alias cnvim="nvim ~/.config/nvim/init.vim"
-		alias vobsidian="cd gdrive-pessoal/pessoal/obsidian"
+		alias vobsidian="cd ~/gdrive-pessoal/pessoal/obsidian"
 		alias vo="pwd |fd . | fzf | xargs -r $EDITOR"
 		alias notas="cd /home/frank/gdrive-pessoal/pessoal/obsidian && nvim"
 		# systemctl
