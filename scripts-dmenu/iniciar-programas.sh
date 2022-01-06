@@ -1,16 +1,16 @@
 #!/bin/sh
-chosen=$(echo -e "No\nYes" | dmenu -i -p "Starting working now?")   
+chosen=$(echo "No\nYes" | dmenu -i -p "Starting working now?")
 
 case "$chosen" in
 		Yes)
-		xdotool key "0xffeb+1" 
-		# spotify 
-		brave 
-		xdotool key "0xffeb+2" 
-		slack
-		xdotool key "0xffeb+3" 
-		brave --profile-directory="Profile 1" ;
-		/bin/bash /usr/local/bin/conectar-banco.sh ;
-		/bin/bash /usr/local/bin/redeciclo-corp-conectar.sh ;
-		obsidian ;
+		# spotify
+		st -t notas -e tmux new -s notas &
+		st -t diversos -e tmux new -s diversos &
+		st -t database -e tmux new -s database
+		# brave
+		# slack ;
+		#obsidian ;
+		# brave --profile-directory="Profile 1" ;
+		# /bin/bash /usr/local/bin/conectar-banco.sh ;
+		# /bin/bash /usr/local/bin/redeciclo-corp-conectar.sh ;
 esac
