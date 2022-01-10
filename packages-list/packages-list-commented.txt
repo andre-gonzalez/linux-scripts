@@ -48,3 +48,4 @@ spice-vdagent #Necessary for sharing clipboard between host and guest using KVM
 flameshot #Screenshot utility
 clipmenu #Clipboard history managment using dmenu
 arandr # GUI frontend for xrandr so i can get the output of monitors configuration
+numlockx # Used in xinitrc to have numlock automatically enabled

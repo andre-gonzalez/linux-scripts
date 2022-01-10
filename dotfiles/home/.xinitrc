@@ -90,6 +90,9 @@ xautolcok -time 10 -locker slock -notify 2 &
 # Fix a bug in the bluetooth
 rfkill unblock all &
 
+#Activate numlock on boot
+numlockx &
+
 # Multiple Monitor configuration
 xrandr --output eDP-1 --primary --mode 1920x1080 --pos 0x768 --rotate normal --output HDMI-1 --mode 1360x768 --pos 280x0 --rotate normal
 
@@ -100,3 +103,5 @@ done
 
 #Execute DWM
 exec dwm
+
+

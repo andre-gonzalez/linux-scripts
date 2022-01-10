@@ -47,3 +47,4 @@ spice-vdagent
 flameshot
 clipmenu
 arandr
+numlockx
