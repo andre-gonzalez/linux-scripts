@@ -7,7 +7,6 @@ nitrogen #background for x
 spotifyd #terminal based spotify client
 ranger #terminal file manager
 github-cli #github cli
-picom #compositor needed so i can have transparency
 xautolock #to set the device to autolock after an amount of time. Will use with slock
 cronie #crontab to schedule tasks
 git #git so i can version code

@@ -7,7 +7,6 @@ nitrogen
 spotifyd
 ranger
 github-cli
-picom
 xautolock
 cronie
 git
