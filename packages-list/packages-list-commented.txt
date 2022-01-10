@@ -19,11 +19,10 @@ unclutter #hide the mouse automatically after some period of inactivity
 bluez #necessary for bluetooth
 bluez-tools #necessary for bluetooth
 bluez-utils #necessary for bluetooth
-pulseaudio-bluetooth #necessary for bluetooth
 pulseaudio #tool to manage audio
+pulseaudio-bluetooth #necessary for bluetooth
 base-devel #a lot of packages necessary for development
 unzip #simple unzip tool
-remmina #necessary to rdp to virtual machines
 xclip #clipboard tool
 ttf-nerd-fonts-symbols-mono #mono-font
 gvim #graphical vim. I only download to have the copy to clipboard options

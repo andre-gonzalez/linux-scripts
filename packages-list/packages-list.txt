@@ -23,7 +23,6 @@ pulseaudio-bluetooth
 pulseaudio
 base-devel
 unzip
-remmina
 xclip
 ttf-nerd-fonts-symbols-mono
 gvim
