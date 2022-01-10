@@ -46,3 +46,4 @@ libvirt
 spice-vdagent
 flameshot
 clipmenu
+arandr
