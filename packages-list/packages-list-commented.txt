@@ -25,7 +25,6 @@ base-devel #a lot of packages necessary for development
 unzip #simple unzip tool
 xclip #clipboard tool
 ttf-nerd-fonts-symbols-mono #mono-font
-gvim #graphical vim. I only download to have the copy to clipboard options
 brightnessctl #tool to adjust screen brightness
 alsa-utils #tool to adjust volume
 pavucontrol #graphical tool to adjust speakrs and microphone

@@ -25,7 +25,6 @@ base-devel
 unzip
 xclip
 ttf-nerd-fonts-symbols-mono
-gvim
 brightnessctl
 alsa-utils
 pavucontrol
