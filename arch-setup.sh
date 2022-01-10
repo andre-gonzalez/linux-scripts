@@ -108,3 +108,4 @@ usermod --append --groups libvirt `whoami`
 # 5.Setup tmux
 # 6.Learn to change the time until the screen goes dark
 # 7.Add to xinitrc to activate num lock on start
+# 8.Learn to open st already doing a command so i can move to the database folder, open my notas directly in neovim in the right folder ...
