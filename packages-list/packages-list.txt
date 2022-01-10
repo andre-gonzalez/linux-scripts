@@ -41,7 +41,6 @@ ripgrep
 fd
 fzf
 jupyter
-bc
 baobab
 nethogs
 virt-manager

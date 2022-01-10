@@ -41,7 +41,6 @@ ripgrep #necessary to use telescope in nvim
 fd #necessary to use telescope in nvim
 fzf #Fuzzy finder in the terminal that i use to open vim files
 jupyter #jupyer notebook for python development
-bc #Calculator in the terminal
 baobab # utility to see how the disk space is been used
 nethogs #utility to check which application are using bandwitch
 virt-manager #Virtualization using KVM
