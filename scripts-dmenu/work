@@ -7,8 +7,8 @@ slack &
 obsidian &
 spotify &
 dbeaver &
-brave &
-brave --profile-directory="Profile 1"
+brave --profile-directory="Profile 1" &
+brave --profile-directory=Default &
 
 
 

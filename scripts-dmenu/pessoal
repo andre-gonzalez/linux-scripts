@@ -4,7 +4,6 @@ st -t notas -e tmux new -s notas &
 st -t diversos -e tmux new -s diversos &
 obsidian &
 spotify &
-brave &
-
+brave --profile-directory=Default &
 
 
