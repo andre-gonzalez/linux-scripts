@@ -13,3 +13,4 @@ google-cloud-sdk-app-engine-python-extras
 stremio
 dashbinsh
 htim
+tmux-bash-completion-git
