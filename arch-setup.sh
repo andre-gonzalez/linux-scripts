@@ -105,7 +105,4 @@ usermod --append --groups libvirt `whoami`
 #etc.
 # To-do:
 # 2.Config spotifytui and spotifyd
-# 5.Setup tmux
-# 6.Learn to change the time until the screen goes dark
-# 7.Add to xinitrc to activate num lock on start
-# 8.Learn to open st already doing a command so i can move to the database folder, open my notas directly in neovim in the right folder ...
+# 3.Create a makefile to setup the installation
