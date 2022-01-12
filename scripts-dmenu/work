@@ -7,8 +7,6 @@ slack &
 obsidian &
 spotify &
 dbeaver &
-brave --profile-directory="Profile 1" &
-brave --profile-directory=Default &
-
-
-
+/usr/bin/dash /usr/local/bin/brave-eureciclo &
+/usr/bin/dash /usr/local/bin/brave-pessoal &
+/usr/bin/dash /usr/local/bin/windows
