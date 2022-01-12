@@ -14,7 +14,6 @@ xbindkeys #necessary to use keyboard keys to adjust volume and backlight
 python-pip #pyhton packages installer
 feh #terminal based image visualization tool
 dbeaver #database tool
-scrot #tool for print the screen
 unclutter #hide the mouse automatically after some period of inactivity
 bluez #necessary for bluetooth
 bluez-tools #necessary for bluetooth

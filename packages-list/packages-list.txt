@@ -14,7 +14,6 @@ xbindkeys
 python-pip
 feh
 dbeaver
-scrot
 unclutter
 bluez
 bluez-tools
