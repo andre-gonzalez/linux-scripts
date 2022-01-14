@@ -12,7 +12,7 @@ sudo pacman -R arch-install-scripts amd-ucode archinstall brltty nano
 sudo pacman --noconfirm --needed -Syu $(<packages-list/packages-list.txt)
 
 #Install Yay
-cd /home/frank/.config
+cd $HOME/.config
 git clone https://aur.archlinux.org/yay-git.git
 cd yay-git
 makepkg -si
@@ -21,7 +21,7 @@ makepkg -si
 yay --noconfirm --needed -Sy $(<packages-list/aur-packages-list.txt)
 
 # Now we are entering .config to install and configur the programs i use
-cd /home/frank/.config
+cd $HOME/.config
 
 #Dwm
 #patches i am using: alpha_patch, alpha_focus_highlight_patch, scrollback_patch, scrollback_mouse_patch, vim_browse_patch
@@ -51,7 +51,7 @@ cd ..
 git clone https://github.com/Andre-gonzalez/my-dwm-bar
 cd my-dwm-bar
 sudo make clean install
-cd /home/frank/.config
+cd $HOME/.config
 
 #slock to block the screen
 #patches i use are: capscolor and dpms
@@ -68,13 +68,13 @@ pacman -Qdt | sudo pacman -Rns
 sudo pacman -Sc
 
 #Copying dot files to the home directory
-cp -a /home/frank/arch-setup/dotfiles/home/. /home/frank/
+cp -a $HOME/arch-setup/dotfiles/home/. $HOME/
 
 #Copying some config files to the etc/ directory
-cp -a /home/frank/arch-setup/dotfiles/etc/. /etc/
+cp -a $HOME/arch-setup/dotfiles/etc/. /etc/
 
 #Moving scripts to run the directory that dmenu looks for scripts to execute
-cp /home/frank/arch-setup/scripts-dmenu/. /usr/local/bin
+cp $HOME/arch-setup/scripts-dmenu/. /usr/local/bin
 
 # Enable cron in systemd
 #sudo systemctl enable cronie.service --now
