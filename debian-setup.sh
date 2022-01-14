@@ -6,13 +6,13 @@
 #Installing the apps i use
 doas apt-get install $(cat packages-list/debian/packages-debian.txt)
 
-/bin/bash /home/frank/arch-setup/packages-list/debian/insync-install.sh
-/bin/bash /home/frank/arch-setup/packages-list/debian/brave-install.sh
-#/bin/bash /home/frank/arch-setup/packages-list/debian/dbeaver-install.sh
+/bin/bash $HOME/arch-setup/packages-list/debian/insync-install.sh
+/bin/bash $HOME/arch-setup/packages-list/debian/brave-install.sh
+#/bin/bash $HOME/arch-setup/packages-list/debian/dbeaver-install.sh
 
 # Now we are entering .config to install and configur the programs i use
-mkdir /home/frank/.config
-cd /home/frank/.config
+mkdir $HOME/.config
+cd $HOME/.config
 
 #Dwm
 #patches i am using: alpha_patch, alpha_focus_highlight_patch, scrollback_patch, scrollback_mouse_patch, vim_browse_patch
@@ -42,7 +42,7 @@ cd ..
 git clone https://github.com/Andre-gonzalez/my-dwm-bar
 #cd my-dwm-bar
 #doas make clean install
-cd /home/frank/.config
+cd $HOME/.config
 
 #slock to block the screen
 #patches i use are: capscolor and dpms
@@ -53,13 +53,13 @@ doas make clean install
 cd ..
 
 #Copying dot files to the home directory
-cp -a /home/frank/arch-setup/dotfiles/home/. /home/frank/
+cp -a $HOME/arch-setup/dotfiles/home/. $HOME/
 
 #Copying some config files to the etc/ directory
-cp -a /home/frank/arch-setup/dotfiles/etc/. /etc/
+cp -a $HOME/arch-setup/dotfiles/etc/. /etc/
 
 #Moving scripts to run the directory that dmenu looks for scripts to execute
-#cp /home/frank/arch-setup/scripts-dmenu/. /usr/local/bin
+#cp $HOME/arch-setup/scripts-dmenu/. /usr/local/bin
 
 # Enable cron in systemd
 #doas systemctl enable cronie.service --now
@@ -77,6 +77,12 @@ cp -a /home/frank/arch-setup/dotfiles/etc/. /etc/
 #Set AutoEnable=true
 #pulseaudio --start
 # use pavucontrol to switch audio
+
+# configuring wireless
+rfkill unblock all
+doas ip link set wlan0 up
+doas modprobe -r ath10k_pci && doas modprobe ath10k_pci
+
 
 # run doas nano /etc/default/grub
 # update GRUB_TIMEOUT=1
