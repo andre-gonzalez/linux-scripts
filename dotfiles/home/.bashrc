@@ -73,13 +73,13 @@ export FZF_ALT_C_COMMAND="fd -t d . $HOME"
 
 #Change directories using fuzzy finder
 g() {
-    file=$(pwd | fd . | fzf -e) && cd "$file"
+    file=$(pwd | fd -td . | fzf -e) && cd "$file"
 }
 gh() {
-    file=$(fd . ~ | fzf -e) && cd "$file"
+    file=$(fd -td . ~ | fzf -e) && cd "$file"
 }
 gr() {
-    file=$(fd . / | fzf -e) && cd "$file"
+    file=$(fd -td . / | fzf -e) && cd "$file"
 }
 
 #To reload .bashrc use ->  source ~/.bashrc
