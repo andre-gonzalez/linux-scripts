@@ -104,7 +104,5 @@ usermod --append --groups libvirt `whoami`
 
 #etc.
 # To-do:
-# 2. Config spotifytui and spotifyd
 # 3. Create a makefile to setup the installation
-# 4. Configure a way to use dmenu for search files using fzf and opening in vim
 # 5. Configure a way to use dmenu for opening directories using fzf
