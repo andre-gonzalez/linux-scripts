@@ -1,2 +1,2 @@
 #!/bin/sh
-st -t notas -e tmux new-session -A -s diversos
+st -t diversos -e tmux new-session -A -s diversos

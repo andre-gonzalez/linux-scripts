@@ -1,2 +1,2 @@
 #!/bin/sh
-st -t notas -e tmux new-session -A -s database
+st -t database -e tmux new-session -A -s database
