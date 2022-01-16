@@ -66,14 +66,14 @@ export FZF_ALT_C_COMMAND="fd -t d . $HOME"
 				alias v="nvim"
 				# alias cnvim="nvim ~/.config/nvim/init.vim"
 				# alias vobsidian="cd ~/gdrive-pessoal/pessoal/obsidian"
-				alias vo="pwd |fd . | fzf | xargs -r $EDITOR"
+				alias vo="pwd |fd -H -tf . | fzf | xargs -r $EDITOR"
 				alias notas="cd /home/frank/gdrive-pessoal/pessoal/obsidian && nvim"
 		# systemctl
 				alias sytemctl="systemctl"
 
 #Change directories using fuzzy finder
 g() {
-    file=$(pwd | fd -td . | fzf -e) && cd "$file"
+    file=$(pwd | fd -H -td . | fzf -e) && cd "$file"
 }
 gh() {
     file=$(fd -H -td . ~ | fzf -e) && cd "$file"
