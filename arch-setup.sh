@@ -104,5 +104,6 @@ usermod --append --groups libvirt `whoami`
 
 #etc.
 # To-do:
-# 3. Create a makefile to setup the installation
-# 5. Configure a way to use dmenu for opening directories using fzf
+# 1. Create a makefile to setup the installation
+# 2. Configure a way to use dmenu for opening directories using fzf
+# 3. Configure notification system for when the computer battery is getting to low
