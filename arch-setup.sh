@@ -108,3 +108,4 @@ usermod --append --groups libvirt `whoami`
 # 2. Configure a way to use dmenu for opening directories using fzf
 # 3. Configure notification system for when the computer battery is getting to low
 # 4. Try dwm-blocks instead of dwm-bar
+# 5. Config dwm to when showing in the large screen to show the windows at the exact size i usually work
