@@ -54,7 +54,8 @@ setxkbmap -variant ,qwerty
 xbindkeys
 
 # DWM Status
-/home/frank/.config/my-dwm-bar/dwm_bar.sh &
+#/home/frank/.config/my-dwm-bar/dwm_bar.sh &
+dwmblocks &
 
 #Compositor
 #picom -f &
@@ -85,7 +86,7 @@ clipmenud &
 xset r rate 400 50
 
 # Xautolock to lock screen after some time of inactivity
-xautolcok -time 10 -locker slock -notify 2 &
+xautolock -time 10 -locker slock -notify 2 &
 
 # Fix a bug in the bluetooth
 rfkill unblock all &
@@ -94,7 +95,7 @@ rfkill unblock all &
 numlockx &
 
 # Multiple Monitor configuration
-xrandr --output eDP-1 --primary --mode 1920x1080 --pos 0x768 --rotate normal --output HDMI-1 --mode 1360x768 --pos 280x0 --rotate normal
+xrandr --output eDP-1 --primary --mode 1920x1080 --pos 1360x434 --rotate normal --output HDMI-1 --mode 1360x768 --pos 0x0 --rotate normal
 
 # Loop
 while true; do
@@ -103,5 +104,3 @@ done
 
 #Execute DWM
 exec dwm
-
-
