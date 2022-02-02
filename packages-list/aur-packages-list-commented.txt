@@ -1,8 +1,8 @@
 brave-bin #My browser of choice
 authy #Two factor authentication tool
 obsidian #Notes tool
-xflux #tool to change screen colcor
-slack-desktop #slack app enterprise communication software
+xflux #tool to change screen color at night for better sleep
+slack-desktop #slack app | enterprise communication software
 anki-git #flahscards application to remember stuff
 spotify #music player
 insync #google drive sync utility
