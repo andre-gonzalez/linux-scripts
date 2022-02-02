@@ -57,3 +57,4 @@ libxcomposite-dev
 libxinerama-dev
 picom
 iwd
+rfkill
