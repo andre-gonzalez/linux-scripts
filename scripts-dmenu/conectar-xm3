@@ -4,6 +4,4 @@
 bluetoothctl power on
 
 #coonect to the headset
-bluetoothctl connect CC:98:8B:C1:5C:78
-sleep 3s
-bluetoothctl connect CC:98:8B:C1:5C:78
+bluetoothctl connect CC:98:8B:C1:5C:78; kill -46 $(pidof dwmblocks)
