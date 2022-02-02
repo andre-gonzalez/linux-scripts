@@ -1,0 +1,2 @@
+#!/bin/sh
+bluetoothctl disconnect 1C:52:16:D1:A1:9B; kill -46 $(pidof dwmblocks)
