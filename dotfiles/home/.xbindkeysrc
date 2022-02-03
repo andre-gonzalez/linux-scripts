@@ -1,3 +1,15 @@
+# Play and pause audio
+"playerctl play-pause"
+   XF86AudioPlay
+
+# Skip track
+"playerctl next"
+   XF86AudioNext
+
+# Earlier track
+"playerctl previous"
+   XF86AudioPrev
+
 #Increase volume
 "pactl set-sink-volume @DEFAULT_SINK@ +1000"
    XF86AudioRaiseVolume
