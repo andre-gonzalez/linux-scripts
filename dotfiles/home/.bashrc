@@ -1,4 +1,4 @@
-#
+#; kill -45 $(pidof dwmblocks)
 # ~/.bashrc
 #
 
@@ -23,13 +23,11 @@ export FZF_ALT_C_COMMAND="fd -t d . $HOME"
 		alias r="ranger"
 		alias l="ls --color -h --group-directories-first"
 		alias tar="tar -xf"
-		alias b="brightnessctl s"
 		alias p="python3"
 		# making some command interactive
 				alias mv="mv -i"
 				alias rm="trash -i"
 				alias cp="cp -i"
-				alias sc="scrot -sfe 'xclip -selection clipboard -t image/png -i $f'"
 		# cd..ing around
 				# alias salesops="cd ~/eureciclo/salesops"
 				# alias pessoal="cd ~/gdrive-pessoal/pessoal"
@@ -60,7 +58,7 @@ export FZF_ALT_C_COMMAND="fd -t d . $HOME"
 		# pacman aliases
 				alias mirror="doas reflector -f 30 -l 30 --number 10 --verbose --save /etc/pacman.d/mirrorlist" #get fastest mirrors
 				alias pms="doas pacman -S"
-				alias pmu="doas pacman -Syyu"
+				alias pmu="doas pacman -Syyu; kill -47 $(pidof dwmblocks)"
 				alias pmr="doas pacman -Rns"
 		# vim
 				alias v="nvim"
