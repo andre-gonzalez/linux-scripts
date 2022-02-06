@@ -60,6 +60,7 @@ export FZF_ALT_C_COMMAND="fd -t d . $HOME"
 				alias pms="doas pacman -S"
 				alias pmu="doas pacman -Syyu; kill -47 $(pidof dwmblocks)"
 				alias pmr="doas pacman -Rns"
+				alias orphans="doas pacman -Qtdq | doas pacman -Rns -"
 		# vim
 				alias v="nvim"
 				# alias cnvim="nvim ~/.config/nvim/init.vim"
