@@ -51,7 +51,7 @@ fi
 setxkbmap -variant ,qwerty
 
 #Keybinds for audio and backlight
-xbindkeys
+xbindkeys &
 
 # DWM Status
 #/home/frank/.config/my-dwm-bar/dwm_bar.sh &
@@ -96,6 +96,9 @@ numlockx &
 
 # Multiple Monitor configuration
 xrandr --output eDP-1 --primary --mode 1920x1080 --pos 1360x434 --rotate normal --output HDMI-1 --mode 1360x768 --pos 0x0 --rotate normal
+
+# Remove Downloads folder
+rm $HOME/Downloads
 
 # Loop
 while true; do
