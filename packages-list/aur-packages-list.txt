@@ -15,3 +15,4 @@ dashbinsh
 htim
 tmux-bash-completion-git
 checkupdates+aur
+informant
