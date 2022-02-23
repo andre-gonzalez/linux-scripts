@@ -77,7 +77,7 @@ setxkbmap -option caps:escape
 setxkbmap -option kpdl:dot &
 
 # start xflux so the screen get orange in the night
-xflux -l -23 -g -43.4 -k 2000 &
+xflux -l -23 -g -43.4 -k 2700 &
 
 #start clipmenud
 clipmenud &
