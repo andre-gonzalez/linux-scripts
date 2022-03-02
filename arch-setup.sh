@@ -48,9 +48,10 @@ cd dwmstatus
 make
 make PREFIX=/usr install
 cd ..
-git clone https://github.com/Andre-gonzalez/my-dwm-bar
-cd my-dwm-bar
+git clone https://github.com/Andre-gonzalez/my-dwmblocks
+cd my-dwmblocks
 sudo make clean install
+ln -s $HOME/.config/my-dwmblocks/bar-functions/* /usr/local/bin/
 cd $HOME/.config
 
 #slock to block the screen
@@ -74,7 +75,7 @@ cp -a $HOME/arch-setup/dotfiles/home/. $HOME/
 cp -a $HOME/arch-setup/dotfiles/etc/. /etc/
 
 #Creating symbolik link to my scripts folder
-ln -s /home/frank/gdrive-pessoal/pessoal/programação/arch-setup/scripts-dmenu/* /usr/local/bin/
+ln -s $HOME/gdrive-pessoal/pessoal/programação/arch-setup/scripts-dmenu/* /usr/local/bin/
 
 # Enable cron in systemd
 #sudo systemctl enable cronie.service --now
