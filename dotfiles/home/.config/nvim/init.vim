@@ -63,7 +63,7 @@
 
 		"Enable copying to clipboard there is two lines becaus it is one for each linux clipboard
 		set clipboard+=unnamedplus
-		set clipboard=unnamed
+		" set clipboard=unnamed
 
 		" completion
 		set completeopt+=noselect
@@ -142,6 +142,9 @@
 				"Code folding for python
 				Plug 'tmhedberg/SimpylFold'
 
+				"Comment in a vim like way
+			    Plug 'tpope/vim-commentary'
+
 		call plug#end()
 
 
@@ -156,7 +159,11 @@
 		endif
 
 		" Set firenvim extension to ignore whats app
-		"let fc['https?://web.whatsapp.com/'] = {'takeover': 'never', 'priority': 1 }
+		" let fc['https?://web.whatsapp.com/'] = {'takeover': 'never', 'priority': 1 }
+		" Set filetype of Firenvim in gmail to markdown
+		au BufEnter mail.google.com_*.txt set filetype=markdown
+		au BufEnter app.datacamp.com_*.txt set filetype=python
+		au BufEnter hackerrank.com_*.txt set filetype=python
 
 		let g:SimpylFold_docstring_preview = 1
 		let g:SimpylFold_fold_docstring = 0
@@ -216,3 +223,10 @@
 
 		" My coloscheme of choice
 		colorscheme gruvbox
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Random
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Automatically recompile dwmblocks
+		autocmd BufWritePost ~/.local/src/dwmblocks/config.h !cd ~/.local/src/dwmblocks/; sudo make install && { killall -q dwmblocks;setsid dwmblocks & }
