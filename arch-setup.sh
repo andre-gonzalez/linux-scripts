@@ -73,8 +73,8 @@ cp -a $HOME/arch-setup/dotfiles/home/. $HOME/
 #Copying some config files to the etc/ directory
 cp -a $HOME/arch-setup/dotfiles/etc/. /etc/
 
-#Moving scripts to run the directory that dmenu looks for scripts to execute
-cp $HOME/arch-setup/scripts-dmenu/. /usr/local/bin
+#Creating symbolik link to my scripts folder
+ln -s /home/frank/gdrive-pessoal/pessoal/programação/arch-setup/scripts-dmenu/* /usr/local/bin/
 
 # Enable cron in systemd
 #sudo systemctl enable cronie.service --now
