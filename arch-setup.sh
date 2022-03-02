@@ -107,5 +107,4 @@ usermod --append --groups libvirt `whoami`
 # 1. Create a makefile to setup the installation
 # 2. Configure a way to use dmenu for opening directories using fzf
 # 3. Configure notification system for when the computer battery is getting to low
-# 4. Configure keyboard shortcuts in st terminal
 # 5. Change Super+shift+v to actually paste what i have just selected
