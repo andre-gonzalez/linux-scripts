@@ -42,7 +42,7 @@ cd dmenu
 sudo make clean install
 cd ..
 
-#dwm-bar
+#dwmblocks
 git clone https://git.suckless.org/dwmstatus
 cd dwmstatus
 make
