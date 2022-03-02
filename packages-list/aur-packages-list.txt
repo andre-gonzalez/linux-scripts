@@ -3,7 +3,7 @@ authy
 obsidian
 xflux
 slack-desktop
-anki-git
+anki
 spotify
 insync
 vscodium-bin
