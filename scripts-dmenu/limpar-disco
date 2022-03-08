@@ -1,4 +1,4 @@
 #!/bin/sh
 
-doas pacman -Sc &&
-trash-empty
+doas pacman --noconfirm --needed -Sc &&
+trash-empty -f
