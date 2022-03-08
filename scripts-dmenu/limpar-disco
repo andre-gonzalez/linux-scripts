@@ -1,0 +1,4 @@
+#!/bin/sh
+
+doas pacman -Sc &&
+trash-empty
