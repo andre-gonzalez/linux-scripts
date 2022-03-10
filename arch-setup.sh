@@ -9,7 +9,7 @@ sudo reflector -f 30 -l 30 --number 10 --verbose --save /etc/pacman.d/mirrorlist
 sudo pacman -R arch-install-scripts amd-ucode archinstall brltty nano
 
 #Sync and update packages already installed and installing new software from arch linux repository
-sudo pacman --noconfirm --needed -Syu $(<packages-list/packages-list.txt)
+sudo pacman --noconfirm --needed -Syu $(< cut -d, -f1 packages-list/packages-list.csv | tail -n +2)
 
 #Install Yay
 cd $HOME/.config
@@ -100,7 +100,9 @@ pulseaudio --start
 # then run grub-mkconfig -o /boot/grub/grub.cfg
 
 # Configuring virtualization using KVM QEMU
-usermod --append --groups libvirt `whoami`
+usermod -a -G libvirt $(whoami)
+systemctl start libvirtd
+systemctl enable libvirtd
 
 
 #etc.
@@ -109,3 +111,4 @@ usermod --append --groups libvirt `whoami`
 # 2. Configure a way to use dmenu for opening directories using fzf
 # 3. Configure notification system for when the computer battery is getting to low
 # 5. Change Super+shift+v to actually paste what i have just selected
+# 6. Have commented on my dwm config file the configuration for when i am using only my laptop monitor
