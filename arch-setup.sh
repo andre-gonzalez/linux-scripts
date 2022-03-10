@@ -111,4 +111,3 @@ systemctl enable libvirtd
 # 2. Configure a way to use dmenu for opening directories using fzf
 # 3. Configure notification system for when the computer battery is getting to low
 # 5. Change Super+shift+v to actually paste what i have just selected
-# 6. Have commented on my dwm config file the configuration for when i am using only my laptop monitor
