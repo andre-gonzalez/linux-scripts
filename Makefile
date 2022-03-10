@@ -32,9 +32,6 @@ install-python-packages:
 disable-services:
 
 enable-services:
-	chsh -s /bin/fish ;\
-	doas pkgfile --update ;\
-	setxkbmap -layout us -variant intl ;\
 	doas usermod -a -G docker $(USER) ;\
 	doas usermod -a -G libvirt $(USER) ;\
 	doas systemctl enable cups.service ;\
@@ -44,7 +41,6 @@ enable-services:
 	doas systemctl enable docker ;\
 	doas systemctl enable bluetooth ;\
 	doas systemctl enable libvirtd ;\
-	doas systemctl enable sshd ;\
 	doas systemctl --user enable ssh-agent.service ;\
     doas virsh net-autostart default ;\
 
