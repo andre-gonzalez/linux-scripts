@@ -9,7 +9,7 @@ sudo reflector -f 30 -l 30 --number 10 --verbose --save /etc/pacman.d/mirrorlist
 sudo pacman -R arch-install-scripts amd-ucode archinstall brltty nano
 
 #Sync and update packages already installed and installing new software from arch linux repository
-sudo pacman --noconfirm --needed -Syu $(< cut -d, -f1 packages-list/packages-list.csv | tail -n +2)
+sudo pacman --noconfirm --needed -Syu $(cut -d\| -f2 packages-list/packages-list.md | tail -n +3 | grep -P '\S')
 
 #Install Yay
 cd $HOME/.config
@@ -18,7 +18,7 @@ cd yay-git
 makepkg -si
 
 #Packages from aur
-yay --noconfirm --needed -Sy $(<packages-list/aur-packages-list.txt)
+yay --noconfirm --needed -Sy $(cut -d\| -f4 packages-list/packages-list.md | tail -n +3 | grep -P '\S')
 
 # Now we are entering .config to install and configur the programs i use
 cd $HOME/.config
