@@ -69,10 +69,15 @@ export FZF_ALT_C_COMMAND="fd -t d . $HOME"
 				alias notas="cd /home/frank/gdrive-pessoal/pessoal/obsidian && nvim"
 		# systemctl
 				alias sytemctl="systemctl"
+		# Dotfiles in git
+		alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 
 #Change directories using fuzzy finder
+gi() {
+		file=$(pwd | fd -H -td . | fzf -e) && cd "$file"
+}
 g() {
-    file=$(pwd | fd -H -td . | fzf -e) && cd "$file"
+		file=$(pwd | fd -td . | fzf -e) && cd "$file"
 }
 gh() {
     file=$(fd -H -td . ~ | fzf -e) && cd "$file"
