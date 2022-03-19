@@ -65,4 +65,6 @@
 |                             |                             | tmux-bash-completion-git                  |  Bash completion for tmux, installs bash-completion too                                                      |
 |                             |                             | checkupdates+aur                          | Tool to check the updates that are pending. I use it to show the list of packages to update in my status bar |
 |                             |                             | informant                                 | To read arch linux new. Usefull to read before a update                                                      |
-| broadcom-wl                 | broadcom-sta-common         |                                           | Driver for my wireless card
+| broadcom-wl                 | broadcom-sta-common         |                                           | Driver for my wireless card                                                                                  |
+| bat                         | bat                         |                                           | cat replacement with syntax highlight                                                                        |
+| dunst                       |                             |                                           | notification system                                                                                          |
