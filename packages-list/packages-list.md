@@ -7,7 +7,7 @@
 | xorg-xrandr                 |                             |                                           | to change display resolution                                                                                 |
 | nitrogen                    | nitrogen                    |                                           | background for x                                                                                             |
 | spotifyd                    |                             |                                           | terminal based spotify client                                                                                |
-| ranger                      | ranger                      |                                           | terminal file manager                                                                                        |
+|                             | ranger                      | lf                                        | terminal file manager                                                                                        |
 | xautolock                   | xautolock                   |                                           | to set the device to autolock after an amount of time. Will use with slock                                   |
 | git                         | git                         |                                           | git so i can version code                                                                                    |
 | xbindkeys                   | xbindkeys                   |                                           | necessary to use keyboard keys to adjust volume and backlight                                                |
