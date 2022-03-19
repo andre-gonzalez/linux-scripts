@@ -107,7 +107,8 @@ systemctl enable libvirtd
 
 #etc.
 # To-do:
-# 1. Create a makefile to setup the installation
-# 2. Configure a way to use dmenu for opening directories using fzf
-# 3. Configure notification system for when the computer battery is getting to low
+# 1. Move enviroment configuration to ansible
+# 2. Create a makefile to setup the installation
+# 3. Configure a way to use dmenu for opening directories using fzf
+# 4. Configure notification system for when the computer battery is getting to low
 # 5. Change Super+shift+v to actually paste what i have just selected
