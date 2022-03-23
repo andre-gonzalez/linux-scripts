@@ -1,0 +1,13 @@
+---
+
+- name: Install arch linux environment
+  hosts: all
+  connection: local
+  become: true
+  tasks:
+
+  - name: install nvim
+    community.general.pacman:
+      name: neovim
+      state: latest
+      update_cache: yes
