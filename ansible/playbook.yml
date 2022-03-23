@@ -8,6 +8,8 @@
 
   - name: install nvim
     community.general.pacman:
-      name: neovim
+      name:
+        - neovim
+        - tmux
       state: latest
       update_cache: yes
