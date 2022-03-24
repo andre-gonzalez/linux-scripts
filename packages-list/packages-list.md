@@ -68,3 +68,5 @@
 | broadcom-wl                 | broadcom-sta-common         |                                           | Driver for my wireless card                                                                                  |
 | bat                         | bat                         |                                           | cat replacement with syntax highlight                                                                        |
 | dunst                       |                             |                                           | notification system                                                                                          |
+| neovim                      |                             |                                           | my IDE of choice                                                                                             |
+| tmux                        |                             |                                           | terminal multi-plexer                                                                                        |
