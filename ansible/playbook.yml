@@ -34,7 +34,7 @@
       - start-services
       - install
     service:
-      name:
+      name: iwd
       state: started
       enabled: yes
 
