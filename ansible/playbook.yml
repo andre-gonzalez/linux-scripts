@@ -7,9 +7,17 @@
   tasks:
 
   - name: install packages and update cache
+    tags: packages, arch
     package:
       name:
         - neovim
         - tmux
       state: latest
       update_cache: yes
+
+  - name: Copy dotfiles
+    tags: dotfiles
+    copy:
+      src: ../dotfiles/
+      dest: $HOME/
+
