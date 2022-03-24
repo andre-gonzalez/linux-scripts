@@ -39,3 +39,30 @@
       state: started
       enabled: yes
     when: ansible_distribution == ["Archlinux", "Debian", "Ubuntu"]
+
+  - name: Git personal setup email
+    tags:
+      - git-personal
+      - install
+    git-config:
+      name: user.email
+      scope: global
+      value: "lopescg@gmail.com"
+
+  - name: Git personal setup name
+    tags:
+      - git-personal
+      - install
+    git-config:
+      name: user.name
+      scope: global
+      value: "André Gonzalez"
+
+  - name: Git eureciclo email
+    tags:
+      - git-eureciclo
+      - install
+    git-config:
+      name: user.email
+      scope: global
+      value: "andre.gonzalez@nhecotech.com"
