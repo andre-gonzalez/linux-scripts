@@ -1,6 +1,6 @@
 ---
 
-- name: Install arch linux environment
+- name: Install system environment
   hosts: all
   connection: local
   become: true
