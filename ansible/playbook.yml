@@ -7,22 +7,26 @@
   tasks:
 
   - name: install packages and update cache
-    tags: install-packages, arch
+    tags: install-packages
     package:
       name:
         - neovim
         - tmux
       state: latest
       update_cache: yes
+    when: ansible_distribution == "Archlinux"
 
   - name: Copy dotfiles
-    tags: copy-dotfiles, arch, ubuntu, debian
+    tags: copy-dotfiles
     copy:
       src: ../dotfiles/
       dest: $HOME/
+    when: ansible_distribution == ["Archlinux", "Debian", "Ubuntu"]
 
   - name: start services
-    tags: start-services, arch, ubuntu, debian
+    tags: start-services
     service:
       name:
       state: started
+      enabled: yes
+    when: ansible_distribution == ["Archlinux", "Debian", "Ubuntu"]
