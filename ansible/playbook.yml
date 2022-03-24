@@ -7,7 +7,7 @@
   tasks:
 
   - name: install packages and update cache
-    tags: packages, arch
+    tags: install-packages, arch
     package:
       name:
         - neovim
@@ -16,8 +16,13 @@
       update_cache: yes
 
   - name: Copy dotfiles
-    tags: dotfiles
+    tags: copy-dotfiles, arch, ubuntu, debian
     copy:
       src: ../dotfiles/
       dest: $HOME/
 
+  - name: start services
+    tags: start-services, arch, ubuntu, debian
+    service:
+      name:
+      state: started
