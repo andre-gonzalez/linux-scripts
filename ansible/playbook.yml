@@ -7,7 +7,9 @@
   tasks:
 
   - name: install packages and update cache
-    tags: install-packages
+    tags:
+      - packages
+      - install
     package:
       name:
         - neovim
@@ -16,15 +18,22 @@
       update_cache: yes
     when: ansible_distribution == "Archlinux"
 
-  - name: Copy dotfiles
-    tags: copy-dotfiles
-    copy:
-      src: ../dotfiles/
-      dest: $HOME/
+  - name: Cloning .dotfiles
+    tags:
+      - dotfiles
+      - install
+    ansible.builtin.git:
+      repo: 'git@github.com:andre-gonzalez/dotfiles.git'
+      dest: /home/frank/
+      recursive: yes
+      update: yes
+      version: main
     when: ansible_distribution == ["Archlinux", "Debian", "Ubuntu"]
 
   - name: start services
-    tags: start-services
+    tags:
+      - start-services
+      - install
     service:
       name:
       state: started
