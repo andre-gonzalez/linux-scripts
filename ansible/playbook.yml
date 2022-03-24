@@ -13,3 +13,5 @@
         - tmux
       state: latest
       update_cache: yes
+    when: ansible_distribution == "Archlinux"
+
