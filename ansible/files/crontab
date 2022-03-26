@@ -1,0 +1,1 @@
+@reboot sleep 15 && DISPLAY=:0 /usr/local/bin/profile-selector
