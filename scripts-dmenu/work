@@ -1,13 +1,14 @@
 #!/bin/sh
 
-/usr/bin/dash /usr/local/bin/notas &
+#/usr/bin/dash /usr/local/bin/notas &
 /usr/bin/dash /usr/local/bin/diversos &
 /usr/bin/dash /usr/local/bin/database &
 slack &
 obsidian &
 spotify &
 dbeaver &
-vscodium &
+# vscodium &
 /usr/bin/dash /usr/local/bin/brave-eureciclo &
 /usr/bin/dash /usr/local/bin/brave-pessoal &
 /usr/bin/dash /usr/local/bin/windows
+rm $HOME/Downloads

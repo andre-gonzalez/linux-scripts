@@ -6,5 +6,6 @@ obsidian &
 anki &
 spotify &
 brave --profile-directory=Default &
+rm $HOME/Downloads
 
 
