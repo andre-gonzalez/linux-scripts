@@ -1,0 +1,14 @@
+#!/bin/sh
+
+ask () {
+		answer="$(echo "work\npessoal" | dmenu -i -p "$1" )"
+}
+
+ask "Starting working now?"
+
+
+if [ "$answer" = "work" ]; then
+		/usr/local/bin/work
+elif [ "$answer" = "pessoal" ]; then
+		/usr/local/bin/pessoal
+fi
