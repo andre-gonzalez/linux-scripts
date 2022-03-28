@@ -109,6 +109,7 @@ systemctl enable libvirtd
 # To-do:
 # 1. Move enviroment configuration to ansible
 # 2. Create a makefile to setup the installation
-# 3. Configure a way to use dmenu for opening directories using fzf
-# 4. Configure notification system for when the computer battery is getting to low
-# 5. Change Super+shift+v to actually paste what i have just selected
+# 3. Create a script that automatically changes dwm and st between TV and laptop mode
+# 4. Configure a way to use dmenu for opening directories using fzf
+# 5. Configure notification system for when the computer battery is getting to low
+# 6. Change Super+shift+v to actually paste what i have just selected
