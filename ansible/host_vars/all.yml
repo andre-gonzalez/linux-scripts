@@ -1,0 +1,28 @@
+# neovim
+- name: defined var neovim
+  nvim=neovim
+  when:ansible_distribution == "ArchLinux"
+
+- name: defined var neovim
+  nvim=
+  when:ansible_distribution == "Debian"
+
+# package name
+- name: defined var tmux
+  nvim=neovim
+  when:ansible_distribution == "ArchLinux"
+
+- name: defined var tmux
+  nvim=
+  when:ansible_distribution == "Debian"
+
+
+# package name
+- name: defined var
+  nvim=neovim
+  when:ansible_distribution == "ArchLinux"
+
+- name: defined var
+  nvim=
+  when:ansible_distribution == "Debian"
+
