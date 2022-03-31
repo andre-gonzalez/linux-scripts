@@ -1,3 +1,11 @@
+
+### System configuration  ####
+user:
+  name: frank
+  group: users
+  shell: bash
+
+#### Packages installation ####
 # neovim
 - name: defined var neovim
   nvim=neovim
@@ -16,7 +24,6 @@
   nvim=
   when:ansible_distribution == "Debian"
 
-
 # package name
 - name: defined var
   nvim=neovim
@@ -26,3 +33,4 @@
   nvim=
   when:ansible_distribution == "Debian"
 
+####  ####
