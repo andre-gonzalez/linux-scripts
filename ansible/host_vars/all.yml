@@ -6,31 +6,67 @@ user:
   shell: bash
 
 #### Packages installation ####
-# neovim
+# neovim - my IDE of choice
 - name: defined var neovim
   nvim=neovim
   when:ansible_distribution == "ArchLinux"
 
 - name: defined var neovim
-  nvim=
+  nvim=neovim
   when:ansible_distribution == "Debian"
 
-# package name
+# tmux - terminal multi-plexer
 - name: defined var tmux
-  nvim=neovim
+  tmux=tmux
   when:ansible_distribution == "ArchLinux"
 
 - name: defined var tmux
-  nvim=
+  tmux=tmux
   when:ansible_distribution == "Debian"
 
-# package name
+# bat - cat replacement with syntax highlight
 - name: defined var
-  nvim=neovim
+  bat=bat
   when:ansible_distribution == "ArchLinux"
 
 - name: defined var
-  nvim=
+  bat=bat
   when:ansible_distribution == "Debian"
 
+# broadcom -> Driver for my wireless card
+- name: defined var
+  broadcom=broadcom-wl
+  when:ansible_distribution == "ArchLinux"
+
+- name: defined var
+  broadcom=broadcom-sta-common
+  when:ansible_distribution == "Debian"
+
+  # informant ->To read arch linux new. Usefull to read before a update
+- name: defined var
+  informant=informant
+  when:ansible_distribution == "ArchLinux"
+
+  # checkupdates -> Tool to check the updates that are pending. I use it to show the list of packages to update in my status bar
+- name: defined var
+  checkupdates=checkupdates+aur
+  when:ansible_distribution == "ArchLinux"
+
+# nvidia -> video driver for nvidia
+- name: defined var
+  nvidia=nvidia
+  when:ansible_distribution == "ArchLinux"
+
+- name: defined var
+  nvidia=nvidia-driver
+  when:ansible_distribution == "Debian"
+
+# nitrogen -> background for x
+- name: defined var
+  nitrogen=nitrogen
+  when:ansible_distribution == "ArchLinux"
+
+- name: defined var
+  nitrogen=nitrogen
+  when:ansible_distribution == "Debian"
 ####  ####
