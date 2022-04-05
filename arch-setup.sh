@@ -113,4 +113,4 @@ systemctl enable libvirtd
 # 4. Configure a way to use dmenu for opening directories using fzf
 # 5. Configure notification system for when the computer battery is getting to low
 # 6. Change Super+shift+v to actually paste what i have just selected
-# 7. Move my scripts from /usr/local/bin to $HOME/.local/bin so they can be specific to only my user
+# 7. Move my scripts from /usr/local/bin to $HOME/.local/bin so they can be specific to only my user and add them to my dotfiles repo
