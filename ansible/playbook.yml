@@ -172,14 +172,14 @@
     - full-install
   git:
     repo: https://github.com/andre-gonzalez/my-dwm
-    dest: "{{ lookup('env', 'USR') | default('nobody', True) }}/.config/my-dwm"
+    dest: "{{ lookup('env', 'USR') | default('nobody', True) }}/.config/dwm"
 
 - name: Install dwm
   tags:
     - dwm-install
     - full-install
   make:
-    chdir: "{{ lookup('env', 'USR') | default('nobody', True) }}/.config/my-dwm"
+    chdir: "{{ lookup('env', 'USR') | default('nobody', True) }}/.config/dwm"
     target: clean install
   become: yes
 
@@ -189,14 +189,14 @@
     - full-install
   git:
     repo: https://github.com/andre-gonzalez/my-st
-    dest: "{{ lookup('env', 'USR') | default('nobody', True) }}/.config/my-st"
+    dest: "{{ lookup('env', 'USR') | default('nobody', True) }}/.config/st"
 
 - name: Install st
   tags:
     - st-install
     - full-install
   make:
-    chdir: "{{ lookup('env', 'USR') | default('nobody', True) }}/.config/my-st"
+    chdir: "{{ lookup('env', 'USR') | default('nobody', True) }}/.config/st"
     target: clean install
   become: yes
 
