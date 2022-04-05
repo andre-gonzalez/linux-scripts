@@ -88,7 +88,7 @@
       - full-install
     ansible.builtin.git:
       repo: 'git@github.com:andre-gonzalez/dotfiles.git'
-      dest: {{ lookup('env', 'USR') | default('nobody', True) }}
+      dest: "{{ lookup('env', 'USR') | default('nobody', True) }}"
       recursive: yes
       update: yes
       version: main
@@ -130,3 +130,23 @@
       name: user.email
       scope: global
       value: "andre.gonzalez@nhecotech.com"
+
+- name: Clone yay
+  tags:
+    - aur-install
+    - full-install
+  git:
+    repo: https://aur.archlinux.org/yay-bin.git
+    dest: "{{ lookup('env', 'USR') | default('nobody', True) }}/.config/yay"
+
+    update: true
+
+- name: Build and install yay
+  tags:
+    - aur-install
+    - full-install
+  git:
+  command:
+    chdir: "{{ lookup('env', 'USR') | default('nobody', True) }}/.config/yay"
+    cmd: "makepkg -sfi --noconfirm"
+    creates: /usr/bin/yay
