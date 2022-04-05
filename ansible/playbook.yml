@@ -91,6 +91,7 @@
       dest: "{{ lookup('env', 'USR') | default('nobody', True) }}"
       recursive: yes
       update: yes
+      bare: yes
       version: main
 
   - name: start services
