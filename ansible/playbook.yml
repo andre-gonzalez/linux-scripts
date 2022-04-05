@@ -88,7 +88,7 @@
       - full-install
     ansible.builtin.git:
       repo: 'git@github.com:andre-gonzalez/dotfiles.git'
-      dest: /home/frank/
+      dest: {{ lookup('env', 'USR') | default('nobody', True) }}
       recursive: yes
       update: yes
       version: main
