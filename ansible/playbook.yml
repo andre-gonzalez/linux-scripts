@@ -146,8 +146,24 @@
   tags:
     - aur-install
     - full-install
-  git:
   command:
     chdir: "{{ lookup('env', 'USR') | default('nobody', True) }}/.config/yay"
     cmd: "makepkg -sfi --noconfirm"
     creates: /usr/bin/yay
+
+- name: Clone dwm
+  tags:
+    - dwm-install
+    - full-install
+  git:
+    repo: https://github.com/andre-gonzalez/my-dwm
+    dest: "{{ lookup('env', 'USR') | default('nobody', True) }}/.config/my-dwm"
+
+- name: Install dwm
+  tags:
+    - dwm-install
+    - full-install
+  make:
+    chdir: "{{ lookup('env', 'USR') | default('nobody', True) }}/.config/my-dwm"
+    target: clean install
+  become: yes
