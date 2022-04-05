@@ -34,7 +34,7 @@
   tags:
     - packages
     - full-install
-  script: update-mirrorlist.sh
+  script: choose-mirror.sh
   become: true
 
   - name: install packages and update cache
