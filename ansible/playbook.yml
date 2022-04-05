@@ -22,6 +22,21 @@
       user: frank
       key: ""
 
+- name: install reflector
+  tags:
+    - packages
+    - full-install
+  pacman:
+    name: reflector
+  become: true
+
+- name: update pacman mirrorlist
+  tags:
+    - packages
+    - full-install
+  script: update-mirrorlist.sh
+  become: true
+
   - name: install packages and update cache
     tags:
       - packages
