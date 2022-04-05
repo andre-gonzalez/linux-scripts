@@ -182,6 +182,38 @@
     cmd: "makepkg -sfi --noconfirm"
     creates: /usr/bin/yay
 
+- name: Install aur packages
+  tags:
+    - aur-packages-install
+    - packages-install
+    - packages
+    - full-install
+  aur:
+    name:
+      - lf
+      - brave-bin
+      - authy
+      - obsidian
+      - xflux
+      - slack-desktop
+      - anki-git
+      - spotify
+      - insync
+      - vscodium-bin
+      - google-cloud-sdk
+      - google-cloud-sdk-app-engine-python
+      - google-cloud-sdk-app-engine-python-extras
+      - stremio
+      - dashbinsh
+      - htim
+      - tmux-bash-completion-git
+      - checkupdates+aur
+      - informant
+    use: yay
+    state: present
+    update_cache: yes
+  become: yes
+
 - name: Clone dwm
   tags:
     - dwm-install
