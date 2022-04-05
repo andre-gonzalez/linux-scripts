@@ -37,7 +37,7 @@
   script: choose-mirror.sh
   become: true
 
-- name: install packages and update cache
+- name: remove packages
   tags:
     - packages-remove
     - packages
