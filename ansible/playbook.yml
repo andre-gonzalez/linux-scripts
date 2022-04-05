@@ -216,3 +216,37 @@
     chdir: "{{ lookup('env', 'USR') | default('nobody', True) }}/.config/dmenu"
     target: clean install
   become: yes
+
+- name: Clone dwmstatus
+  tags:
+    - dwmblocks-install
+    - full-install
+  git:
+    repo: https://git.suckless.org/dwmstatus
+    dest: "{{ lookup('env', 'USR') | default('nobody', True) }}/.config/dwmstatus"
+
+- name: Install dwmstatus
+  tags:
+    - dwmblocks-install
+    - full-install
+  make:
+    chdir: "{{ lookup('env', 'USR') | default('nobody', True) }}/.config/dwmstatus"
+    target: clean install
+  become: yes
+
+- name: Clone dwmblocks
+  tags:
+    - dwmblocks-install
+    - full-install
+  git:
+    repo: https://github.com/Andre-gonzalez/my-dwmblocks
+    dest: "{{ lookup('env', 'USR') | default('nobody', True) }}/.config/dwmblocks"
+
+- name: Install dwmblocks
+  tags:
+    - dwmblocks-install
+    - full-install
+  make:
+    chdir: "{{ lookup('env', 'USR') | default('nobody', True) }}/.config/dwmblocks"
+    target: clean install
+  become: yes
