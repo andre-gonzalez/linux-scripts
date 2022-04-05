@@ -316,3 +316,9 @@
     chdir: "{{ lookup('env', 'USR') | default('nobody', True) }}/.config/slock"
     target: clean install
   become: yes
+
+- name: add the user to the libvirt group
+  ansible.builtin.user:
+    name: frank
+    group: libvirtd
+  become: yes
