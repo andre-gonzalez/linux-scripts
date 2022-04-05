@@ -182,3 +182,20 @@
     chdir: "{{ lookup('env', 'USR') | default('nobody', True) }}/.config/my-dwm"
     target: clean install
   become: yes
+
+- name: Clone st
+  tags:
+    - st-install
+    - full-install
+  git:
+    repo: https://github.com/andre-gonzalez/my-st
+    dest: "{{ lookup('env', 'USR') | default('nobody', True) }}/.config/my-st"
+
+- name: Install st
+  tags:
+    - st-install
+    - full-install
+  make:
+    chdir: "{{ lookup('env', 'USR') | default('nobody', True) }}/.config/my-st"
+    target: clean install
+  become: yes
