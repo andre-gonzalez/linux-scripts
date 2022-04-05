@@ -133,6 +133,7 @@
         - iwd
         - libvirt
         - bluetooth
+        - cronie.service
       state: started
       enabled: yes
 
