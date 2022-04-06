@@ -319,7 +319,11 @@
   become: yes
 
 - name: add the user to the libvirt group
+  tags:
+    - libvirt
+    - full-install
   ansible.builtin.user:
     name: frank
     group: libvirtd
   become: yes
+
