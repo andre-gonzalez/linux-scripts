@@ -327,12 +327,14 @@
     group: libvirtd
   become: yes
 
-- name: copy file doas.conf
+- name: copy file doas.conf and pacman.conf to /etc
   tags:
     - full-install
   copy:
-    src: doas.conf
-    dest: /etc/doas.conf
+    src:
+      - doas.conf
+      - pacman.conf
+    dest: /etc
     owner: root
     group: root
     mode: 0644
