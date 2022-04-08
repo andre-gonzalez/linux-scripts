@@ -26,7 +26,7 @@
   tags:
     - packages
     - full-install
-  pacman:
+  package:
     name: reflector
   become: true
 
