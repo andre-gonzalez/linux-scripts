@@ -183,16 +183,14 @@
       cmd: "makepkg -sfi --noconfirm"
       creates: /usr/bin/yay
 
-  - name: Install trizen using makepkg if it isn't installed already
-    aur:
-      name: trizen
-      use: makepkg
-      state: present
-    become: yes
-    become_user: aur_builder
 
   # This task uses the `aur` module's FQCN.
   - name: Install trizen using makepkg if it isn't installed already
+    tags:
+      - aur-packages-install
+      - packages-install
+      - packages
+      - full-install
     kewlfft.aur.aur:
       name: trizen
       use: makepkg
@@ -206,7 +204,7 @@
       - packages-install
       - packages
       - full-install
-    aur:
+    kewlfft.aur.aur:
       name:
         - lf
         - brave-bin
