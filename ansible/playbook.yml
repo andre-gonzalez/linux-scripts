@@ -22,320 +22,320 @@
       user: frank
       key: ""
 
-- name: install reflector
-  tags:
-    - packages
-    - full-install
-  package:
-    name: reflector
-  become: true
+  - name: install reflector
+    tags:
+      - packages
+      - full-install
+    package:
+      name: reflector
+    become: true
 
-- name: update pacman mirrorlist
-  tags:
-    - packages
-    - full-install
-  script: choose-mirror.sh
-  become: true
+  - name: update pacman mirrorlist
+    tags:
+      - packages
+      - full-install
+    script: choose-mirror.sh
+    become: true
 
-- name: remove packages
-  tags:
-    - packages-remove
-    - packages
-    - full-install
-  package:
-    name:
-      - arch-install-scripts
-      - amd-ucode
-      - archinstall
-      - brltty nano
-    state: absent
-    update_cache: no
+  - name: remove packages
+    tags:
+      - packages-remove
+      - packages
+      - full-install
+    package:
+      name:
+        - arch-install-scripts
+        - amd-ucode
+        - archinstall
+        - brltty nano
+      state: absent
+      update_cache: no
 
-- name: install packages and update cache
-  tags:
-    - packages-install
-    - packages
-    - full-install
-  package:
-    name:
-      - "{{ neovim }}"
-      - "{{ tmux }}"
-      - "{{ nvidia }}"
-      - "{{ xorg-server }}"
-      - "{{ xorg-xinit }}"
-      - "{{ xorg-xsetroot }}"
-      - "{{ xorg-xrandr }}"
-      - "{{ nitrogen }}"
-      - "{{ spotifyd }}"
-      - "{{ xautolock }}"
-      - "{{ git }}"
-      - "{{ xbindkeys }}"
-      - "{{ python-pip }}"
-      - "{{ feh }}"
-      - "{{ dbeaver }}"
-      - "{{ unclutter }}"
-      - "{{ bluez }}"
-      - "{{ bluez-tools }}"
-      - "{{ bluez-utils }}"
-      - "{{ pulseaudio }}"
-      - "{{ pulseaudio-bluetooth }}"
-      - "{{ base-devel }}"
-      - "{{ xclip }}"
-      - "{{ ttf-nerd-fonts-symbols-mono }}"
-      - "{{ brightnessctl }}"
-      - "{{ alsa-utils }}"
-      - "{{ pavucontrol }}"
-      - "{{ lxappearance }}"
-      - "{{ arc-gtk-theme }}"
-      - "{{ doas }}"
-      - "{{ connman }}"
-      - "{{ wpa_supplicant }}"
-      - "{{ pamixer }}"
-      - "{{ ripgrep }}"
-      - "{{ fd }}"
-      - "{{ fzf }}"
-      - "{{ jupyter }}"
-      - "{{ baobab }}"
-      - "{{ nethogs }}"
-      - "{{ virt-manager }}"
-      - "{{ qemu }}"
-      - "{{ libvirt }}"
-      - "{{ lxsession }}"
-      - "{{ spice-vdagent }}"
-      - "{{ flameshot }}"
-      - "{{ clipmenu }}"
-      - "{{ arandr }}"
-      - "{{ numlockx }}"
-      - "{{ broadcom-wl }}"
-      - "{{ bat }}"
-      - "{{ dunst }}"
-    state: latest
-    update_cache: yes
+  - name: install packages and update cache
+    tags:
+      - packages-install
+      - packages
+      - full-install
+    package:
+      name:
+        - "{{ neovim }}"
+        - "{{ tmux }}"
+        - "{{ nvidia }}"
+        - "{{ xorg-server }}"
+        - "{{ xorg-xinit }}"
+        - "{{ xorg-xsetroot }}"
+        - "{{ xorg-xrandr }}"
+        - "{{ nitrogen }}"
+        - "{{ spotifyd }}"
+        - "{{ xautolock }}"
+        - "{{ git }}"
+        - "{{ xbindkeys }}"
+        - "{{ python-pip }}"
+        - "{{ feh }}"
+        - "{{ dbeaver }}"
+        - "{{ unclutter }}"
+        - "{{ bluez }}"
+        - "{{ bluez-tools }}"
+        - "{{ bluez-utils }}"
+        - "{{ pulseaudio }}"
+        - "{{ pulseaudio-bluetooth }}"
+        - "{{ base-devel }}"
+        - "{{ xclip }}"
+        - "{{ ttf-nerd-fonts-symbols-mono }}"
+        - "{{ brightnessctl }}"
+        - "{{ alsa-utils }}"
+        - "{{ pavucontrol }}"
+        - "{{ lxappearance }}"
+        - "{{ arc-gtk-theme }}"
+        - "{{ doas }}"
+        - "{{ connman }}"
+        - "{{ wpa_supplicant }}"
+        - "{{ pamixer }}"
+        - "{{ ripgrep }}"
+        - "{{ fd }}"
+        - "{{ fzf }}"
+        - "{{ jupyter }}"
+        - "{{ baobab }}"
+        - "{{ nethogs }}"
+        - "{{ virt-manager }}"
+        - "{{ qemu }}"
+        - "{{ libvirt }}"
+        - "{{ lxsession }}"
+        - "{{ spice-vdagent }}"
+        - "{{ flameshot }}"
+        - "{{ clipmenu }}"
+        - "{{ arandr }}"
+        - "{{ numlockx }}"
+        - "{{ broadcom-wl }}"
+        - "{{ bat }}"
+        - "{{ dunst }}"
+      state: latest
+      update_cache: yes
 
-- name: Cloning .dotfiles
-  tags:
-    - dotfiles
-    - full-install
-  ansible.builtin.git:
-    repo: 'git@github.com:andre-gonzalez/dotfiles.git'
-    dest: "{{ lookup('env', 'USR') | default('nobody', True) }}"
-    recursive: yes
-    update: yes
-    bare: yes
-    version: main
+  - name: Cloning .dotfiles
+    tags:
+      - dotfiles
+      - full-install
+    ansible.builtin.git:
+      repo: 'git@github.com:andre-gonzalez/dotfiles.git'
+      dest: "{{ lookup('env', 'USR') | default('nobody', True) }}"
+      recursive: yes
+      update: yes
+      bare: yes
+      version: main
 
-- name: start services
-  tags:
-    - start-services
-    - full-install
-  service:
-    name:
-      - iwd
+  - name: start services
+    tags:
+      - start-services
+      - full-install
+    service:
+      name:
+        - iwd
+        - libvirt
+        - bluetooth
+        - cronie.service
+      state: started
+      enabled: yes
+
+  - name: Git personal setup email
+    tags:
+      - git-personal
+      - full-install
+    community.general.git_config:
+      name: user.email
+      scope: global
+      value: "lopescg@gmail.com"
+
+  - name: Git personal setup name
+    tags:
+      - git-personal
+      - full-install
+    community.general.git_config:
+      name: user.name
+      scope: global
+      value: "André Gonzalez"
+
+  - name: Git eureciclo email
+    tags:
+      - git-eureciclo
+      - full-install
+    community.general.git_config:
+      name: user.email
+      scope: global
+      value: "andre.gonzalez@nhecotech.com"
+
+  - name: Clone yay
+    tags:
+      - aur-install
+      - full-install
+    git:
+      repo: https://aur.archlinux.org/yay-bin.git
+      dest: "{{ lookup('env', 'USR') | default('nobody', True) }}/.config/yay"
+
+      update: true
+
+  - name: Build and install yay
+    tags:
+      - aur-install
+      - full-install
+    command:
+      chdir: "{{ lookup('env', 'USR') | default('nobody', True) }}/.config/yay"
+      cmd: "makepkg -sfi --noconfirm"
+      creates: /usr/bin/yay
+
+  - name: Install aur packages
+    tags:
+      - aur-packages-install
+      - packages-install
+      - packages
+      - full-install
+    aur:
+      name:
+        - lf
+        - brave-bin
+        - authy
+        - obsidian
+        - xflux
+        - slack-desktop
+        - anki-git
+        - spotify
+        - insync
+        - vscodium-bin
+        - google-cloud-sdk
+        - google-cloud-sdk-app-engine-python
+        - google-cloud-sdk-app-engine-python-extras
+        - stremio
+        - dashbinsh
+        - htim
+        - tmux-bash-completion-git
+        - checkupdates+aur
+        - informant
+      use: yay
+      state: present
+      update_cache: yes
+    when: ansible_distribution == "Archlinux"
+    become: yes
+
+  - name: Clone dwm
+    tags:
+      - dwm-install
+      - full-install
+    git:
+      repo: https://github.com/andre-gonzalez/my-dwm
+      dest: "{{ lookup('env', 'USR') | default('nobody', True) }}/.config/dwm"
+
+  - name: Install dwm
+    tags:
+      - dwm-install
+      - full-install
+    make:
+      chdir: "{{ lookup('env', 'USR') | default('nobody', True) }}/.config/dwm"
+      target: clean install
+    become: yes
+
+  - name: Clone st
+    tags:
+      - st-install
+      - full-install
+    git:
+      repo: https://github.com/andre-gonzalez/my-st
+      dest: "{{ lookup('env', 'USR') | default('nobody', True) }}/.config/st"
+
+  - name: Install st
+    tags:
+      - st-install
+      - full-install
+    make:
+      chdir: "{{ lookup('env', 'USR') | default('nobody', True) }}/.config/st"
+      target: clean install
+    become: yes
+
+  - name: Clone dmenu
+    tags:
+      - dmenu-install
+      - full-install
+    git:
+      repo: https://git.suckless.org/dmenu
+      dest: "{{ lookup('env', 'USR') | default('nobody', True) }}/.config/dmenu"
+
+  - name: Install dmenu
+    tags:
+      - dmenu-install
+      - full-install
+    make:
+      chdir: "{{ lookup('env', 'USR') | default('nobody', True) }}/.config/dmenu"
+      target: clean install
+    become: yes
+
+  - name: Clone dwmstatus
+    tags:
+      - dwmblocks-install
+      - full-install
+    git:
+      repo: https://git.suckless.org/dwmstatus
+      dest: "{{ lookup('env', 'USR') | default('nobody', True) }}/.config/dwmstatus"
+
+  - name: Install dwmstatus
+    tags:
+      - dwmblocks-install
+      - full-install
+    make:
+      chdir: "{{ lookup('env', 'USR') | default('nobody', True) }}/.config/dwmstatus"
+      target: clean install
+    become: yes
+
+  - name: Clone dwmblocks
+    tags:
+      - dwmblocks-install
+      - full-install
+    git:
+      repo: https://github.com/Andre-gonzalez/my-dwmblocks
+      dest: "{{ lookup('env', 'USR') | default('nobody', True) }}/.config/dwmblocks"
+
+  - name: Install dwmblocks
+    tags:
+      - dwmblocks-install
+      - full-install
+    make:
+      chdir: "{{ lookup('env', 'USR') | default('nobody', True) }}/.config/dwmblocks"
+      target: clean install
+    become: yes
+
+  - name: Clone slock
+    tags:
+      - slock-install
+      - full-install
+    git:
+      repo: https://github.com/Andre-gonzalez/my-slock.git
+      dest: "{{ lookup('env', 'USR') | default('nobody', True) }}/.config/slock"
+
+  - name: Install slock
+    tags:
+      - slock-install
+      - full-install
+    make:
+      chdir: "{{ lookup('env', 'USR') | default('nobody', True) }}/.config/slock"
+      target: clean install
+    become: yes
+
+  - name: add the user to the libvirt group
+    tags:
       - libvirt
-      - bluetooth
-      - cronie.service
-    state: started
-    enabled: yes
+      - full-install
+    ansible.builtin.user:
+      name: frank
+      group: libvirtd
+    become: yes
 
-- name: Git personal setup email
-  tags:
-    - git-personal
-    - full-install
-  community.general.git_config:
-    name: user.email
-    scope: global
-    value: "lopescg@gmail.com"
-
-- name: Git personal setup name
-  tags:
-    - git-personal
-    - full-install
-  community.general.git_config:
-    name: user.name
-    scope: global
-    value: "André Gonzalez"
-
-- name: Git eureciclo email
-  tags:
-    - git-eureciclo
-    - full-install
-  community.general.git_config:
-    name: user.email
-    scope: global
-    value: "andre.gonzalez@nhecotech.com"
-
-- name: Clone yay
-  tags:
-    - aur-install
-    - full-install
-  git:
-    repo: https://aur.archlinux.org/yay-bin.git
-    dest: "{{ lookup('env', 'USR') | default('nobody', True) }}/.config/yay"
-
-    update: true
-
-- name: Build and install yay
-  tags:
-    - aur-install
-    - full-install
-  command:
-    chdir: "{{ lookup('env', 'USR') | default('nobody', True) }}/.config/yay"
-    cmd: "makepkg -sfi --noconfirm"
-    creates: /usr/bin/yay
-
-- name: Install aur packages
-  tags:
-    - aur-packages-install
-    - packages-install
-    - packages
-    - full-install
-  aur:
-    name:
-      - lf
-      - brave-bin
-      - authy
-      - obsidian
-      - xflux
-      - slack-desktop
-      - anki-git
-      - spotify
-      - insync
-      - vscodium-bin
-      - google-cloud-sdk
-      - google-cloud-sdk-app-engine-python
-      - google-cloud-sdk-app-engine-python-extras
-      - stremio
-      - dashbinsh
-      - htim
-      - tmux-bash-completion-git
-      - checkupdates+aur
-      - informant
-    use: yay
-    state: present
-    update_cache: yes
-  when: ansible_distribution == "Archlinux"
-  become: yes
-
-- name: Clone dwm
-  tags:
-    - dwm-install
-    - full-install
-  git:
-    repo: https://github.com/andre-gonzalez/my-dwm
-    dest: "{{ lookup('env', 'USR') | default('nobody', True) }}/.config/dwm"
-
-- name: Install dwm
-  tags:
-    - dwm-install
-    - full-install
-  make:
-    chdir: "{{ lookup('env', 'USR') | default('nobody', True) }}/.config/dwm"
-    target: clean install
-  become: yes
-
-- name: Clone st
-  tags:
-    - st-install
-    - full-install
-  git:
-    repo: https://github.com/andre-gonzalez/my-st
-    dest: "{{ lookup('env', 'USR') | default('nobody', True) }}/.config/st"
-
-- name: Install st
-  tags:
-    - st-install
-    - full-install
-  make:
-    chdir: "{{ lookup('env', 'USR') | default('nobody', True) }}/.config/st"
-    target: clean install
-  become: yes
-
-- name: Clone dmenu
-  tags:
-    - dmenu-install
-    - full-install
-  git:
-    repo: https://git.suckless.org/dmenu
-    dest: "{{ lookup('env', 'USR') | default('nobody', True) }}/.config/dmenu"
-
-- name: Install dmenu
-  tags:
-    - dmenu-install
-    - full-install
-  make:
-    chdir: "{{ lookup('env', 'USR') | default('nobody', True) }}/.config/dmenu"
-    target: clean install
-  become: yes
-
-- name: Clone dwmstatus
-  tags:
-    - dwmblocks-install
-    - full-install
-  git:
-    repo: https://git.suckless.org/dwmstatus
-    dest: "{{ lookup('env', 'USR') | default('nobody', True) }}/.config/dwmstatus"
-
-- name: Install dwmstatus
-  tags:
-    - dwmblocks-install
-    - full-install
-  make:
-    chdir: "{{ lookup('env', 'USR') | default('nobody', True) }}/.config/dwmstatus"
-    target: clean install
-  become: yes
-
-- name: Clone dwmblocks
-  tags:
-    - dwmblocks-install
-    - full-install
-  git:
-    repo: https://github.com/Andre-gonzalez/my-dwmblocks
-    dest: "{{ lookup('env', 'USR') | default('nobody', True) }}/.config/dwmblocks"
-
-- name: Install dwmblocks
-  tags:
-    - dwmblocks-install
-    - full-install
-  make:
-    chdir: "{{ lookup('env', 'USR') | default('nobody', True) }}/.config/dwmblocks"
-    target: clean install
-  become: yes
-
-- name: Clone slock
-  tags:
-    - slock-install
-    - full-install
-  git:
-    repo: https://github.com/Andre-gonzalez/my-slock.git
-    dest: "{{ lookup('env', 'USR') | default('nobody', True) }}/.config/slock"
-
-- name: Install slock
-  tags:
-    - slock-install
-    - full-install
-  make:
-    chdir: "{{ lookup('env', 'USR') | default('nobody', True) }}/.config/slock"
-    target: clean install
-  become: yes
-
-- name: add the user to the libvirt group
-  tags:
-    - libvirt
-    - full-install
-  ansible.builtin.user:
-    name: frank
-    group: libvirtd
-  become: yes
-
-- name: copy file doas.conf and pacman.conf to /etc
-  tags:
-    - full-install
-  copy:
-    src:
-      - doas.conf
-      - pacman.conf
-    dest: /etc
-    owner: root
-    group: root
-    mode: 0644
-  become: yes
+  - name: copy file doas.conf and pacman.conf to /etc
+    tags:
+      - full-install
+    copy:
+      src:
+        - doas.conf
+        - pacman.conf
+      dest: /etc
+      owner: root
+      group: root
+      mode: 0644
+    become: yes
