@@ -51,78 +51,78 @@
     state: absent
     update_cache: no
 
-  - name: install packages and update cache
-    tags:
-      - packages-install
-      - packages
-      - full-install
-    package:
-      name:
-        - "{{ neovim }}"
-        - "{{ tmux }}"
-        - "{{ nvidia }}"
-        - "{{ xorg-server }}"
-        - "{{ xorg-xinit }}"
-        - "{{ xorg-xsetroot }}"
-        - "{{ xorg-xrandr }}"
-        - "{{ nitrogen }}"
-        - "{{ spotifyd }}"
-        - "{{ xautolock }}"
-        - "{{ git }}"
-        - "{{ xbindkeys }}"
-        - "{{ python-pip }}"
-        - "{{ feh }}"
-        - "{{ dbeaver }}"
-        - "{{ unclutter }}"
-        - "{{ bluez }}"
-        - "{{ bluez-tools }}"
-        - "{{ bluez-utils }}"
-        - "{{ pulseaudio }}"
-        - "{{ pulseaudio-bluetooth }}"
-        - "{{ base-devel }}"
-        - "{{ xclip }}"
-        - "{{ ttf-nerd-fonts-symbols-mono }}"
-        - "{{ brightnessctl }}"
-        - "{{ alsa-utils }}"
-        - "{{ pavucontrol }}"
-        - "{{ lxappearance }}"
-        - "{{ arc-gtk-theme }}"
-        - "{{ doas }}"
-        - "{{ connman }}"
-        - "{{ wpa_supplicant }}"
-        - "{{ pamixer }}"
-        - "{{ ripgrep }}"
-        - "{{ fd }}"
-        - "{{ fzf }}"
-        - "{{ jupyter }}"
-        - "{{ baobab }}"
-        - "{{ nethogs }}"
-        - "{{ virt-manager }}"
-        - "{{ qemu }}"
-        - "{{ libvirt }}"
-        - "{{ lxsession }}"
-        - "{{ spice-vdagent }}"
-        - "{{ flameshot }}"
-        - "{{ clipmenu }}"
-        - "{{ arandr }}"
-        - "{{ numlockx }}"
-        - "{{ broadcom-wl }}"
-        - "{{ bat }}"
-        - "{{ dunst }}"
-      state: latest
-      update_cache: yes
+- name: install packages and update cache
+  tags:
+    - packages-install
+    - packages
+    - full-install
+  package:
+    name:
+      - "{{ neovim }}"
+      - "{{ tmux }}"
+      - "{{ nvidia }}"
+      - "{{ xorg-server }}"
+      - "{{ xorg-xinit }}"
+      - "{{ xorg-xsetroot }}"
+      - "{{ xorg-xrandr }}"
+      - "{{ nitrogen }}"
+      - "{{ spotifyd }}"
+      - "{{ xautolock }}"
+      - "{{ git }}"
+      - "{{ xbindkeys }}"
+      - "{{ python-pip }}"
+      - "{{ feh }}"
+      - "{{ dbeaver }}"
+      - "{{ unclutter }}"
+      - "{{ bluez }}"
+      - "{{ bluez-tools }}"
+      - "{{ bluez-utils }}"
+      - "{{ pulseaudio }}"
+      - "{{ pulseaudio-bluetooth }}"
+      - "{{ base-devel }}"
+      - "{{ xclip }}"
+      - "{{ ttf-nerd-fonts-symbols-mono }}"
+      - "{{ brightnessctl }}"
+      - "{{ alsa-utils }}"
+      - "{{ pavucontrol }}"
+      - "{{ lxappearance }}"
+      - "{{ arc-gtk-theme }}"
+      - "{{ doas }}"
+      - "{{ connman }}"
+      - "{{ wpa_supplicant }}"
+      - "{{ pamixer }}"
+      - "{{ ripgrep }}"
+      - "{{ fd }}"
+      - "{{ fzf }}"
+      - "{{ jupyter }}"
+      - "{{ baobab }}"
+      - "{{ nethogs }}"
+      - "{{ virt-manager }}"
+      - "{{ qemu }}"
+      - "{{ libvirt }}"
+      - "{{ lxsession }}"
+      - "{{ spice-vdagent }}"
+      - "{{ flameshot }}"
+      - "{{ clipmenu }}"
+      - "{{ arandr }}"
+      - "{{ numlockx }}"
+      - "{{ broadcom-wl }}"
+      - "{{ bat }}"
+      - "{{ dunst }}"
+    state: latest
+    update_cache: yes
 
-  - name: Cloning .dotfiles
-    tags:
-      - dotfiles
-      - full-install
-    ansible.builtin.git:
-      repo: 'git@github.com:andre-gonzalez/dotfiles.git'
-      dest: "{{ lookup('env', 'USR') | default('nobody', True) }}"
-      recursive: yes
-      update: yes
-      bare: yes
-      version: main
+- name: Cloning .dotfiles
+  tags:
+    - dotfiles
+    - full-install
+  ansible.builtin.git:
+    repo: 'git@github.com:andre-gonzalez/dotfiles.git'
+    dest: "{{ lookup('env', 'USR') | default('nobody', True) }}"
+    recursive: yes
+    update: yes
+    bare: yes
+    version: main
 
   - name: start services
     tags:
