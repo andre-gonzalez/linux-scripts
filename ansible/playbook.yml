@@ -124,45 +124,45 @@
     bare: yes
     version: main
 
-  - name: start services
-    tags:
-      - start-services
-      - full-install
-    service:
-      name:
-        - iwd
-        - libvirt
-        - bluetooth
-        - cronie.service
-      state: started
-      enabled: yes
+- name: start services
+  tags:
+    - start-services
+    - full-install
+  service:
+    name:
+      - iwd
+      - libvirt
+      - bluetooth
+      - cronie.service
+    state: started
+    enabled: yes
 
-  - name: Git personal setup email
-    tags:
-      - git-personal
-      - full-install
-    community.general.git_config:
-      name: user.email
-      scope: global
-      value: "lopescg@gmail.com"
+- name: Git personal setup email
+  tags:
+    - git-personal
+    - full-install
+  community.general.git_config:
+    name: user.email
+    scope: global
+    value: "lopescg@gmail.com"
 
-  - name: Git personal setup name
-    tags:
-      - git-personal
-      - full-install
-    community.general.git_config:
-      name: user.name
-      scope: global
-      value: "André Gonzalez"
+- name: Git personal setup name
+  tags:
+    - git-personal
+    - full-install
+  community.general.git_config:
+    name: user.name
+    scope: global
+    value: "André Gonzalez"
 
-  - name: Git eureciclo email
-    tags:
-      - git-eureciclo
-      - full-install
-    community.general.git_config:
-      name: user.email
-      scope: global
-      value: "andre.gonzalez@nhecotech.com"
+- name: Git eureciclo email
+  tags:
+    - git-eureciclo
+    - full-install
+  community.general.git_config:
+    name: user.email
+    scope: global
+    value: "andre.gonzalez@nhecotech.com"
 
 - name: Clone yay
   tags:
