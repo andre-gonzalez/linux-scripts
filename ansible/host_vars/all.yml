@@ -52,4 +52,68 @@ user:
 - name: defined var
   nitrogen=nitrogen
   when: ansible_distribution in ["Archlinux", "Debian"]
+
+# xautolock -> to set the device to autolock after an amount of time. Will use with slock
+- name: defined var
+  xautolock=xautolock
+  when: ansible_distribution in ["Archlinux", "Debian"]
+
+# git -> git so i can version code
+- name: defined var
+  git=git
+  when: ansible_distribution in ["Archlinux", "Debian"]
+
+# xbindkeys -> necessary to use keyboard keys to adjust volume and backlight
+- name: defined var
+  xbindkeys=xbindkeys
+  when: ansible_distribution in ["Archlinux", "Debian"]
+
+# python-pip -> pyhton packages installer
+- name: defined var
+  python-pip=python-pip
+  when: ansible_distribution == "Archlinux"
+
+- name: defined var
+  python-pip=python-pip-whl
+  when: ansible_distribution == "Debian"
+
+# feh -> terminal based image visualization tool
+- name: defined var
+  feh=feh
+  when: ansible_distribution in ["Archlinux", "Debian"]
+
+# unclutter -> hide the mouse automatically after some period of inactivity
+- name: defined var
+  unclutter=unclutter
+  when: ansible_distribution in ["Archlinux", "Debian"]
+
+# bluez -> necessary for bluetooth
+- name: defined var
+  bluez=bluez
+  when: ansible_distribution in ["Archlinux", "Debian"]
+
+# bluez-tools -> necessary for bluetooth
+- name: defined var
+  bluez-tools=bluez-tools
+  when: ansible_distribution in ["Archlinux", "Debian"]
+
+# pulseaudio -> tool to manage audio
+- name: defined var
+  pulseaudio=pulseaudio
+  when: ansible_distribution in ["Archlinux", "Debian"]
+
+# pulseaudio-bluetooth -> necessary for bluetooth
+- name: defined var
+  pulseaudio-bluetooth=pulseaudio-bluetooth
+  when: ansible_distribution == "Archlinux"
+
+- name: defined var
+  pulseaudio-bluetooth=pulseaudio-module-bluetooth
+  when: ansible_distribution == "Debian"
+
+# xclip -> clipboard tool
+- name: defined var
+  xclip=xclip
+  when: ansible_distribution in ["Archlinux", "Debian"]
+####  ####
 ####  ####
