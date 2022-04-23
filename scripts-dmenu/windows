@@ -2,6 +2,3 @@
 # KVM/QEMU VM
 /usr/bin/virsh start windows-ame
 virt-manager --connect=qemu:///system --show-domain-console windows-ame
-
-# Virtualbox VM
-# virtualbox /home/frank/.config/'VirtualBox VMs'/'Windows AME'/'Windows AME.vbox'
