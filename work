@@ -12,5 +12,5 @@ $HOME/.scripts /usr/local/bin/brave-eureciclo &
 $HOME/.scripts /usr/local/bin/brave-pessoal &
 $HOME/.scripts /usr/local/bin/brave-call &
 $HOME/.scripts /usr/local/bin/brave-videos &
-$HOME/.scripts /usr/local/bin/windows
+$HOME/.scripts /usr/local/bin/windows &
 rm $HOME/Downloads
