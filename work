@@ -1,16 +1,16 @@
 #!/bin/sh
 
-#$HOME/.scripts /usr/local/bin/notas &
-/$HOME/.scripts /usr/local/bin/diversos &
-/$HOME/.scripts /usr/local/bin/database &
+# /usr/bin/dash $HOME/.scripts/notas &
+/usr/bin/dash $HOME/.scripts/diversos &
+/usr/bin/dash $HOME/.scripts/database &
 slack &
 obsidian &
 spotify &
 dbeaver &
 # vscodium &
-$HOME/.scripts /usr/local/bin/brave-eureciclo &
-$HOME/.scripts /usr/local/bin/brave-pessoal &
-$HOME/.scripts /usr/local/bin/brave-call &
-$HOME/.scripts /usr/local/bin/brave-videos &
-$HOME/.scripts /usr/local/bin/windows &
+/usr/bin/dash $HOME/.scripts/brave-eureciclo &
+/usr/bin/dash $HOME/.scripts/brave-call &
+/usr/bin/dash $HOME/.scripts/brave-pessoal &
+/usr/bin/dash $HOME/.scripts/brave-videos &
+/usr/bin/dash $HOME/.scripts/windows &
 rm $HOME/Downloads

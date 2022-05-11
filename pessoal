@@ -1,9 +1,9 @@
 #!/bin/sh
 
 # st -t notas -e tmux new -s notas &
-st -t diversos -e tmux new -s diversos &
+/usr/bin/dash $HOME/.scripts/diversos &
 obsidian &
 anki &
 spotify &
-brave --profile-directory=Default &
+/usr/bin/dash $HOME/.scripts/brave-pessoal &
 rm $HOME/Downloads
