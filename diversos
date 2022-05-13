@@ -1,2 +1,2 @@
 #!/bin/sh
-/usr/local/bin/st -t diversos -e tmux new-session -A -s diversos bash
+/usr/local/bin/st -t diversos -e tmux new-session -A -s diversos fish

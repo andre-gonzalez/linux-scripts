@@ -1,2 +1,2 @@
 #!/bin/sh
-/usr/local/bin/st -t database -e tmux new-session -A -s database
+/usr/local/bin/st -t database -e tmux new-session -A -s database fish
