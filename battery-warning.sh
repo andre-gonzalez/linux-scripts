@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 battery_stat="$(acpi --battery)"
 battery_greped_status="$(echo $battery_stat | grep -Pio 'remaining|charged')"
