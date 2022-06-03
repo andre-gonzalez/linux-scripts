@@ -4,8 +4,8 @@ status="$(dunstctl is-paused)"
 
 if [ "$status" = "false" ]; then
 		dunstctl set-paused true
-		echo "Do not disturb OFF" | dmenu
+		echo "Do not disturb ON" | dmenu
 elif [ "$status" = "true" ]; then
 		dunstctl set-paused false
-		echo "Do not disturb ON" | dmenu
+		echo "Do not disturb OFF" | dmenu
 fi
