@@ -1,0 +1,10 @@
+#!/bin/sh
+
+access_file=
+type=$(head -n 1 $access_file)
+connection=$(sed -n 2p $access_file)
+database=$(sed -n 3p $access_file)
+user=$(sed -n 4p $access_file)
+pass=$(tail -n 1 $access_file)
+
+sql2csv --db $type://$user:$pass@$connection/$database --query "$1"
