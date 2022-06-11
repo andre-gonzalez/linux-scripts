@@ -8,3 +8,7 @@ dwm_bluetooth
 dwm_connman
 dwm_date
 dwm_resources
+dwm_systemd_networkd
+qso
+qrc
+.env
