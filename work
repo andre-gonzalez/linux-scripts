@@ -5,13 +5,14 @@
 /usr/local/bin/st -t diversos -e tmux new-session -A -s diversos -c $HOME/eureciclo fish
 /usr/bin/dash $HOME/.scripts/database &
 slack &
-obsidian &
+# obsidian &
 spotify &
 dbeaver &
 # vscodium &
 /usr/bin/dash $HOME/.scripts/brave-eureciclo &
 /usr/bin/dash $HOME/.scripts/brave-call &
-/usr/bin/dash $HOME/.scripts/brave-pessoal &
+# /usr/bin/dash $HOME/.scripts/brave-pessoal &
+qutebrowser &
 /usr/bin/dash $HOME/.scripts/brave-videos &
 /usr/bin/dash $HOME/.scripts/windows &
 rm $HOME/Downloads
