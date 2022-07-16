@@ -2,7 +2,7 @@
 
 # /usr/bin/dash $HOME/.scripts/notas &
 /usr/bin/dash $HOME/.scripts/diversos &
-/usr/local/bin/st -t diversos -e tmux new-session -A -s diversos -c $HOME/eureciclo fish
+/usr/local/bin/st -t diversos -e tmux new-session -A -s diversos -c $HOME/eureciclo fish &
 /usr/bin/dash $HOME/.scripts/database &
 slack &
 # obsidian &
