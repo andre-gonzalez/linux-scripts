@@ -10,6 +10,7 @@ dwm_date
 dwm_resources
 dwm_systemd_networkd
 dwm_weather
+dwm_countdown
 qso
 qrc
 .env
