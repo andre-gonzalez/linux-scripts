@@ -8,7 +8,7 @@ ask "Starting working now?"
 
 
 if [ "$answer" = "work" ]; then
-		/usr/local/bin/work
+		/home/frank/.scripts/work
 elif [ "$answer" = "pessoal" ]; then
-		/usr/local/bin/pessoal
+		/home/frank/.scripts/pessoal
 fi
