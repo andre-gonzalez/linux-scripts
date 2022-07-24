@@ -8,4 +8,5 @@ if [ "$status" = "false" ]; then
 elif [ "$status" = "true" ]; then
 		dunstctl set-paused false
 		echo "Do not disturb OFF" | dmenu
+        notify-send "Do not disturb OFF"
 fi
