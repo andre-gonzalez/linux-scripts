@@ -6,5 +6,5 @@ obsidian &
 anki &
 spotify &
 qutebrowser &
-/usr/bin/dash $HOME/.scripts/brave-pessoal &
+# /usr/bin/dash $HOME/.scripts/brave-pessoal &
 rm $HOME/Downloads
