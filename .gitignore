@@ -15,3 +15,6 @@ qso
 qrc
 .env
 iso
+start-ec2-instance
+stop-ec2-instance
+stop-ec2-instance
