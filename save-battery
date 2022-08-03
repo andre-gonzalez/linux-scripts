@@ -2,6 +2,7 @@
 
 /bin/sh $HOME/.scripts/prompt.sh "Deseja desligar o bluetooth?" "bluetoothctl power off"
 /bin/sh $HOME/.scripts/prompt.sh "Deseja reduzir a brilho da tela para 50%?" "brightnessctl set 50%; kill -45 $(pidof dwmblocks)"
+/bin/sh $HOME/.scripts/prompt.sh "Deseja reduzir a brilho da tela para 1%?" "brightnessctl set 1%; kill -45 $(pidof dwmblocks)"
 /bin/sh $HOME/.scripts/prompt.sh "Deseja mudar o fundo da tela para preto?" "feh --bg-fill "$HOME"/.config/.wallpaper/black.png"
 /bin/sh $HOME/.scripts/prompt.sh "Deseja encerrar o preload?" "killall preload"
 /bin/sh $HOME/.scripts/prompt.sh "Deseja encerrar o insync?" "killall insync"
