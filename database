@@ -1,2 +1,2 @@
 #!/bin/sh
-/usr/local/bin/st -t database -e tmux new-session -A -s database -n main -c $HOME/eureciclo/salesops-dw fish
+/usr/local/bin/st -t database -e tmuxp load "$HOME"/.tmuxp/database.yml

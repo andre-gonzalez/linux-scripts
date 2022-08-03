@@ -1,9 +1,7 @@
 #!/bin/sh
 
-# /usr/bin/dash $HOME/.scripts/notas &
-# /usr/bin/dash $HOME/.scripts/diversos &
-/usr/local/bin/st -t diversos -e tmux new-session -A -s diversos -n main -c $HOME/eureciclo fish &
-/usr/bin/dash $HOME/.scripts/database &
+/usr/local/bin/st -t diversos -e tumxp load "$HOME"/.tmuxp/diversos.yml
+/usr/local/bin/st -t diversos -e tumxp load "$HOME"/.tmuxp/database.yml
 slack &
 # obsidian &
 spotify &
