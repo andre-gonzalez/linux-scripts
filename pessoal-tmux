@@ -1,0 +1,3 @@
+#!/bin/sh
+
+/usr/local/bin/st -t diversos -e tumxp load "$HOME"/.tmuxp/pessoal.yml
