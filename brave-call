@@ -1,2 +1,2 @@
 #!/bin/sh
-brave --profile-directory="Profile 2"
+brave --profile-directory="Profile 3" &
