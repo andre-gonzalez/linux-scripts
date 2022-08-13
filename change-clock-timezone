@@ -1,0 +1,25 @@
+#!/bin/sh
+
+mexican=$(grep -c '"dwm_date"' /home/frank/.config/dwmblocks/config.h)
+answer="$( echo "Brazil\nMexico" | dmenu -i -p "Which timezone?")"
+
+restart_dwmblocks() {
+		# cd /home/frank/.config/dwmblocks/ && sudo make clean install
+		pid=$(ps -C dwmblocks | awk 'FNR == 2 {print $1}')
+		# echo "$pid"
+		kill -9 "$pid"
+		/usr/local/bin/dwmblocks &
+		echo "Changed to $answer timezone" | dmenu
+		notify-send "Changed to $answer timezone"
+}
+
+if [ "$answer" = "Brazil" -a "$mexican" -eq 1 ]; then
+		sed -i 's/dwm_date/dwm_date_brasil/g' /home/frank/.config/dwmblocks/config.h
+		restart_dwmblocks
+elif [ "$answer" = "Mexico" -a "$mexican" -eq 0 ]; then
+		sed -i 's/dwm_date_brasil/dwm_date/g' /home/frank/.config/dwmblocks/config.h
+		restart_dwmblocks
+else
+		echo "Already at $answer timezone" | dmenu
+		notify-send "Already at $answer timezone"
+fi
