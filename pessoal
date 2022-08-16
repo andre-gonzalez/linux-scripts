@@ -2,7 +2,7 @@
 
 # st -t notas -e tmux new -s notas &
 /usr/local/bin/st -t diversos -e tumxp load "$HOME"/.tmuxp/pessoal.yml
-obsidian &
+# obsidian &
 anki &
 spotify &
 qutebrowser &
