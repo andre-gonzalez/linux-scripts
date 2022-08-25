@@ -1,12 +1,7 @@
 #!/bin/sh
 xrandr --output eDP-1 --primary --mode 1920x1080 --pos 0x0 --rotate normal --output HDMI-1 --off
 
-xdotool key super+period && xdotool key super+1 && xdotool key super+period && xdotool key super+1 key shift+super+period
-xdotool key super+period && xdotool key super+2 && xdotool key super+period && xdotool key super+2 key shift+super+period
-xdotool key super+period && xdotool key super+3 && xdotool key super+period && xdotool key super+3 key shift+super+period
-xdotool key super+period && xdotool key super+4 && xdotool key super+period && xdotool key super+4 key shift+super+period
-xdotool key super+period && xdotool key super+5 && xdotool key super+period && xdotool key super+5 key shift+super+period
-xdotool key super+period && xdotool key super+6 && xdotool key super+period && xdotool key super+6 key shift+super+period
-xdotool key super+period && xdotool key super+7 && xdotool key super+period && xdotool key super+7 key shift+super+period
-xdotool key super+period && xdotool key super+8 && xdotool key super+period && xdotool key super+8 key shift+super+period
-xdotool key super+period && xdotool key super+9 && xdotool key super+period && xdotool key super+9 key shift+super+period
+for i in $(seq 1 9)
+do
+		xdotool key super+period && xdotool key super+$i && xdotool key super+period && xdotool key super+$i key shift+super+period
+done
