@@ -1,0 +1,8 @@
+#!/bin/sh
+xrandr --output eDP-1 --primary --mode 1920x1080 --pos 1920x249 --rotate normal --output HDMI-1 --mode 1920x1080 --pos 0x0 --rotate normal
+
+xdotool key super+period && xdotool key super+1 && xdotool key super+period && xdotool key super+1 key shift+super+period
+xdotool key super+period && xdotool key super+2 && xdotool key super+period && xdotool key super+2 key shift+super+period
+xdotool key super+period && xdotool key super+3 && xdotool key super+period && xdotool key super+3 key shift+super+period
+xdotool key super+period && xdotool key super+4 && xdotool key super+period && xdotool key super+4 key shift+super+period
+xdotool key super+period && xdotool key super+5 && xdotool key super+period && xdotool key super+5 key shift+super+period
