@@ -1,6 +1,8 @@
 #!/bin/sh
 xrandr --output eDP-1 --primary --mode 1920x1080 --pos 1920x249 --rotate normal --output HDMI-1 --mode 1920x1080 --pos 0x0 --rotate normal
 
+setxkbmap -layout us -variant dvorak-intl && setxkbmap -option caps:escape
+
 for i in $(seq 1 5)
 do
 		xdotool key super+period && xdotool key super+$i && xdotool key super+period && xdotool key super+$i key shift+super+period
