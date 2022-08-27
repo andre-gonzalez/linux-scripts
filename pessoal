@@ -1,6 +1,5 @@
 #!/bin/sh
 
-# st -t notas -e tmux new -s notas &
 /usr/bin/dash $HOME/.scripts/pessoal-tmux &
 # obsidian &
 anki &
