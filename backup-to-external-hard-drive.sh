@@ -14,6 +14,8 @@ do
 		WILL_FIT=$(expr $FREE_SPACE - $USED_SPACE_HOME)
 done
 
-# will backup home
-DATE=`date +%Y-%m-%d-%T`
+DATE=`date +%Y-%m-%d`
+# backup home
 rsync -a --info=progress2 --exclude="lost+found" --exclude=".cache" $HOME/ /mnt/hd-externo/$DATE
+# backup VM
+rsync -a --info=progress2 --exclude="lost+found" --exclude=".cache" /var/lib/libvirt/images/win10.qcow2 /mnt/hd-externo/$DATE
