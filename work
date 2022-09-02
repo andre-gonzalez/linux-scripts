@@ -1,7 +1,7 @@
 #!/bin/sh
 
 /usr/bin/dash $HOME/.scripts/work-tmux &
-/usr/bin/dash $HOME/.scripts/database &
+# /usr/bin/dash $HOME/.scripts/database &
 slack &
 # obsidian &
 spotify &
