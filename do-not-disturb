@@ -5,8 +5,10 @@ status="$(dunstctl is-paused)"
 if [ "$status" = "false" ]; then
 		dunstctl set-paused true
 		echo "Do not disturb ON" | dmenu
+		kill -48 $(pidof dwmblocks)
 elif [ "$status" = "true" ]; then
 		dunstctl set-paused false
 		echo "Do not disturb OFF" | dmenu
         notify-send "Do not disturb OFF"
+		kill -48 $(pidof dwmblocks)
 fi
