@@ -1,16 +1,23 @@
 #!/bin/sh
 
 /usr/bin/dash $HOME/.scripts/work-tmux &
-# /usr/bin/dash $HOME/.scripts/database &
+qutebrowser &
 slack &
+# /usr/bin/dash $HOME/.scripts/database &
 # obsidian &
-spotify &
 dbeaver &
 # vscodium &
 /usr/bin/dash $HOME/.scripts/brave-eureciclo &
+/usr/bin/dash $HOME/.scripts/windows &
 /usr/bin/dash $HOME/.scripts/brave-call &
 # /usr/bin/dash $HOME/.scripts/brave-pessoal &
-qutebrowser &
 /usr/bin/dash $HOME/.scripts/brave-videos &
-/usr/bin/dash $HOME/.scripts/windows &
+spotify &
 rm $HOME/Downloads
+
+for i in $(seq 6 7)
+do
+		if [ $(xrandr --query | grep -c HDMI) = 1 ]; then
+				xdotool key super+period && xdotool key super+$i && xdotool key super+period && xdotool key super+$i key shift+super+period
+		fi
+done
