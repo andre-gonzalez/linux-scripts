@@ -13,6 +13,7 @@ dbeaver &
 # /usr/bin/dash $HOME/.scripts/brave-pessoal &
 /usr/bin/dash $HOME/.scripts/brave-videos &
 spotify &
+whatsapp-nativefier &
 rm $HOME/Downloads
 
 for i in $(seq 6 7)
