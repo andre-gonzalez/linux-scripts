@@ -4,8 +4,13 @@ ask () {
 		answer="$(echo "work\npessoal" | dmenu -i -p "$1" )"
 }
 
-ask "Starting working now?"
+until xdotool key enter
+do
+		sleep 1
+		echo "erro"
+done
 
+ask "Starting working now?"
 
 if [ "$answer" = "work" ]; then
 		/home/frank/.scripts/work
