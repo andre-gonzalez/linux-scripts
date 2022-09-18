@@ -1,5 +1,6 @@
 # dwmblocks files
 dwm_packages
+dwm_do_not_disturb
 dwm_pulse
 dwm_spotify
 dwm_backlight
@@ -21,3 +22,4 @@ stop-ec2-instance
 dwm_currency
 dwm_date_brasil
 ssh-linux-data-analytics-vm
+public-ip-ec2-instance
