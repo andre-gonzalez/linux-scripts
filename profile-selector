@@ -1,15 +1,33 @@
 #!/bin/sh
 
+check_display () {
+		until xdotool key enter
+		do
+				sleep 1
+				echo "erro"
+		done
+}
+
+work_hours () {
+		day_of_week=$(date +%A)
+		hour=$(date +%H)
+
+		for x in Monday Tuesday Wednesday Thursday Friday; do
+				if [ $x = $day_of_week ]; then
+						if [ "$hour" -ge 6 -a "$hour" -lt 9 ]; then
+								/home/frank/.scripts/work
+								exit
+						fi
+				fi
+		done
+}
+
 ask () {
 		answer="$(echo "work\npessoal" | dmenu -i -p "$1" )"
 }
 
-until xdotool key enter
-do
-		sleep 1
-		echo "erro"
-done
-
+check_display
+work_hours
 ask "Starting working now?"
 
 if [ "$answer" = "work" ]; then
