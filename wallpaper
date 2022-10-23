@@ -5,4 +5,4 @@ ask () {
 
 ask
 
-feh --bg-fill "$HOME"/.config/.wallpaper/"$answer"
+feh --bg-fill --no-fehbg "$HOME"/.config/.wallpaper/"$answer"
