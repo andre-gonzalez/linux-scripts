@@ -16,6 +16,6 @@ done
 
 DATE=`date +%Y-%m-%d`
 # backup home
-rsync -a --info=progress2 --exclude="lost+found" --exclude=".cache" $HOME/ /mnt/hd-externo/$DATE
+rsync -a --info=progress2 --exclude="lost+found" --exclude=".cache" $HOME/ /mnt/hd-interno/$DATE
 # backup VM
-rsync -a --info=progress2 --exclude="lost+found" --exclude=".cache" /var/lib/libvirt/images/win10.qcow2 /mnt/hd-externo/$DATE
+rsync -a --info=progress2 --exclude="lost+found" --exclude=".cache" /var/lib/libvirt/images/pool/win10-2.img /mnt/hd-interno/$DATE
