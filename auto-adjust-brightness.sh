@@ -40,6 +40,9 @@ adjust_bright () {
 		elif [ "$hour" -eq 17 -a "$minute" -ge 30 ]; then
 				brightnessctl set 97%; kill -45 $(pidof dwmblocks)
 				exit
+		elif [ "$hour" -ge 6 -a "$hour" -le 16 ]; then
+				brightnessctl set 100%; kill -45 $(pidof dwmblocks)
+				exit
 		fi
 }
 
