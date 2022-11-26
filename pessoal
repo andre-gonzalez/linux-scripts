@@ -1,5 +1,17 @@
 #!/bin/sh
 
+answer="$(echo "Yes\nNo" | dmenu -i -p "Connect XM3?")"
+
+if [ $answer = "Yes" ]; then
+		bluetoothctl power on
+		bluetoothctl connect CC:98:8B:C1:5C:78; kill -46 $(pidof dwmblocks)
+		until [ $(bluetoothctl info | grep -c 'Name: WH-1000XM3') = 1 ] || [ $(bluetoothctl info | grep -c 'Name: LE_WH-1000XM3') = 1 ]
+		do
+				echo "waiting connection"
+				sleep 1s
+		done
+				echo "connection made"
+fi
 /usr/bin/dash $HOME/.scripts/pessoal-tmux &
 # obsidian &
 anki &
