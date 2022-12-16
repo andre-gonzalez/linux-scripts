@@ -4,4 +4,4 @@ cp -f "$HOME"/.local/share/fish/fish_history "$HOME"/gdrive-pessoal/pessoal/prog
 cd "$HOME"/gdrive-pessoal/pessoal/programação/ansible/main-ansible/ && ansible-vault encrypt ./files/fish_history
 git add ./files/fish_history
 git commit -m "update fish_history file $(date "+%Y-%m-%d-%R")"
-git push -u origin main
+git push -q -u origin main
