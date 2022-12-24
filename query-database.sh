@@ -21,5 +21,9 @@ connection=$(head -n 2 $access_file | tail -n 1)
 database=$(head -n 3 $access_file | tail -n 1)
 user=$(head -n 4 $access_file | tail -n 1)
 pass=$(tail -n 1 $access_file)
+query=$(while read line
+do
+  echo "$line"
+done < "${2:-/dev/stdin}")
 
-sql2csv --db $type://$user:$pass@$connection/$database --query "$2"
+sql2csv --db $type://$user:$pass@$connection/$database --query "$query"
