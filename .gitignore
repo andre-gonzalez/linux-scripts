@@ -1,5 +1,6 @@
 # dwmblocks files
 dwm_packages
+dwm_ufw
 dwm_do_not_disturb
 dwm_pulse
 dwm_spotify
@@ -12,6 +13,7 @@ dwm_resources
 dwm_systemd_networkd
 dwm_weather
 dwm_countdown
+
 qso
 qrc
 .env
