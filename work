@@ -20,6 +20,7 @@ slack &
 dbeaver &
 # vscodium &
 /usr/bin/dash $HOME/.scripts/brave-eureciclo &
+/usr/bin/dash $HOME/eureciclo/conectar-bancos/reconect-database.sh
 /usr/bin/dash $HOME/.scripts/windows &
 /usr/bin/dash $HOME/.scripts/brave-call &
 # /usr/bin/dash $HOME/.scripts/brave-pessoal &
