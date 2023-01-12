@@ -1,31 +1,16 @@
 #!/bin/sh
 
-answer="$(echo "Yes\nNo" | dmenu -i -p "Connect XM3?")"
-
-if [ $answer = "Yes" ]; then
-		bluetoothctl power on
-		bluetoothctl connect CC:98:8B:C1:5C:78; kill -46 $(pidof dwmblocks)
-		until [ $(bluetoothctl info | grep -c 'Name: WH-1000XM3') = 1 ] || [ $(bluetoothctl info | grep -c 'Name: LE_WH-1000XM3') = 1 ]
-		do
-				echo "waiting connection"
-				sleep 1s
-		done
-				echo "connection made"
-fi
 /usr/bin/dash $HOME/.scripts/work-tmux &
 qutebrowser &
-slack &
+# slack &
 # /usr/bin/dash $HOME/.scripts/database &
-# obsidian &
 dbeaver &
-# vscodium &
-/usr/bin/dash $HOME/.scripts/brave-eureciclo &
+# /usr/bin/dash $HOME/.scripts/brave-eureciclo &
 /usr/bin/dash $HOME/eureciclo/conectar-bancos/reconect-database.sh
 /usr/bin/dash $HOME/.scripts/windows &
-/usr/bin/dash $HOME/.scripts/brave-call &
-# /usr/bin/dash $HOME/.scripts/brave-pessoal &
-/usr/bin/dash $HOME/.scripts/brave-videos &
-spotify &
+# /usr/bin/dash $HOME/.scripts/brave-call &
+# /usr/bin/dash $HOME/.scripts/brave-videos &
+# spotify &
 whatsapp-nativefier &
 rm $HOME/Downloads
 
@@ -35,3 +20,5 @@ do
 				xdotool key super+period && xdotool key super+$i && xdotool key super+period && xdotool key super+$i key shift+super+period
 		fi
 done
+
+bluetoothctl connect CC:98:8B:C1:5C:78; kill -46 $(pidof dwmblocks)

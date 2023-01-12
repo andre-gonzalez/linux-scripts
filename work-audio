@@ -1,0 +1,7 @@
+#!/bin/sh
+
+slack &
+/usr/bin/dash $HOME/.scripts/brave-eureciclo &
+/usr/bin/dash $HOME/.scripts/brave-call &
+/usr/bin/dash $HOME/.scripts/brave-videos &
+spotify &
