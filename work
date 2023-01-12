@@ -3,10 +3,10 @@
 /usr/bin/dash $HOME/.scripts/work-tmux &
 qutebrowser &
 # slack &
-# /usr/bin/dash $HOME/.scripts/database &
 dbeaver &
 # /usr/bin/dash $HOME/.scripts/brave-eureciclo &
-/usr/bin/dash $HOME/eureciclo/conectar-bancos/reconect-database.sh
+/usr/bin/dash $HOME/eureciclo/conectar-bancos/redeciclo-corp-conectar-servidor.sh
+/usr/bin/dash $HOME/eureciclo/conectar-bancos/conectar-banco-servidor.sh
 /usr/bin/dash $HOME/.scripts/windows &
 # /usr/bin/dash $HOME/.scripts/brave-call &
 # /usr/bin/dash $HOME/.scripts/brave-videos &
