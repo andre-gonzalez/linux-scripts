@@ -5,8 +5,9 @@ qutebrowser &
 # slack &
 dbeaver &
 # /usr/bin/dash $HOME/.scripts/brave-eureciclo &
-/usr/bin/dash $HOME/eureciclo/conectar-bancos/redeciclo-corp-conectar-servidor.sh
-/usr/bin/dash $HOME/eureciclo/conectar-bancos/conectar-banco-servidor.sh
+/usr/bin/dash $HOME/eureciclo/conectar-bancos/redeciclo-corp-conectar-no-login.sh
+/usr/bin/dash $HOME/eureciclo/conectar-bancos/conectar-banco-no-login.sh
+/usr/bin/dash $HOME/eureciclo/conectar-bancos/stg-redeciclo-corp-conectar-no-login.sh
 /usr/bin/dash $HOME/.scripts/windows &
 # /usr/bin/dash $HOME/.scripts/brave-call &
 # /usr/bin/dash $HOME/.scripts/brave-videos &
