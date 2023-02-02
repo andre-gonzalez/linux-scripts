@@ -1,0 +1,3 @@
+#/bin/sh
+
+pactl set-default-sink bluez_output.CC_98_8B_C1_5C_78.1
