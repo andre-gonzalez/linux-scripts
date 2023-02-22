@@ -2,11 +2,15 @@
 
 # Remove package manager cache
 yay --noconfirm --needed -Sc && 
+
 # Empty trash
 trash-empty -f && 
+
 # Removed unused dependecies
 pacman -Rsn --color --noconfirm $(pacman -Qdtq) 
+
 # Ask to start bleachbit
 "$HOME"/.scripts/prompt.sh "Start bleachbit" bleachbit
+
 printf "\n AVISO: Não esqueça de elimnar snapshots antigos do timeshift!!!\n"
 printf "Se precisar de mais espaço rode o código abaixo nos repositórios \n git reflog expire --all --expire=now \n git gc --prune=now --aggressive"
