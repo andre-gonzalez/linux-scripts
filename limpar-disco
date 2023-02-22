@@ -1,7 +1,9 @@
 #!/bin/sh
 
-yay --noconfirm --needed -Sc &&
-trash-empty -f
+# Remove package manager cache
+yay --noconfirm --needed -Sc && 
+# Empty trash
+trash-empty -f && 
 # Removed unused dependecies
 pacman -Rsn --color --noconfirm $(pacman -Qdtq) 
 printf "\n AVISO: Não esqueça de elimnar snapshots antigos do timeshift!!!\n"
