@@ -4,6 +4,10 @@
 # Joe Standring <git@joestandring.com>
 # GNU GPLv3
 
+# Pausing notifications
+dunstctl set-paused true
+kill -48 $(pidof dwmblocks)
+
 for f in /tmp/countdown.*; do
     if [ -e "$f" ]; then
         printf "There may be another instance of this script running. If you are sure there is not, delete the file /tmp/countdown.XXXXX and try again.\n"
@@ -37,6 +41,8 @@ for f in /tmp/countdown.*; do
         done
 
         # Notify the user and play a sound when the timer reaches 0
+		dunstctl set-paused false
+		kill -48 $(pidof dwmblocks)
 		printf "Timer Finished" | dmenu -sb "red" -sf "black"
         notify-send "Timer Finished!"
         # mpv ~/scripts/alarm.ogg
