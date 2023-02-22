@@ -7,7 +7,7 @@ yay --noconfirm --needed -Sc &&
 trash-empty -f && 
 
 # Removed unused dependecies
-pacman -Rsn --color --noconfirm $(pacman -Qdtq) 
+pacman -Rsn --noconfirm $(pacman -Qdtq) 
 
 # Ask to start bleachbit
 "$HOME"/.scripts/prompt.sh "Start bleachbit?" bleachbit
