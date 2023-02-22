@@ -2,5 +2,7 @@
 
 yay --noconfirm --needed -Sc &&
 trash-empty -f
+# Removed unused dependecies
+pacman -Rsn --color --noconfirm $(pacman -Qdtq) 
 printf "\n AVISO: Não esqueça de elimnar snapshots antigos do timeshift!!!\n"
 printf "Se precisar de mais espaço rode o código abaixo nos repositórios \n git reflog expire --all --expire=now \n git gc --prune=now --aggressive"
