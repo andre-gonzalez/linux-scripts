@@ -10,7 +10,7 @@ trash-empty -f &&
 pacman -Rsn --color --noconfirm $(pacman -Qdtq) 
 
 # Ask to start bleachbit
-"$HOME"/.scripts/prompt.sh "Start bleachbit" bleachbit
+"$HOME"/.scripts/prompt.sh "Start bleachbit?" bleachbit
 
 # Ask to start baobab
 "$HOME"/.scripts/prompt.sh "Start baobab?" baobab
