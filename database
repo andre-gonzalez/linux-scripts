@@ -1,2 +1,0 @@
-#!/bin/sh
-/usr/local/bin/st -t database -e tmuxp load "$HOME"/.config/tmuxp/database.yml
