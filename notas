@@ -1,2 +1,0 @@
-#!/bin/sh
-st -t notas -e tmux new-session -A -s notas fish
