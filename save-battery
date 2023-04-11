@@ -6,6 +6,7 @@
 /bin/sh $HOME/.scripts/prompt.sh "Deseja mudar o fundo da tela para preto?" "feh --bg-fill "$HOME"/.config/.wallpaper/black.png"
 /bin/sh $HOME/.scripts/prompt.sh "Deseja encerrar o preload?" "systemctl stop preload"
 /bin/sh $HOME/.scripts/prompt.sh "Deseja encerrar o insync?" "killall insync"
+/bin/sh $HOME/.scripts/prompt.sh "Deseja encerrar o dunst?" "killall dunst"
 /bin/sh $HOME/.scripts/prompt.sh "Deseja encerrar o cron?" "systemctl stop cronie"
 /bin/sh $HOME/.scripts/prompt.sh "Deseja encerrar o iwd?" "systemctl stop iwd"
 /bin/sh $HOME/.scripts/prompt.sh "Deseja encerrar o smbd" "systemctl stop smbd"
@@ -19,3 +20,5 @@
 /bin/sh $HOME/.scripts/prompt.sh "Deseja encerrar o firewalld" "systemctl stop firewalld"
 /bin/sh $HOME/.scripts/prompt.sh "Deseja encerrar o fail2ban" "systemctl stop fail2ban"
 /bin/sh $HOME/.scripts/prompt.sh "Deseja encerrar o apparmor" "systemctl stop apparmor"
+/bin/sh $HOME/.scripts/prompt.sh "Deseja encerrar o pipewire" "killall pipewire; killall pipewire-pulse"
+/bin/sh start-stop-xcompmgr.sh
