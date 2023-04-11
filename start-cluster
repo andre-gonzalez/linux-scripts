@@ -1,0 +1,5 @@
+#/bin/sh
+
+cluster_id="$(grep -E -o '\w{4}-\w{6}-\w{8}' "$HOME"/.databricks-connect)"
+databricks clusters start --cluster-id $cluster_id
+databricks clusters list
