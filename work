@@ -13,6 +13,7 @@ dbeaver &
 # /usr/bin/dash $HOME/.scripts/brave-videos &
 # spotify &
 whatsapp-nativefier &
+/usr/bin/dash $HOME/.scripts/pull-repositories.sh &
 rm $HOME/Downloads
 
 for i in $(seq 6 7)
