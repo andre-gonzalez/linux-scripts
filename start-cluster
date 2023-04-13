@@ -1,5 +1,28 @@
-#/bin/sh
+#!/bin/sh
 
-cluster_id="$(grep -E -o '\w{4}-\w{6}-\w{8}' "$HOME"/.databricks-connect)"
+#Pegar o id do cluster a ser iniciado
+cluster_id="$(grep -E -o '\w{4}-\w{6}-\w{8}' $HOME/.databricks-connect)"
+
+#inicia o cluster
 databricks clusters start --cluster-id $cluster_id
-ipython -i "$HOME"/.scripts/databricks-ipython.py
+
+# Armazena o status do cluster
+status_cluster=$(databricks clusters list | grep "$cluster_id" | grep -Eo 'TERMINATED|RUNNING|PENDING')
+
+# Notifica o status atual do cluster (Esperado que está PENDING)
+notification_id=$(notify-send --print-id "Databricks" "Cluster: $status_cluster")
+
+until [ "$status_cluster" = "RUNNING" ]
+do
+  echo "$status_cluster"
+  # Fica atualizando a notificação do status do cluster
+  notification_id=$(notify-send --print-id --replace-id="$notification_id" "Databricks" "Cluster: $status_cluster")
+  sleep 1
+  status_cluster=$(databricks clusters list | grep "$cluster_id" | grep -Eo 'TERMINATED|RUNNING|PENDING')
+done
+
+# Notifica que o cluster foi inciado
+notification_id=$(notify-send --print-id --urgency='critical' --replace-id="$notification_id" "Databricks" "Cluster: $status_cluster")
+
+# Inicia o ipython fazendo a configuração básica
+ipython -i databricks-ipython.py
