@@ -13,6 +13,7 @@ dbeaver &
 # /usr/bin/dash $HOME/.scripts/brave-videos &
 # spotify &
 whatsapp-nativefier &
+portmaster &
 /usr/bin/dash $HOME/.scripts/pull-repositories.sh &
 rm $HOME/Downloads
 
