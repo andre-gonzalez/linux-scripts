@@ -18,7 +18,4 @@ done
 DATE=`date +%Y-%m-%d`
 # backup home
 echo "backup home directory"
-rsync -a --info=progress2 --exclude="lost+found" --exclude=".cache" $HOME/ /mnt/hd-interno/$DATE
-# backup VM
-echo "backup VM"
-rsync -a --info=progress2 --exclude="lost+found" --exclude=".cache" /var/lib/libvirt/images/pool/win10-2.img /mnt/hd-interno/$DATE
+rsync -a --info=progress2 --exclude="lost+found" --exclude=".cache" "$HOME"/ /mnt/hd-interno/"$DATE"
