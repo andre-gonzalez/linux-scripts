@@ -1,0 +1,12 @@
+#/bin/sh
+
+base_url=$(xclip -o -sel clip) 
+title=$(curl -sL $base_url | grep -Po '(?<=<title>).*(?=</title>)')
+full_url=$(printf "https://www.instapaper.com/api/add?url=%s&title=%s" "$base_url" "$title")
+key=$(cat .env/instapaper | grep -Po '(?<=instapaper=).*')
+
+wget --no-check-certificate --quiet \
+  --method GET \
+  --timeout=0 \
+  --header 'Authorization: Basic '"$key" \
+   "$full_url"
