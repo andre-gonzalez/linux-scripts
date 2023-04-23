@@ -10,3 +10,5 @@ wget --no-check-certificate --quiet \
   --timeout=0 \
   --header 'Authorization: Basic '"$key" \
    "$full_url"
+
+notify-send  "Instapaper" "Enviado: $title"
