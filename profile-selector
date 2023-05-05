@@ -23,7 +23,7 @@ work_hours () {
 }
 
 ask () {
-		answer="$(echo "work\npessoal" | dmenu -i -p "$1" )"
+		answer="$(echo "work\npessoal" | dmenu -p "$1" )"
 }
 
 check_display
