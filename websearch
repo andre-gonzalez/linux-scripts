@@ -89,7 +89,7 @@ choice=$(dmenu -i -p "Go:" -w "$winid" < "$tmpfile") || exit 1
 protocol='^(https?|ftps?|mailto|about|file):///?'
 checkurl() {
 	grep -Fx "$choice" "$tmpfile" &&
-		choice=$(echo "$choice" | awk '{ print $1 }') && return 0
+		choice=$(echo "$choice" | awk -F '- ' '{ print $2 }') && return 0
 	[ ${#choice} -lt 4 ] && return 1
 	echo "$choice" | grep -Z ' ' && return 1
 	echo "$choice" | grep -EiZ "$protocol" && return 0
