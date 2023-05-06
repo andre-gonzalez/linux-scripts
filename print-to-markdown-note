@@ -1,0 +1,5 @@
+#!/bin/sh
+
+NOME=$(cat '' | dmenu)
+flameshot gui -c -p $HOME/gdrive-pessoal/pessoal/obsidian/_attachment/$NOME
+echo -n ![$NOME]\(_attachment/$NOME.png\) | xclip -selection clipboard
