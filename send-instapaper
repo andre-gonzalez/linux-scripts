@@ -5,10 +5,11 @@ title=$(curl -sL $base_url | grep -Po '(?<=<title>).*(?=</title>)')
 full_url=$(printf "https://www.instapaper.com/api/add?url=%s&title=%s" "$base_url" "$title")
 key=$(cat "$HOME"/.scripts/.env/instapaper | grep -Po '(?<=instapaper=).*')
 
-wget --no-check-certificate --quiet \
+wget --no-check-certificate -qO \
   --method GET \
   --timeout=0 \
   --header 'Authorization: Basic '"$key" \
-   "$full_url"
+   "$full_url" > /dev/null
 
 notify-send  "Instapaper" "Enviado: $title"
+
