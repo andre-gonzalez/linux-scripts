@@ -10,7 +10,7 @@
 # cursor is on a web browser it acts as the address bar of that browser.
 
 browser='qutebrowser --target tab'
-engine='https://google.com/?q=%s'
+engine='https://google.com/search?q=%s'
 bookmarks="$HOME/gdrive-pessoal/pessoal/obsidian/pessoal/bookmarks.md"
 
 gotourl() {
