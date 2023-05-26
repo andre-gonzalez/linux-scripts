@@ -7,3 +7,7 @@ for i in $(seq 1 9)
 do
 		xdotool key super+period && xdotool key super+$i && xdotool key super+period && xdotool key super+$i key shift+super+period
 done
+
+cd /home/frank/.config/dwm/laptop-dwm/ && make clean install
+
+xdotool key shift+super+q
