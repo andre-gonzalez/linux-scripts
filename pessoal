@@ -3,7 +3,7 @@
 /usr/bin/dash $HOME/.scripts/pessoal-tmux &
 # obsidian &
 anki &
-spotify &
+spotify-launcher &
 qutebrowser &
 # /usr/bin/dash $HOME/.scripts/brave-pessoal &
 whatsapp-nativefier &
