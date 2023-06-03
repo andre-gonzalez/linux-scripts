@@ -1,4 +1,4 @@
-#/bin/sh
+#!/bin/sh
 
 base_url=$(xclip -o -sel clip)
 title=$(curl -sL $base_url | grep -Po '(?<=<title>).*(?=</title>)')
