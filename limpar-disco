@@ -1,10 +1,10 @@
 #!/bin/sh
 
 # Remove package manager cache
-yay --noconfirm --needed -Sc && 
+yay --noconfirm --needed -Sc &&
 
 # Empty trash
-trash-empty -f && 
+trash-empty -f &&
 
 # Removed unused dependecies
 pacman -Rsn --noconfirm $(pacman -Qdtq)  &&
@@ -13,7 +13,10 @@ pacman -Rsn --noconfirm $(pacman -Qdtq)  &&
 pip cache purge &&
 
 # Clean docker
-docker image prune -a
+docker image prune -a &&
+docker system prune -a &&
+docker volume prune &&
+docker container prune
 
 # Ask to start bleachbit
 "$HOME"/.scripts/prompt.sh "Start bleachbit?" bleachbit
