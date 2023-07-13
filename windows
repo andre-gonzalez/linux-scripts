@@ -1,4 +1,4 @@
 #!/bin/sh
 # KVM/QEMU VM
-/usr/bin/virsh start win10
+# /usr/bin/virsh start win10
 virt-manager --connect=qemu:///system --show-domain-console win10
