@@ -12,11 +12,12 @@ dbeaver &
 # /usr/bin/dash $HOME/.scripts/brave-call &
 # /usr/bin/dash $HOME/.scripts/brave-videos &
 # spotify &
+firefox &
 whatsapp-nativefier &
 # portmaster &
 /usr/bin/pritunl-client-electron &
 /usr/bin/dash $HOME/.scripts/pull-repositories.sh &
-rm $HOME/Downloads
+rm $HOME/Downloads &
 /usr/bin/dash $HOME/.scripts/monitoring &
 
 # sleep 10
