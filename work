@@ -17,6 +17,7 @@ whatsapp-nativefier &
 /usr/bin/pritunl-client-electron &
 /usr/bin/dash $HOME/.scripts/pull-repositories.sh &
 rm $HOME/Downloads
+/usr/bin/dash $HOME/.scripts/monitoring &
 
 # sleep 10
 

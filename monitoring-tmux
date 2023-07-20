@@ -1,0 +1,2 @@
+#!/bin/sh
+/usr/local/bin/st -t monitoring -e tmuxp load "$HOME"/.config/tmuxp/monitoring.yml
