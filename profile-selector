@@ -27,6 +27,7 @@ ask () {
 }
 
 check_display
+sleep 1
 work_hours
 ask "Starting working now?"
 
