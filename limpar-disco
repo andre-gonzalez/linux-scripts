@@ -22,7 +22,10 @@ docker container prune
 "$HOME"/.scripts/prompt.sh "Start bleachbit?" bleachbit
 
 # Ask to start baobab
-"$HOME"/.scripts/prompt.sh "Start baobab?" baobab
+# "$HOME"/.scripts/prompt.sh "Start baobab?" baobab
+
+# Ask to start ncdu
+"$HOME"/.scripts/prompt.sh "Start ncdu?" ncdu
 
 printf "\n AVISO: Não esqueça de elimnar snapshots antigos do timeshift!!!\n"
 printf "Se precisar de mais espaço rode o código abaixo nos repositórios \n git reflog expire --all --expire=now \n git gc --prune=now --aggressive"
