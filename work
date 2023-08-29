@@ -19,6 +19,7 @@ whatsapp-nativefier &
 /usr/bin/dash $HOME/.scripts/pull-repositories.sh &
 rm $HOME/Downloads &
 /usr/bin/dash $HOME/.scripts/monitoring &
+zulip &
 
 # sleep 10
 
