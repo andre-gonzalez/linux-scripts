@@ -12,7 +12,6 @@ virt-manager --connect=qemu:///system --show-domain-console win10 &
 # /usr/bin/dash $HOME/.scripts/brave-call &
 # /usr/bin/dash $HOME/.scripts/brave-videos &
 # spotify &
-firefox &
 whatsapp-nativefier &
 # portmaster &
 /usr/bin/pritunl-client-electron &
