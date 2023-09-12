@@ -8,17 +8,24 @@ dbeaver &
 /usr/bin/dash $HOME/eureciclo/conectar-bancos/redeciclo-corp-conectar-no-login.sh &
 /usr/bin/dash $HOME/eureciclo/conectar-bancos/conectar-banco-no-login.sh &
 /usr/bin/dash $HOME/eureciclo/conectar-bancos/stg-redeciclo-corp-conectar-no-login.sh &
-virt-manager --connect=qemu:///system --show-domain-console win10 &
+WIFI=`iwctl station wlan0 show | grep -c 'QueWiFi2'`
+
+if [ $WIFI -ge 1 ] ; then
+	/usr/bin/dash $HOME/.scripts/windows-server
+else
+	virt-manager --connect=qemu:///system --show-domain-console win10 &
+fi
+
 # /usr/bin/dash $HOME/.scripts/brave-call &
 # /usr/bin/dash $HOME/.scripts/brave-videos &
 # spotify &
-whatsapp-nativefier &
+# whatsapp-nativefier &
 # portmaster &
 /usr/bin/pritunl-client-electron &
 /usr/bin/dash $HOME/.scripts/pull-repositories.sh &
 rm $HOME/Downloads &
 /usr/bin/dash $HOME/.scripts/monitoring &
-zulip &
+ferdium &
 
 # sleep 10
 
