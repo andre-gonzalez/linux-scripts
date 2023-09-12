@@ -1,0 +1,2 @@
+#!/bin/sh
+remmina "$HOME"/.local/share/remmina/group_rdp_eureciclo-windows-vm_192-168-1-136.remmina
