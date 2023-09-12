@@ -14,6 +14,7 @@ dwm_systemd_networkd
 dwm_weather
 dwm_countdown
 dwm_cron
+dwm_vpn
 
 qso
 qrc
