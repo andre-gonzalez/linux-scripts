@@ -18,7 +18,6 @@ fi
 # /usr/bin/dash $HOME/.scripts/brave-call &
 # /usr/bin/dash $HOME/.scripts/brave-videos &
 # spotify &
-# whatsapp-nativefier &
 # portmaster &
 # /usr/bin/pritunl-client-electron &
 /usr/bin/dash $HOME/.scripts/pull-repositories.sh &
