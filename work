@@ -3,7 +3,7 @@
 /usr/bin/dash $HOME/.scripts/work-tmux &
 qutebrowser &
 # slack &
-dbeaver &
+vscodium &
 # /usr/bin/dash $HOME/.scripts/brave-eureciclo &
 /usr/bin/dash $HOME/eureciclo/conectar-bancos/redeciclo-corp-conectar-no-login.sh &
 
