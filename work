@@ -26,13 +26,4 @@ rm $HOME/Downloads &
 /usr/bin/dash $HOME/.scripts/monitoring &
 ferdium &
 
-# sleep 10
-
-# for i in $(seq 6 7)
-# do
-# 		if [ $(xrandr --query | grep -c HDMI) = 1 ]; then
-# 				xdotool key super+period && xdotool key super+$i && xdotool key super+period && xdotool key super+$i key shift+super+period
-# 		fi
-# done
-
 bluetoothctl connect CC:98:8B:C1:5C:78; kill -46 $(pidof dwmblocks)
