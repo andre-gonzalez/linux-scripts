@@ -2,9 +2,7 @@
 
 /usr/bin/dash $HOME/.scripts/work-tmux &
 qutebrowser &
-# slack &
 vscodium &
-# /usr/bin/dash $HOME/.scripts/brave-eureciclo &
 /usr/bin/dash $HOME/eureciclo/conectar-bancos/redeciclo-corp-conectar-no-login.sh &
 
 WIFI=`iwctl station wlan0 show | grep -c 'QueWiFi2'`
@@ -15,11 +13,8 @@ else
 	virt-manager --connect=qemu:///system --show-domain-console win10 &
 fi
 
-# /usr/bin/dash $HOME/.scripts/brave-call &
-# /usr/bin/dash $HOME/.scripts/brave-videos &
-# spotify &
 # portmaster &
-# /usr/bin/pritunl-client-electron &
+/usr/bin/pritunl-client-electron &
 /usr/bin/dash $HOME/.scripts/pull-repositories.sh &
 rm $HOME/Downloads &
 /usr/bin/dash $HOME/.scripts/monitoring &
