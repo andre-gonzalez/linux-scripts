@@ -19,11 +19,14 @@ docker volume prune &&
 docker container prune
 
 # Clean cache in /var
-rm -r /var/cache/
+trash-put /var/cache/
 
 # Clean cache in home direcotry
-rm -r "$HOME"/.cache/go-build/
-rm -r "$HOME"/.cache/yay/
+trash-put --recursive "$HOME"/.cache/go-build/
+trash-put --recursive "$HOME"/.cache/yay/
+
+# Remove go/ directory
+trash-put --recursive "$HOME"/go/
 
 # Ask to start bleachbit
 "$HOME"/.scripts/prompt.sh "Start bleachbit?" bleachbit
