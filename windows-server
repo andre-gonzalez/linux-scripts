@@ -1,2 +1,14 @@
 #!/bin/sh
-remmina "$HOME"/.local/share/remmina/group_rdp_eureciclo-windows-vm_192-168-1-136.remmina
+ip=$(cat "$HOME"/.scripts/.env/ip-proxmox-server)
+active=$(ping -c 1 "$ip" | grep -Po "[0-9]+(?=%)" )
+
+if [ $active -eq 100 ]
+then
+	/usr/bin/dash $HOME/.scripts/start-server &&
+	sleep 25 &&
+	remmina "$HOME"/.local/share/remmina/group_rdp_eureciclo-windows-vm_192-168-1-136.remmina
+elif [ $active -eq 0 ]
+then
+	remmina "$HOME"/.local/share/remmina/group_rdp_eureciclo-windows-vm_192-168-1-136.remmina
+else "cannot determine"
+fi

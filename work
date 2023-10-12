@@ -8,8 +8,8 @@ vscodium &
 /usr/bin/dash $HOME/.scripts/pull-repositories.sh &
 rm $HOME/Downloads &
 /usr/bin/dash $HOME/.scripts/monitoring &
-ferdium &
 show_keybinds.sh &
+ferdium &
 
 WIFI=`iwctl station wlan0 show | grep -c 'QueWiFi2'` &
 
@@ -23,3 +23,11 @@ redshift -l 19.44:-99.13 -t 6500:3000 -b 1:0.4 &
 # portmaster &
 
 bluetoothctl connect CC:98:8B:C1:5C:78; kill -46 $(pidof dwmblocks)
+
+WIFI=`iwctl station wlan0 show | grep -c 'QueWiFi2'` &
+
+if [ $WIFI -ge 1 ] ; then
+	/usr/bin/dash $HOME/.scripts/windows-server
+else
+	virt-manager --connect=qemu:///system --show-domain-console win10
+fi
