@@ -1,13 +1,37 @@
 #!/bin/sh
-ip=$(cat "$HOME"/.scripts/.env/ip-proxmox-server)
+ip=$(cat $HOME/.scripts/.env/ip-proxmox-server)
 active=$(ping -c 1 "$ip" | grep -Po "[0-9]+(?=%)" )
+pass=$(cat $HOME/.scripts/.env/ssh | grep -Po '(?<=ssh-password=).*')
 
+# Checks if server is up if not starts it
 if [ $active -eq 100 ]
-then
+	then
+
 	/usr/bin/dash $HOME/.scripts/start-server &&
-	remmina "$HOME"/.local/share/remmina/group_rdp_eureciclo-windows-vm_192-168-1-136.remmina
+	status=$(sshpass -p $pass ssh -i ~/.ssh/personal_id_ed25519_2023-05 proxmox qm status 103 | grep -Eo 'running|stopped')
+
+	# Check if VM is running if not starts it
+	case  $status in
+		"stopped")
+			sshpass -p $pass ssh -i ~/.ssh/personal_id_ed25519_2023-05 proxmox qm start 103 &&
+			sleep 2
+			;;
+	esac
+
+	remmina $HOME/.local/share/remmina/group_rdp_eureciclo-windows-vm_192-168-1-136.remmina
+
 elif [ $active -eq 0 ]
-then
-	remmina "$HOME"/.local/share/remmina/group_rdp_eureciclo-windows-vm_192-168-1-136.remmina
-else "cannot determine"
+	then
+
+	# Check if VM is running if not starts it
+		status=$(sshpass -p $pass ssh -i ~/.ssh/personal_id_ed25519_2023-05 proxmox qm status 103 | grep -Eo 'running|stopped')
+		case  $status in
+			"stopped")
+				sshpass -p $pass ssh -i ~/.ssh/personal_id_ed25519_2023-05 proxmox qm start 103 &&
+				sleep 2
+				;;
+		esac
+
+		remmina $HOME/.local/share/remmina/group_rdp_eureciclo-windows-vm_192-168-1-136.remmina
+	else "cannot determine"
 fi
