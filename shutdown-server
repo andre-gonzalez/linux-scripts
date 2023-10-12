@@ -1,3 +1,12 @@
 #!/bin/sh
 
 ssh proxmox "shutdown now"
+
+ip=$(cat "$HOME"/.scripts/.env/ip-proxmox-server)
+active=$(ping -c 1 "$ip" | grep -Po "[0-9]+(?=%)" )
+
+while [ $active != 100 ]
+do
+	sleep 1
+	active=$(ping -c 1 "$ip" | grep -Po "[0-9]+(?=%)" )
+done
