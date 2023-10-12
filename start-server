@@ -1,2 +1,4 @@
+#!/bin/sh
+
 key=$(cat "$HOME"/.scripts/.env/mac-address-proxmox-server)
 wol "$key"

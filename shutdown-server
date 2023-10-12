@@ -1,0 +1,3 @@
+#!/bin/sh
+
+ssh proxmox "shutdown now"
