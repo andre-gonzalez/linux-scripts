@@ -8,6 +8,7 @@ qutebrowser &
 # /usr/bin/dash $HOME/.scripts/brave-pessoal &
 whatsapp-nativefier &
 portmaster &
+redshift -l 19.44:-99.13 -t 6500:3000 -b 1:0.4 &
 rm $HOME/Downloads
 
 bluetoothctl connect CC:98:8B:C1:5C:78; kill -46 $(pidof dwmblocks)
