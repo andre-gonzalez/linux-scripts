@@ -10,6 +10,7 @@ rm $HOME/Downloads &
 /usr/bin/dash $HOME/.scripts/monitoring-tmux &
 /usr/bin/dash $HOME/.scripts/show_keybinds.sh &
 ferdium &
+dbeaver &
 
 redshift -l 19.44:-99.13 -t 6500:3000 -b 1:0.4 &
 # portmaster &
