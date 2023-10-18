@@ -1,4 +1,5 @@
 #!/bin/sh
-brave --profile-directory="Profile 1" &
+# brave --profile-directory="Profile 1" &
+thorium-browser --profile-directory="Profile 1" &
 # /usr/bin/dash /home/frank/eureciclo/conectar-bancos/redeciclo-corp-conectar.sh &
 # /usr/bin/dash /home/frank/eureciclo/conectar-bancos/conectar-banco.sh
