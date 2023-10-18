@@ -25,4 +25,4 @@ done
 notification_id=$(notify-send --print-id --urgency='critical' --replace-id="$notification_id" "Databricks" "Cluster: $status_cluster")
 
 # Inicia o ipython fazendo a configuração básica
-ipython -i databricks-ipython.py
+# ipython -i databricks-ipython.py
