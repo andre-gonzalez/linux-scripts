@@ -1,0 +1,7 @@
+#!/bin/sh
+#Copy it to /usr/local/bin in order to execute iit with dmenu
+#Turn bluetooth on
+bluetoothctl power on
+
+#coonect to the headset
+bluetoothctl connect E8:07:BF:00:C0:9F; kill -46 $(pidof dwmblocks)
