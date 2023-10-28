@@ -13,6 +13,7 @@ ferdium &
 dbeaver &
 # portmaster &
 clockify &
+/usr/bin/bash $HOME/.scripts/configure-trackball.sh &
 
 bluetoothctl connect CC:98:8B:C1:5C:78; kill -46 $(pidof dwmblocks)
 
