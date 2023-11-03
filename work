@@ -4,6 +4,7 @@
 qutebrowser &
 vscodium &
 /usr/bin/dash $HOME/eureciclo/conectar-bancos/redeciclo-corp-conectar-no-login.sh &
+/usr/bin/dash $HOME/eureciclo/conectar-bancos/nfex-conectar.sh &
 /usr/bin/pritunl-client-electron &
 # /usr/bin/dash $HOME/.scripts/pull-repositories.sh &
 rm $HOME/Downloads &
