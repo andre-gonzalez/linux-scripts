@@ -11,3 +11,6 @@ do
 	sleep 1
 	active=$(ping -c 1 "$ip" | grep -Po "[0-9]+(?=%)" )
 done
+
+echo "Server has started"
+notify-send  "Server" "Server has started"
