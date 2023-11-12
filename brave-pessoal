@@ -1,2 +1,3 @@
 #!/bin/sh
-brave --profile-directory=Default
+# brave --profile-directory=Default
+thorium-browser --profile-directory="Profile 4" &
