@@ -5,7 +5,7 @@
 anki &
 spotify-launcher &
 qutebrowser &
-/usr/bin/dash $HOME/.scripts/brave-pessoal &
+/usr/bin/dash $HOME/.scripts/web-pessoal &
 /usr/bin/bash $HOME/.scripts/configure-trackball.sh &
 # portmaster &
 redshift -l 19.44:-99.13 -t 6500:3000 -b 1:0.4 &

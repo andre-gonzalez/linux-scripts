@@ -1,10 +1,10 @@
 #!/bin/sh
 
 slack &
-/usr/bin/dash $HOME/.scripts/brave-eureciclo &
+/usr/bin/dash $HOME/.scripts/web-eureciclo &
 /usr/bin/dash $HOME/.scripts/vpn-conectar &
-/usr/bin/dash $HOME/.scripts/brave-call &
-/usr/bin/dash $HOME/.scripts/brave-videos &
+/usr/bin/dash $HOME/.scripts/web-call &
+/usr/bin/dash $HOME/.scripts/web-videos &
 spotify-launcher &
 
 # sleep 10
