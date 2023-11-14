@@ -18,8 +18,8 @@ cmd=$(dmenu -l "$height" -p "$prompt" "$@" < "$file")
 while [ -n "$cmd" ]; do
  	if grep -q "^$cmd\$" "$file"; then
 		grep -v "^$cmd\$" "$file" > "$file.$$"
-		# when=$(date "+%Y-%m-%d_%R")
-		# echo "$cmd" - "$when" >> "$done"
+		when=$(date "+%Y-%m-%d_%R")
+		echo "$cmd" - "$when" >> "$done"
 		mv "$file.$$" "$file"
         height=$(( height - 1 ))
  	else
