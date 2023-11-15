@@ -11,7 +11,6 @@ rm $HOME/Downloads &
 /usr/bin/dash $HOME/.scripts/show_keybinds.sh &
 ferdium &
 dbeaver &
-# portmaster &
 clockify &
 /usr/bin/bash $HOME/.scripts/configure-trackball.sh &
 
