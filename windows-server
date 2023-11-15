@@ -1,47 +1,45 @@
 #!/bin/sh
-# ip=$(cat $HOME/.scripts/.env/ip-proxmox-server)
-# active=$(ping -c 1 "$ip" | grep -Po "[0-9]+(?=%)" )
-# pass=$(cat $HOME/.scripts/.env/ssh | grep -Po '(?<=ssh-password=).*')
+ip=$(cat $HOME/.scripts/.env/ip-proxmox-server)
+active=$(ping -c 1 "$ip" | grep -Po "[0-9]+(?=%)" )
+pass=$(cat $HOME/.scripts/.env/ssh | grep -Po '(?<=ssh-password=).*')
 
 # Checks if server is up if not starts it
-# echo "Checking if the server is up"
-# if [ $active -eq 100 ]
-# 	then
+start_server() {
+	echo "Checking if the server is up"
+	notify-send "windows-server" "Checking if the server is up"
+	if [ $active -eq 100 ]; then
+		/usr/bin/dash $HOME/.scripts/start-server
+	else
+		echo "Server already up"
+		notify-send "windows-server" "Server already up"
+	fi
+}
 
-# 	echo "Starting server"
-# 	/usr/bin/dash $HOME/.scripts/start-server &&
-# 	status=$(sshpass -p $pass ssh -i ~/.ssh/personal_id_ed25519_2023-05 proxmox qm status 103 | grep -Eo 'running|stopped')
+start_vm() {
+	status=$(sshpass -p $pass ssh -i ~/.ssh/personal_id_ed25519_2023-05 proxmox qm status 103 | grep -Eo 'running|stopped')
+	case $status in
+		"stopped")
+			echo "Starting the VM"
+			notify-send "windows-server"  "Starting the VM"
+			sshpass -p $pass ssh -i ~/.ssh/personal_id_ed25519_2023-05 proxmox qm start 103 &&
+			echo "VM Started"
+			notify-send "windows-server"  "VM Started"
+			;;
+		"running")
+			echo "VM Already Started"
+			notify-send "windows-server"  "VM Already Started"
+			;;
+	esac
+}
 
-# 	# Check if VM is running if not starts it
-# 	echo "Checking if VM is on"
-# 	case  $status in
-# 		"stopped")
-# 			echo "Starting the VM"
-# 			sshpass -p $pass ssh -i ~/.ssh/personal_id_ed25519_2023-05 proxmox qm start 103 &&
-# 			sleep 2
-# 			;;
-# 	esac
-
-# 	echo "Connecting to the VM"
-# 	remmina $HOME/.local/share/remmina/group_rdp_eureciclo-windows-vm_192-168-1-136.remmina
-
-# elif [ $active -eq 0 ]
-# 	then
-
-# 	# Check if VM is running if not starts it
-# 	echo "Checking if VM is on"
-# 	status=$(sshpass -p $pass ssh -i ~/.ssh/personal_id_ed25519_2023-05 proxmox qm status 103 | grep -Eo 'running|stopped')
-# 	case  $status in
-# 		"stopped")
-# 			echo "Starting the VM"
-# 			sshpass -p $pass ssh -i ~/.ssh/personal_id_ed25519_2023-05 proxmox qm start 103 &&
-# 			sleep 2
-# 			;;
-# 	esac
-
-# 	echo "Connecting to the VM"
+connect_to_vm() {
+	echo "Connecting to the VM"
+	notify-send "windows-server"  "Connecting to the VM"
+	sleep 4
 	remmina $HOME/.local/share/remmina/group_rdp_eureciclo-windows-vm_192-168-1-136.remmina
-# 	else "cannot determine"
-# fi
+}
 
+start_server
+start_vm
+connect_to_vm
 exit 0
