@@ -1,17 +1,31 @@
 #!/bin/sh
 
-key=$(cat "$HOME"/.scripts/.env/mac-address-proxmox-server)
-wol "$key"
-
 ip=$(cat "$HOME"/.scripts/.env/ip-proxmox-server)
 active=$(ping -c 1 "$ip" | grep -Po "[0-9]+(?=%)" )
 
-notify-send  "Server" "Starting Server"
-while [ $active != 0 ]
-do
-	sleep 1
-	active=$(ping -c 1 "$ip" | grep -Po "[0-9]+(?=%)" )
-done
+start_server() {
+	if [ $active != 0 ]; then
+		echo "Starting Server"
+		notify-send  "Server" "Starting Server"
+		key=$(cat "$HOME"/.scripts/.env/mac-address-proxmox-server)
+		wol "$key"
+	else
+		echo "Server already started"
+		notify-send  "Server" "Server already started"
+		exit 1
+	fi
+}
 
-echo "Server has started"
-notify-send  "Server" "Server has started"
+check_server_status() {
+	while [ $active != 0 ]
+	do
+		sleep 1
+		active=$(ping -c 1 "$ip" | grep -Po "[0-9]+(?=%)" )
+	done
+	echo "Server has started"
+	notify-send  "Server" "Server has started"
+}
+
+start_server
+check_server_status
+exit 0
