@@ -1,12 +1,18 @@
 #!/bin/sh
 
 ip=$(cat "$HOME"/.scripts/.env/ip-proxmox-server)
-active=$(ping -c 1 "$ip" | grep -Po "[0-9]+(?=%)" )
+active=$(ping -c 1 "$ip" | grep -Po "[0-9]+(?=%)")
 
 shutdown_server() {
-	notify-send  "Server" "Shuting down server"
-	echo "Shuting down server"
-	ssh proxmox "shutdown now"
+	if [ $active -eq 0 ]; then
+		echo "Shuting down server"
+		notify-send  "Server" "Shuting down server"
+		ssh proxmox "shutdown now"
+	else
+		echo "Server already shutdown"
+		notify-send  "Server" "Server already shutdown"
+		exit 1
+	fi
 }
 
 check_server_shutdown() {
@@ -15,8 +21,8 @@ check_server_shutdown() {
 		sleep 1
 		active=$(ping -c 1 "$ip" | grep -Po "[0-9]+(?=%)" )
 	done
-	notify-send  "Server" "Server has been shutdown"
 	echo "Server has been shutdown"
+	notify-send  "Server" "Server has been shutdown"
 }
 
 shutdown_server
