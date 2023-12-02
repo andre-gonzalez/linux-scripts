@@ -1,62 +1,43 @@
 #!/bin/sh
-ip=$(cat $HOME/.scripts/.env/ip-proxmox-server)
-active=$(ping -c 1 "$ip" | grep -Po "[0-9]+(?=%)" )
+BACKUP_BASE_LOCATION="/mnt/backup/"
+BACKUP_DRIVE="/dev/sdb1"
+VM_ID=104
+SERVER_NAME="Backup"
 
-# Checks if server is up if not starts it
-start_server() {
-	echo "Checking if the server is up"
-	notify-send "Backup" "Checking if the server is up"
-	if [ $active -eq 100 ]; then
-		/usr/bin/dash $HOME/.scripts/start-server
-	else
-		echo "Server already up"
-		notify-send "Backup" "Server already up"
-	fi
-}
-
-start_vm() {
-	status=$(ssh -i ~/.ssh/personal_id_ed25519_2023-11 proxmox qm status 100 | grep -Eo 'running|stopped')
-	case $status in
-		"stopped")
-			echo "Starting the server"
-			notify-send "Backup"  "Starting the backup server"
-			sshpass -p $pass ssh -i ~/.ssh/personal_id_ed25519_2023-05 proxmox qm start 103 &&
-			echo "VM Started"
-			notify-send "Bacup"  "VM Started"
-			;;
-		"running")
-			echo "Server Already Started"
-			notify-send "Backup"  "Backup Server Already Started"
-			;;
-	esac
-}
 
 free_space() {
-	FREE_SPACE=`ssh backup-workstation df / | awk '{print $4}' | tail -n 1`
-	USED_SPACE_HOME=`df /home | awk '{print $3}' | tail -n 1`
+  BACKUP_BASE_LOCATION=$1
+	BACKUP_DRIVE=$2
+	SERVER_NAME=$3
+	FREE_SPACE=`ssh backup-workstation df "$BACKUP_DRIVE" | awk '{print $4}' | tail -n 1`
+	USED_SPACE_HOME=`du -s "$HOME/" --exclude=".cache" --exclude="lost+found" | awk '{print $1}'`
 	WILL_FIT=$(expr $FREE_SPACE - $USED_SPACE_HOME)
 
 	# exclude the oldest backup until the drive can fit the home directory
-	while [ $WILL_FIT < 0 ];
+	while [ $WILL_FIT -lt 0 ];
 	do
+		echo "oi"
 			echo "Deleting old backups"
-			notify-send "Backup"  "Deleting old backups"
-			FILE_TO_EXCLUDE=`ssh backup-workstation ls -1 /root/ | head -n 1`
+			notify-send "$SERVER_NAME"  "Deleting old backups"
+			FILE_TO_EXCLUDE=`ssh backup-workstation ls -1 "$BACKUP_BASE_LOCATION" | head -n 1`
 			rm -fr /mnt/hd-interno/$FILE_TO_EXCLUDE
-			FREE_SPACE=`ssh backup-workstation df / | awk '{print $4}' | tail -n 1`
+			FREE_SPACE=`ssh backup-workstation df "$BACKUP_DRIVE" | awk '{print $4}' | tail -n 1`
 			WILL_FIT=$(expr $FREE_SPACE - $USED_SPACE_HOME)
 	done
 }
 
 backup() {
+  BACKUP_BASE_LOCATION=$1
+	BACKUP_DRIVE=$2
+	SERVER_NAME=$3
 	DATE=`date +%Y-%m-%d`
-	echo "backup home directory"
-	notify-send "Backup"  "Backuping home directory"
-	rsync -a --info=progress2 --exclude="lost+found" --exclude=".cache" -e "ssh -i  /home/frank/.ssh/personal_id_ed25519_2023-11" "$HOME"/ root@192.168.1.127:/root/"$DATE"
+	echo "backing up home directory"
+	notify-send "$SERVER_NAME"  "backing up home directory"
+	rsync -a --info=progress2 --exclude="lost+found" --exclude=".cache" -e "ssh -i  /home/frank/.ssh/personal_id_ed25519_2023-11" "$HOME"/ frank@192.168.1.127:"$BACKUP_BASE_LOCATION""$DATE"
 }
 
 compress_backup() {
-	7z a -t7z /root/"$DATE"
+	7z a -t7z "$BACKUP_BASE_LOCATION""$DATE"
 }
 
 stop_vm() {
@@ -73,10 +54,10 @@ stop_vm() {
 	fi
 }
 
-start_server
-start_vm
-free_space
-backup
-compress_backup
-stop_vm
+/usr/bin/dash $HOME/.scripts/start-server
+/usr/bin/dash $HOME/.scripts/start-vm.sh $VM_ID $SERVER_NAME
+free_space $BACKUP_BASE_LOCATION $BACKUP_DRIVE $SERVER_NAME
+backup $BACKUP_BASE_LOCATION $BACKUP_DRIVE $SERVER_NAME
+# compress_backup
+/usr/bin/dash $HOME/.scripts/stop-vm.sh $VM_ID $SERVER_NAME
 exit 0
