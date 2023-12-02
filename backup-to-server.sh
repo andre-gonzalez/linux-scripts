@@ -8,8 +8,6 @@ SSH_PORT=`cat $HOME/.scripts/.env/ssh | grep -Po '(?<=SSH_PORT=).*'`
 USER=`cat $HOME/.scripts/.env/ssh | grep -Po '(?<=USER=).*'`
 IP=`cat $HOME/.scripts/.env/ssh | grep -Po '(?<=IP_BACKUP_WORKSTATION=).*'`
 
-echo "$SSH_KEY_PATH" "$SSH_PORT" "$USER" "$IP"
-
 free_space() {
   BACKUP_BASE_LOCATION=$1
 	BACKUP_DRIVE=$2
