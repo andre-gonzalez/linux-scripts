@@ -16,7 +16,7 @@ work_hours () {
 				if [ $x = $day_of_week ]; then
 						if [ "$hour" -ge 6 -a "$hour" -lt 9 ]; then
 								/home/frank/.scripts/work
-								exit
+								exit 0
 						fi
 				fi
 		done
