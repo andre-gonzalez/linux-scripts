@@ -3,7 +3,12 @@ BACKUP_BASE_LOCATION="/mnt/backup/"
 BACKUP_DRIVE="/dev/sdb1"
 VM_ID=104
 SERVER_NAME="Backup"
+SSH_KEY_PATH=`cat $HOME/.scripts/.env/ssh | grep -Po '(?<=SSH_KEY_PATH=).*'`
+SSH_PORT=`cat $HOME/.scripts/.env/ssh | grep -Po '(?<=SSH_PORT=).*'`
+USER=`cat $HOME/.scripts/.env/ssh | grep -Po '(?<=USER=).*'`
+IP=`cat $HOME/.scripts/.env/ssh | grep -Po '(?<=IP_BACKUP_WORKSTATION=).*'`
 
+echo "$SSH_KEY_PATH" "$SSH_PORT" "$USER" "$IP"
 
 free_space() {
   BACKUP_BASE_LOCATION=$1
@@ -30,10 +35,14 @@ backup() {
   BACKUP_BASE_LOCATION=$1
 	BACKUP_DRIVE=$2
 	SERVER_NAME=$3
+  SSH_KEY_PATH=$4
+	SSH_PORT=$5
+	USER=$6
+	IP=$7
 	DATE=`date +%Y-%m-%d`
 	echo "backing up home directory"
 	notify-send "$SERVER_NAME"  "backing up home directory"
-	rsync -a --info=progress2 --exclude="lost+found" --exclude=".cache" -e "ssh -i  /home/frank/.ssh/personal_id_ed25519_2023-11" "$HOME"/ frank@192.168.1.127:"$BACKUP_BASE_LOCATION""$DATE"
+	rsync -a --info=progress2 --exclude="lost+found" --exclude=".cache" -e "ssh -p $SSH_PORT -i  $SSH_KEY_PATH" "$HOME"/ $USER@$IP:"$BACKUP_BASE_LOCATION""$DATE"
 }
 
 compress_backup() {
@@ -57,7 +66,7 @@ stop_vm() {
 /usr/bin/dash $HOME/.scripts/start-server
 /usr/bin/dash $HOME/.scripts/start-vm.sh $VM_ID $SERVER_NAME
 free_space $BACKUP_BASE_LOCATION $BACKUP_DRIVE $SERVER_NAME
-backup $BACKUP_BASE_LOCATION $BACKUP_DRIVE $SERVER_NAME
+backup $BACKUP_BASE_LOCATION $BACKUP_DRIVE $SERVER_NAME $SSH_KEY_PATH $SSH_PORT $USER $IP
 # compress_backup
 /usr/bin/dash $HOME/.scripts/stop-vm.sh $VM_ID $SERVER_NAME
 exit 0
