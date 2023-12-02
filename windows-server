@@ -1,7 +1,6 @@
 #!/bin/sh
 ip=$(cat $HOME/.scripts/.env/ip-proxmox-server)
 active=$(ping -c 1 "$ip" | grep -Po "[0-9]+(?=%)" )
-pass=$(cat $HOME/.scripts/.env/ssh | grep -Po '(?<=ssh-password=).*')
 
 # Checks if server is up if not starts it
 start_server() {
