@@ -47,20 +47,6 @@ compress_backup() {
 	7z a -t7z "$BACKUP_BASE_LOCATION""$DATE"
 }
 
-stop_vm() {
-	active=$(ping -c 1 "$ip" | grep -Po "[0-9]+(?=%)" )
-
-	echo "Stoping backup server"
-	notify-send "Backup" "Stoping backup server"
-
-	if [ $active -eq 100 ]; then
-			ssh -i ~/.ssh/personal_id_ed25519_2023-11 proxmox qm stop 100
-	else
-		echo "Server stopped"
-		notify-send "Backup" "Backup server stopped"
-	fi
-}
-
 /usr/bin/dash $HOME/.scripts/start-server
 /usr/bin/dash $HOME/.scripts/start-vm.sh $VM_ID $SERVER_NAME
 free_space $BACKUP_BASE_LOCATION $BACKUP_DRIVE $SERVER_NAME
