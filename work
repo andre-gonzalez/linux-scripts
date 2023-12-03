@@ -6,11 +6,11 @@
 /usr/bin/dash $HOME/eureciclo/conectar-bancos/nfex-conectar.sh &
 /usr/bin/pritunl-client-electron &
 rm $HOME/Downloads &
-/usr/bin/dash $HOME/.scripts/monitoring-tmux &
+# /usr/bin/dash $HOME/.scripts/monitoring-tmux &
 /usr/bin/dash $HOME/.scripts/show_keybinds.sh &
 ferdium &
 dbeaver &
-clockify &
+# clockify &
 /usr/bin/bash $HOME/.scripts/configure-trackball.sh &
 
 bluetoothctl connect CC:98:8B:C1:5C:78; kill -46 $(pidof dwmblocks) &
