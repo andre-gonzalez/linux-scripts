@@ -7,4 +7,4 @@ LIST="$HOME/gdrive-pessoal/pessoal/obsidian/pessoal/copy_to_clipboard.md"
 
 SELECTION=$(dmenu -p "Copy:" -l 50 < $LIST)
 
-echo $SELECTION | awk -F '|' '{print $2}' | xargs | xclip -r
+echo $SELECTION | awk -F '|' '{print $2}' | xargs | xclip -r -selection clipboard
