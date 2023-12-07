@@ -15,12 +15,12 @@ start_server() {
 }
 
 start_vm() {
-	status=$(sshpass -p $pass ssh -i ~/.ssh/personal_id_ed25519_2023-05 proxmox qm status 103 | grep -Eo 'running|stopped')
+	status=$(ssh -i ~/.ssh/personal_id_ed25519_2023-05 proxmox qm status 103 | grep -Eo 'running|stopped')
 	case $status in
 		"stopped")
 			echo "Starting the VM"
 			notify-send "windows-server"  "Starting the VM"
-			sshpass -p $pass ssh -i ~/.ssh/personal_id_ed25519_2023-05 proxmox qm start 103 &&
+			ssh -i ~/.ssh/personal_id_ed25519_2023-05 proxmox qm start 103 &&
 			echo "VM Started"
 			notify-send "windows-server"  "VM Started"
 			;;
