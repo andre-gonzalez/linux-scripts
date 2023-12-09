@@ -20,13 +20,12 @@ free_space() {
 	# exclude the oldest backup until the drive can fit the home directory
 	while [ $WILL_FIT -lt 0 ];
 	do
-		echo "oi"
-			echo "Deleting old backups"
-			notify-send "$SERVER_NAME"  "Deleting old backups"
-			FILE_TO_EXCLUDE=`ssh backup-workstation ls -1 "$BACKUP_BASE_LOCATION" | head -n 1`
-			rm -fr /mnt/hd-interno/$FILE_TO_EXCLUDE
-			FREE_SPACE=`ssh backup-workstation df "$BACKUP_DRIVE" | awk '{print $4}' | tail -n 1`
-			WILL_FIT=$(expr $FREE_SPACE - $USED_SPACE_HOME)
+		echo "Deleting old backups"
+		notify-send "$SERVER_NAME"  "Deleting old backups"
+		FILE_TO_EXCLUDE=`ssh backup-workstation ls -1 "$BACKUP_BASE_LOCATION" | head -n 1`
+		rm -fr /mnt/hd-interno/$FILE_TO_EXCLUDE
+		FREE_SPACE=`ssh backup-workstation df "$BACKUP_DRIVE" | awk '{print $4}' | tail -n 1`
+		WILL_FIT=$(expr $FREE_SPACE - $USED_SPACE_HOME)
 	done
 }
 
@@ -53,7 +52,7 @@ compress_backup() {
 
 /usr/bin/dash $HOME/.scripts/start-server
 /usr/bin/dash $HOME/.scripts/start-vm.sh $VM_ID $SERVER_NAME
-free_space $BACKUP_BASE_LOCATION $BACKUP_DRIVE $SERVER_NAME
+# free_space $BACKUP_BASE_LOCATION $BACKUP_DRIVE $SERVER_NAME
 backup $BACKUP_BASE_LOCATION $BACKUP_DRIVE $SERVER_NAME $SSH_KEY_PATH $SSH_PORT $USER $IP $DATE
 # compress_backup $BACKUP_BASE_LOCATION $DATE
 /usr/bin/dash $HOME/.scripts/stop-vm.sh $VM_ID $SERVER_NAME
