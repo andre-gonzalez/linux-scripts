@@ -1,6 +1,7 @@
 #!/bin/sh
 
 slack &
+/usr/bin/pritunl-client-electron &
 /usr/bin/dash $HOME/.scripts/web-eureciclo &
 /usr/bin/dash $HOME/.scripts/vpn-conectar &
 /usr/bin/dash $HOME/.scripts/web-call &
