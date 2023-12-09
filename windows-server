@@ -14,23 +14,6 @@ start_server() {
 	fi
 }
 
-start_vm() {
-	status=$(ssh -i ~/.ssh/personal_id_ed25519_2023-05 proxmox qm status 103 | grep -Eo 'running|stopped')
-	case $status in
-		"stopped")
-			echo "Starting the VM"
-			notify-send "windows-server"  "Starting the VM"
-			ssh -i ~/.ssh/personal_id_ed25519_2023-05 proxmox qm start 103 &&
-			echo "VM Started"
-			notify-send "windows-server"  "VM Started"
-			;;
-		"running")
-			echo "VM Already Started"
-			notify-send "windows-server"  "VM Already Started"
-			;;
-	esac
-}
-
 connect_to_vm() {
 	echo "Connecting to the VM"
 	notify-send "windows-server"  "Connecting to the VM"
@@ -39,6 +22,6 @@ connect_to_vm() {
 }
 
 start_server
-start_vm
+start-vm.sh 103 windows-server
 connect_to_vm
 exit 0
