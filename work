@@ -5,7 +5,6 @@
 /usr/bin/dash $HOME/eureciclo/conectar-bancos/redeciclo-corp-conectar-no-login.sh &
 /usr/bin/dash $HOME/eureciclo/conectar-bancos/nfex-conectar.sh &
 rm $HOME/Downloads &
-# /usr/bin/dash $HOME/.scripts/monitoring-tmux &
 /usr/bin/dash $HOME/.scripts/show_keybinds.sh &
 ferdium &
 dbeaver &
