@@ -1,14 +1,31 @@
 #!/bin/sh
+# This is a simple script to pause notifications
+# When it is run it simply changes the notification ON or OFF in dunst
+# It accepts STDIN to set the number of minutes to mantain in do not disturb mode
+# Ex: `./do-not-disturb 1` command will keep the system in do not disturb mode
+# for 1 minute and then turn notifications ON again
 
 status="$(dunstctl is-paused)"
+MINUTES=$1
+
+do_not_disturb_off () {
+	dunstctl set-paused false
+	notify-send "Do not disturb OFF"
+	kill -48 $(pidof dwmblocks)
+}
+
 
 if [ "$status" = "false" ]; then
 		dunstctl set-paused true
 		echo "Do not disturb ON" | dmenu
 		kill -48 $(pidof dwmblocks)
+
+		# If minutes var is set than sleep and get out of do not disturb
+		if [ ! -z "$MINUTES" ]; then
+			sleep "$MINUTES"m
+			do_not_disturb_off
+		fi
+
 elif [ "$status" = "true" ]; then
-		dunstctl set-paused false
-		echo "Do not disturb OFF" | dmenu
-        notify-send "Do not disturb OFF"
-		kill -48 $(pidof dwmblocks)
+		do_not_disturb_off
 fi
