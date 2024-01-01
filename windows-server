@@ -10,4 +10,3 @@ connect_to_vm() {
 start-server
 start-vm.sh 103 windows-server
 connect_to_vm
-exit 0

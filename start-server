@@ -28,4 +28,3 @@ check_server_status() {
 
 start_server
 check_server_status
-exit 0

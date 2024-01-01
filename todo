@@ -29,5 +29,3 @@ while [ -n "$cmd" ]; do
 
 	cmd=$(dmenu -l "$height" -p "$prompt" "$@" < "$file")
 done
-
-exit 0

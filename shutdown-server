@@ -27,4 +27,3 @@ check_server_shutdown() {
 
 shutdown_server
 check_server_shutdown
-exit 0

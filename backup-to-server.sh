@@ -56,4 +56,3 @@ compress_backup() {
 backup $BACKUP_BASE_LOCATION $BACKUP_DRIVE $SERVER_NAME $SSH_KEY_PATH $SSH_PORT $USER $IP $DATE
 # compress_backup $BACKUP_BASE_LOCATION $DATE
 /usr/bin/dash $HOME/.scripts/stop-vm.sh $VM_ID $SERVER_NAME
-exit 0

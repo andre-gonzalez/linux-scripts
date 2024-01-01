@@ -40,4 +40,3 @@ stop_vm() {
 
 STATUS=$(get_status $VM_ID)
 stop_vm $VM_ID $SERVER_NAME $STATUS
-exit 0
