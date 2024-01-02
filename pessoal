@@ -8,7 +8,7 @@ spotify-launcher &
 /usr/bin/dash $HOME/.scripts/web-pessoal &
 /usr/bin/bash $HOME/.scripts/configure-trackball.sh &
 # portmaster &
-redshift -l 19.44:-99.13 -t 6500:3000 -b 1:0.4 &
+start-redshift.sh &
 rm $HOME/Downloads
 
 bluetoothctl connect CC:98:8B:C1:5C:78; kill -46 $(pidof dwmblocks)
