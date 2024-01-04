@@ -1,5 +1,5 @@
 #!/bin/sh
-# This is script is intended to start redshift program using your ip geolocation
+# This script is intended to start redshift program using your ip geolocation
 # To use it is necessary to have a free account on https://ipinfo.io/
 # Save you ipinfo.io token as a shell variable on the following path ./env/ipnfo
 
