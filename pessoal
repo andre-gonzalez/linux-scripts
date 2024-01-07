@@ -2,9 +2,8 @@
 
 /usr/bin/dash $HOME/.scripts/pessoal-tmux &
 # obsidian &
-anki &
+# anki &
 spotify-launcher &
-# qutebrowser &
 /usr/bin/dash $HOME/.scripts/web-pessoal &
 /usr/bin/bash $HOME/.scripts/configure-trackball.sh &
 # portmaster &
