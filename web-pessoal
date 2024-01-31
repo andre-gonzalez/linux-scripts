@@ -5,5 +5,5 @@ case "$BROWSER" in
 	brave) brave --profile-directory=Default ;;
 	thorium) thorium-browser --profile-directory="Profile 4" ;;
 	qutebrowser) qutebrowser ;;
-	*) brave --profile-directory=Default ;;
+	*) qutebrowser ;;
 esac
