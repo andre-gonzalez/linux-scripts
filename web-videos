@@ -1,3 +1,8 @@
 #!/bin/sh
-brave --profile-directory="Profile 2"
-# thorium-browser --profile-directory="Profile 3" &
+BROWSER=$1
+
+case "$BROWSER" in
+	brave) brave --profile-directory="Profile 2" ;;
+	thorium) thorium-browser --profile-directory="Profile 3" ;;
+	*) brave --profile-directory="Profile 2" ;;
+esac
