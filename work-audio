@@ -5,6 +5,6 @@ slack &
 /usr/bin/dash $HOME/.scripts/web-eureciclo &
 /usr/bin/dash $HOME/.scripts/vpn-conectar &
 /usr/bin/dash $HOME/.scripts/web-call &
-/usr/bin/dash $HOME/.scripts/web-videos &
+# /usr/bin/dash $HOME/.scripts/web-videos &
 /usr/bin/dash $HOME/.scripts/web-pessoal &
 spotify-launcher &
