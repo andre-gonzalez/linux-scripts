@@ -4,7 +4,7 @@ connect_to_vm() {
 	echo "Connecting to the VM"
 	notify-send "windows-server"  "Connecting to the VM"
 	sleep 4
-	remmina $HOME/.local/share/remmina/group_rdp_eureciclo-windows-vm_eureciclo-windows-vm-corgi-walleye-ts-net.remmina
+	remmina $HOME/.local/share/remmina/group_rdp_eureciclo-windows-vm_192-168-1-130.remmina
 }
 
 start-server
