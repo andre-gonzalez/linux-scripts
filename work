@@ -5,7 +5,7 @@
 /usr/bin/dash $HOME/eureciclo/conectar-bancos/nfex-conectar.sh &
 rm $HOME/Downloads &
 /usr/bin/dash $HOME/.scripts/show_keybinds.sh &
-ferdium &
+# ferdium &
 dbeaver &
 # clockify &
 /usr/bin/bash $HOME/.scripts/configure-trackball.sh &
@@ -13,4 +13,4 @@ start-redshift.sh &
 
 bluetoothctl connect CC:98:8B:C1:5C:78; kill -46 $(pidof dwmblocks) &
 
-/usr/bin/dash $HOME/.scripts/windows-server
+# /usr/bin/dash $HOME/.scripts/windows-server
