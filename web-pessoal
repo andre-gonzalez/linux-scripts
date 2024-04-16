@@ -1,9 +1,10 @@
 #!/bin/sh
 BROWSER=$1
+URL=$2
 
 case "$BROWSER" in
-	brave) brave --profile-directory=Default ;;
-	thorium) thorium-browser --profile-directory="Profile 4" ;;
-	qutebrowser) qutebrowser ;;
-	*) qutebrowser ;;
+	brave) brave --profile-directory=Default $URL;;
+	thorium) thorium-browser --profile-directory="Profile 4" $URL;;
+	qutebrowser) qutebrowser $URL;;
+	*) qutebrowser $1;;
 esac

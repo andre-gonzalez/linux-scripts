@@ -1,8 +1,9 @@
 #!/bin/sh
 BROWSER=$1
+URL=$2
 
 case "$BROWSER" in
-	brave) brave --profile-directory="Profile 2" ;;
-	thorium) thorium-browser --profile-directory="Profile 3" ;;
-	*) brave --profile-directory="Profile 2" ;;
+	brave) brave --profile-directory="Profile 2" $URL;;
+	thorium) thorium-browser --profile-directory="Profile 3" $URL;;
+	*) brave --profile-directory="Profile 2" $1;;
 esac
