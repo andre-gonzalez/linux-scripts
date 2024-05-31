@@ -11,7 +11,7 @@
 
 browser='qutebrowser --target tab'
 engine='https://google.com/search?q=%s'
-bookmarks="$HOME/gdrive-pessoal/pessoal/obsidian/pessoal/bookmarks.md"
+bookmarks="$HOME/projects/notas/pessoal/bookmarks.md"
 
 gotourl() {
 	if [ "$nbrowser" = surf ]

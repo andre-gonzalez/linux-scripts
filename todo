@@ -6,8 +6,8 @@
 # add it.
 #
 
-file="$HOME/gdrive-pessoal/pessoal/obsidian/todo.md"
-done="$HOME/gdrive-pessoal/pessoal/obsidian/todo-concluded.md"
+file="$HOME/projects/notas/todo.md"
+done="$HOME/projects/notas/todo-concluded.md"
 touch "$file"
 touch "$done"
 height=$(wc -l "$file" | awk '{print $1}')
