@@ -16,6 +16,8 @@ do
 done
 
 DATE=`date +%Y-%m-%d`
+HOST=$(hostname)
+
 # backup home
 echo "backup home directory"
-rsync -a --info=progress2 --exclude="lost+found" --exclude=".cache" "$HOME"/ /mnt/hd-interno/"$DATE"
+rsync -a --info=progress2 --exclude="lost+found" --exclude=".cache" $HOME/ /mnt/hd-interno/$DATE-$HOST
