@@ -20,4 +20,4 @@ HOST=$(hostname)
 
 # backup home
 echo "backup home directory"
-rsync -a --info=progress2 --exclude="lost+found" --exclude=".cache" $HOME/ /mnt/hd-externo/$DATE-$HOST
+rsync -a --info=progress2 --exclude="lost+found" --exclude=".cache" --exclude=".config/autostart/" $HOME/ /mnt/hd-externo/$DATE-$HOST
