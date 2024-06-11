@@ -1,0 +1,3 @@
+#!/bin/sh
+
+xsel -o | dmenu -p Calculate: | xargs echo | bc 2>&1 | dmenu -p Answer: | xsel -i
