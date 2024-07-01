@@ -20,4 +20,7 @@ HOST=$(hostname)
 
 # backup home
 echo "backup home directory"
+echo "backup to ext4"
 rsync -a --info=progress2 --exclude="lost+found" --exclude=".cache" --exclude=".config/autostart/" $HOME/ /mnt/hd-interno/$DATE-$HOST
+echo "backup to ntfs"
+rsync -a --info=progress2 --exclude="lost+found" --exclude=".cache" --exclude=".config/autostart/" $HOME/ /mnt/ntfs-hd-interno/$DATE-$HOST
