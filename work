@@ -7,6 +7,15 @@ rm $HOME/Downloads &
 dbeaver &
 /usr/bin/bash $HOME/.scripts/configure-trackball.sh &
 start-redshift.sh &
+/usr/bin/dash $HOME/.scripts/work-tmux &
+slack &
+/usr/bin/pritunl-client-electron &
+/usr/bin/dash $HOME/.scripts/web-eureciclo &
+/usr/bin/dash $HOME/.scripts/vpn-conectar &
+/usr/bin/dash $HOME/.scripts/web-call &
+# /usr/bin/dash $HOME/.scripts/web-videos &
+/usr/bin/dash $HOME/.scripts/web-pessoal &
+spotify-launcher &
 
 bluetoothctl connect CC:98:8B:C1:5C:78; kill -46 $(pidof dwmblocks) &
 
