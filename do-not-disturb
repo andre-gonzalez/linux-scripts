@@ -8,24 +8,23 @@
 status="$(dunstctl is-paused)"
 MINUTES=$1
 
-do_not_disturb_off () {
+do_not_disturb_off() {
 	dunstctl set-paused false
 	notify-send "Do not disturb OFF"
 	kill -48 $(pidof dwmblocks)
 }
 
-
 if [ "$status" = "false" ]; then
-		dunstctl set-paused true
-		echo "Do not disturb ON" | dmenu
-		kill -48 $(pidof dwmblocks)
+	dunstctl set-paused true
+	echo "Do not disturb ON" | dmenu
+	kill -48 $(pidof dwmblocks)
 
-		# If minutes var is set than sleep and get out of do not disturb
-		if [ ! -z "$MINUTES" ]; then
-			sleep "$MINUTES"m
-			do_not_disturb_off
-		fi
+	# If minutes var is set than sleep and get out of do not disturb
+	if [ ! -z "$MINUTES" ]; then
+		sleep "$MINUTES"m
+		do_not_disturb_off
+	fi
 
 elif [ "$status" = "true" ]; then
-		do_not_disturb_off
+	do_not_disturb_off
 fi
