@@ -7,4 +7,4 @@ cd "$HOME"/projects/notas/ &&
 	git commit -am "$NOW" &&
 	git push -q -u origin main
 
-curl https://hc-ping.com/fde92570-863b-4c76-a1c1-567c6f321a00
+curl -s https://hc-ping.com/fde92570-863b-4c76-a1c1-567c6f321a00
