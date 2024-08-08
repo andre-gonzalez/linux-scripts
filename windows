@@ -1,5 +1,7 @@
 #!/bin/sh
 
-docker start windows
-sleep 15
-remmina $HOME/.local/share/remmina/group_rdp_windows_192-168-1-86.remmina
+# docker start windows
+# sleep 15
+# remmina $HOME/.local/share/remmina/group_rdp_windows_192-168-1-86.remmina
+/usr/bin/virsh start win10
+virt-manager --connect=qemu:///system --show-domain-console win10
