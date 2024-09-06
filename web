@@ -26,6 +26,9 @@ gotourl() {
 			type --clearmodifiers --delay 2 "$choice"
 		xdotool key --clearmodifiers Return
 		setxkbmap -layout "$layout"
+	elif [ "$nbrowser" = eureciclo ]
+	then
+		qutebrowser --basedir ~/eureciclo/qutebrowser-work "$choice"
 	elif [ -n "$nbrowser" ]
 	then
 		$nbrowser "$choice"
@@ -42,9 +45,10 @@ searchweb() {
 
 xprop -root | grep '^_NET_ACTIVE_WINDOW' && {
 	winid=$(xprop -root _NET_ACTIVE_WINDOW | sed 's/.*[[:space:]]//')
-	class=$(xprop -id "$winid" WM_CLASS | awk -F'\"' '{ print $(NF - 1) }')
+	class=$(xprop -id "$winid" WM_CLASS | awk -F'\"' '{ print $2 }')
 	case "$class" in
 		Firefox) nbrowser='firefox' ;;
+		eureciclo) nbrowser='eureciclo';;
 		#Firefox) shortcut='ctrl+l' ;; # alternative method, uses xdotool
 		IceCat) nbrowser='icecat' ;;
 		Chromium) nbrowser='chromium' ;;
