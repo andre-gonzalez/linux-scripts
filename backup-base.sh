@@ -46,10 +46,10 @@ backup() {
     EXCLUDES="--exclude=lost+found --exclude=.cache --exclude=.config/autostart/ --exclude=.config/VirtualBox/"
 
     # Logging the backup operation
-    echo "Backing up home directory to $DISK_PATH/backup-$HOST/$DATE-$HOST"
+    echo "Backing up home directory to $BACKUP_DIR/$DATE-$HOST"
 
     # Build rsync command
-	RSYNC_CMD="rsync -a --info=progress2 $EXCLUDES $HOME/ $DISK_PATH/backup-$HOST/$DATE-$HOST"
+	RSYNC_CMD="rsync -a --info=progress2 $EXCLUDES $HOME/ $BACKUP_DIR/$DATE-$HOST"
 
 	# Perform the backup
     $RSYNC_CMD
