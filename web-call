@@ -5,5 +5,6 @@ URL=$2
 case "$BROWSER" in
 	brave) brave --profile-directory="Profile 3" $URL;;
 	thorium) thorium-browser --profile-directory="Profile 5" $URL;;
-	*) brave --profile-directory="Profile 3" $1;;
+	qutebrowser) qutebrowser --basedir ~/eureciclo/web-call --qt-arg name call;;
+	*) qutebrowser --basedir ~/eureciclo/web-call --qt-arg name call $1;;
 esac

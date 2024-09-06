@@ -29,6 +29,9 @@ gotourl() {
 	elif [ "$nbrowser" = eureciclo ]
 	then
 		qutebrowser --basedir ~/eureciclo/qutebrowser-work "$choice"
+	elif [ "$nbrowser" = call ]
+	then
+		qutebrowser --basedir ~/eureciclo/web-call "$choice"
 	elif [ -n "$nbrowser" ]
 	then
 		$nbrowser "$choice"
@@ -49,6 +52,7 @@ xprop -root | grep '^_NET_ACTIVE_WINDOW' && {
 	case "$class" in
 		Firefox) nbrowser='firefox' ;;
 		eureciclo) nbrowser='eureciclo';;
+		call) nbrowser='call';;
 		#Firefox) shortcut='ctrl+l' ;; # alternative method, uses xdotool
 		IceCat) nbrowser='icecat' ;;
 		Chromium) nbrowser='chromium' ;;
