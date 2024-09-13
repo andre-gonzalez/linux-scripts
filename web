@@ -60,6 +60,7 @@ xprop -root | grep '^_NET_ACTIVE_WINDOW' && {
 		Opera) nbrowser='opera' ;;
 		Vivaldi) nbrowser='vivaldi' ;; # not tested
 		Brave-browser) nbrowser='brave' ;; # not tested
+		Navigator) nbrowser='zen-browser' ;; # not tested
 		Thorium-browser) nbrowser='thorium-browser' ;; # not tested
 		Conkeror) nbrowser='conkeror' ;; # not tested
 		Palemoon) nbrowser='palemoon' ;; # not tested
