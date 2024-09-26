@@ -28,6 +28,9 @@ trash-put --recursive "$HOME"/.cache/yay/
 # Remove go/ directory
 trash-put --recursive "$HOME"/go/
 
+# Clean logs older than 1 week
+journalctl --vacuum-time=1w
+
 # Ask to start bleachbit
 "$HOME"/.scripts/prompt.sh "Start bleachbit?" bleachbit
 
