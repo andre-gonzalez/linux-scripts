@@ -41,4 +41,6 @@ journalctl --vacuum-time=1w
 "$HOME"/.scripts/prompt.sh "Start ncdu?" ncdu
 
 printf "\n AVISO: Não esqueça de elimnar snapshots antigos do timeshift!!!\n"
-printf "Se precisar de mais espaço rode o código abaixo nos repositórios \n git reflog expire --all --expire=now \n git gc --prune=now --aggressive"
+printf "Se precisar de mais espaço rode o código abaixo nos repositórios \n git reflog expire --all --expire=now \n git gc --prune=now --aggressive\n"
+printf "rode pacman -Qtd para ver pacotes para desinstalar\n"
+printf "Você pode instalar o ancient-packages para ver pacotes que você tem instalado que não estão mais nos repositórios\n"
