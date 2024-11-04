@@ -4,6 +4,7 @@
 slack &
 /usr/bin/pritunl-client-electron &
 /usr/bin/dash $HOME/.scripts/web-eureciclo &
+zen-browser -P 'Google Chat' &
 /usr/bin/dash $HOME/.scripts/vpn-conectar &
 /usr/bin/dash $HOME/.scripts/web-call &
 # /usr/bin/dash $HOME/.scripts/web-videos &
