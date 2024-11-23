@@ -1,7 +1,7 @@
 #!/bin/sh
 
 /bin/sh $HOME/.scripts/prompt.sh "Deseja desligar a placa nvidia?" "envycontrol -s integrated"
-/bin/sh $HOME/.scripts/prompt.sh "Deseja encerrar o tailscale" "systemctl stop tailscaled"
+/bin/sh $HOME/.scripts/prompt.sh "Deseja encerrar o tailscale?" "systemctl stop tailscaled"
 /bin/sh $HOME/.scripts/prompt.sh "Deseja desligar o bluetooth?" "bluetoothctl power off & systemctl stop bluetoothd"
 /bin/sh $HOME/.scripts/prompt.sh "Deseja reduzir a brilho da tela para 50%?" "brightnessctl set 50%; kill -45 $(pidof dwmblocks)"
 /bin/sh $HOME/.scripts/prompt.sh "Deseja reduzir a brilho da tela para 1%?" "brightnessctl set 1%; kill -45 $(pidof dwmblocks)"
@@ -17,7 +17,9 @@
 /bin/sh $HOME/.scripts/prompt.sh "Deseja encerrar o ssb" "systemctl stop ssb"
 /bin/sh $HOME/.scripts/prompt.sh "Deseja encerrar o networkd" "systemctl stop networkd"
 /bin/sh $HOME/.scripts/prompt.sh "Deseja encerrar o libvirtd" "systemctl stop libvirtd"
-/bin/sh $HOME/.scripts/prompt.sh "Deseja encerrar o docker" "systemctl stop docker"
+/bin/sh $HOME/.scripts/prompt.sh "Deseja encerrar o docker?" "systemctl stop docker"
+/bin/sh $HOME/.scripts/prompt.sh "Deseja encerrar o docker socket?" "systemctl stop docker.socket"
+/bin/sh $HOME/.scripts/prompt.sh "Deseja encerrar o containerd" "systemctl stop containerd"
 /bin/sh $HOME/.scripts/prompt.sh "Deseja encerrar o ufw" "systemctl stop ufw"
 /bin/sh $HOME/.scripts/prompt.sh "Deseja encerrar o firewalld" "systemctl stop firewalld"
 /bin/sh $HOME/.scripts/prompt.sh "Deseja encerrar o fail2ban" "systemctl stop fail2ban"
