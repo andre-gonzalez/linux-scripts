@@ -1,5 +1,6 @@
 #!/bin/sh
 
+/bin/sh $HOME/.scripts/prompt.sh "Deseja desligar a placa nvidia?" "envycontrol -s integrated"
 /bin/sh $HOME/.scripts/prompt.sh "Deseja desligar o bluetooth?" "bluetoothctl power off & systemctl stop bluetoothd"
 /bin/sh $HOME/.scripts/prompt.sh "Deseja reduzir a brilho da tela para 50%?" "brightnessctl set 50%; kill -45 $(pidof dwmblocks)"
 /bin/sh $HOME/.scripts/prompt.sh "Deseja reduzir a brilho da tela para 1%?" "brightnessctl set 1%; kill -45 $(pidof dwmblocks)"
