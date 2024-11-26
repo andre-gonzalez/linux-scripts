@@ -10,3 +10,4 @@ touch $TMPFILE
 chmod o-r $TMPFILE
 st -t neovim-anywhere -c neovim-anywhere -e nvim $TMPFILE
 cat $TMPFILE | xclip -selection clipboard
+xdotool key --clearmodifiers ctrl+v
