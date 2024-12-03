@@ -20,6 +20,7 @@
 /bin/sh $HOME/.scripts/prompt.sh "Deseja encerrar o docker?" "systemctl stop docker"
 /bin/sh $HOME/.scripts/prompt.sh "Deseja encerrar o docker socket?" "systemctl stop docker.socket"
 /bin/sh $HOME/.scripts/prompt.sh "Deseja encerrar o containerd" "systemctl stop containerd"
+/bin/sh $HOME/.scripts/prompt.sh "Deseja encerrar o pritunl" "systemctl stop pritunl-client"
 /bin/sh $HOME/.scripts/prompt.sh "Deseja encerrar o ufw" "systemctl stop ufw"
 /bin/sh $HOME/.scripts/prompt.sh "Deseja encerrar o firewalld" "systemctl stop firewalld"
 /bin/sh $HOME/.scripts/prompt.sh "Deseja encerrar o fail2ban" "systemctl stop fail2ban"
