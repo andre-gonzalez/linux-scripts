@@ -3,7 +3,7 @@ BROWSER=$1
 URL=$2
 
 case "$BROWSER" in
-	brave) brave --profile-directory="Profile 3" $URL;;
+	brave) brave --profile-directory="Profile 3" --window-name="call" $URL;;
 	thorium) thorium-browser --profile-directory="Profile 5" $URL;;
 	qutebrowser) qutebrowser --basedir /home/frank/eureciclo/web-call --qt-arg name call;;
 	*) brave --profile-directory="Profile 3" $URL;;
