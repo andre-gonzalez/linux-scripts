@@ -1,5 +1,6 @@
 #!/bin/sh
 
+/usr/bin/dash $HOME/.scripts/show_keybinds.sh &
 /usr/bin/dash $HOME/.scripts/work-tmux &
 slack &
 /usr/bin/pritunl-client-electron &
