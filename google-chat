@@ -1,1 +1,2 @@
-brave --profile-directory="Profile 4" --window-name="google-chat"
+brave --profile-directory="Profile 4" --app=https://chat.google.com
+# gtk-launch brave-mdpkiolbdkhdjpekfbkbmhigcaggjagi-Profile_4.desktop
