@@ -37,3 +37,5 @@ if [ "$answer" = "work" ]; then
 elif [ "$answer" = "pessoal" ]; then
 		/home/frank/.scripts/pessoal
 fi
+
+"$HOME"/.scripts/prompt.sh "Kill xautolock?" "killall xautolock"
