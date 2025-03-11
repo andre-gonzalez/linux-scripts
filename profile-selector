@@ -3,7 +3,7 @@
 check_display () {
 		until xdotool key enter
 		do
-				sleep 1
+				sleep 0.1
 				echo "erro"
 		done
 }
@@ -27,7 +27,8 @@ ask () {
 }
 
 check_display
-sleep 1
+sleep 0.2
+bluetoothctl connect CC:98:8B:C1:5C:78; kill -46 $(pidof dwmblocks)
 work_hours
 ask "Starting working now?"
 
