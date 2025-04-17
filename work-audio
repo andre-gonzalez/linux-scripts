@@ -10,3 +10,4 @@
 # /usr/bin/dash $HOME/.scripts/web-videos &
 /usr/bin/dash $HOME/.scripts/web-pessoal &
 spotify-launcher &
+kill-xautolock.sh &

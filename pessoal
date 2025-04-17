@@ -8,6 +8,9 @@ spotify-launcher &
 /usr/bin/bash $HOME/.scripts/configure-trackball.sh &
 # portmaster &
 start-redshift.sh &
+
+kill-xautolock.sh &
+
 rm $HOME/Downloads
 
 bluetoothctl connect CC:98:8B:C1:5C:78; kill -46 $(pidof dwmblocks)
