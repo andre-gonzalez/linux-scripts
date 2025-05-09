@@ -3,8 +3,8 @@ BROWSER=$1
 URL=$2
 
 case "$BROWSER" in
-	brave) brave --profile-directory="Profile 3" --window-name="call" $URL;;
-	thorium) thorium-browser --profile-directory="Profile 5" $URL;;
+	brave) prime-run brave --profile-directory="Profile 3" --window-name="call" --app=https://meet.google.com ;;
+	thorium) prime-run thorium-browser --window-name="call" --app=https://meet.google.com $URL;;
 	qutebrowser) qutebrowser --basedir /home/frank/eureciclo/web-call --qt-arg name call;;
-	*) brave --profile-directory="Profile 3" $URL;;
+	*) prime-run thorium-browser --window-name="call" --app=https://meet.google.com $URL;;
 esac
