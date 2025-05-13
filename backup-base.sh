@@ -30,7 +30,7 @@ make_space() {
 				exit 1
 			fi
 
-			echo "Deleting $FILE_TO_EXCLUDE"
+			echo "Deleting $FILE_TO_EXCLUDE\n"
 			rm -fr "$BACKUP_DIR"/"$FILE_TO_EXCLUDE"
 
 			# Recalculate space after deletion
@@ -43,7 +43,7 @@ backup() {
     DATE=$(date +%Y-%m-%d)
 
 	# Excluded directories
-    EXCLUDES="--exclude=lost+found --exclude=.cache --exclude=.config/autostart/ --exclude=.config/VirtualBox/"
+    EXCLUDES="--exclude=lost+found --exclude=.cache --exclude=.config/autostart/ --exclude=.config/VirtualBox/ --exclude=.local/share/Trash --exclude=videos/"
 
     # Logging the backup operation
     echo "Backing up home directory to $BACKUP_DIR/$DATE-$HOST"
