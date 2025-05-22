@@ -4,5 +4,5 @@ BROWSER=$1
 case "$BROWSER" in
 	brave) prime-run brave --profile-directory="Profile 4" --app=https://chat.google.com;;
 	thorium) prime-run thorium-browser --window-name="call" --app=https://chat.google.com;;
-	*) prime-run thorium-browser --window-name="call" --app=https://chat.google.com;;
+	*) thorium-browser --window-name="call" --app=https://chat.google.com;;
 esac
