@@ -4,4 +4,5 @@
 bluetoothctl power on
 
 #coonect to the headset
+# Black one
 bluetoothctl connect 84:D3:52:63:69:E8; kill -46 $(pidof dwmblocks)
