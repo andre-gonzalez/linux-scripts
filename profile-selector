@@ -27,7 +27,7 @@ ask () {
 }
 
 check_display
-sleep 0.2
+sleep 1
 bluetoothctl connect CC:98:8B:C1:5C:78; kill -46 $(pidof dwmblocks)
 work_hours
 ask "Starting working now?"
