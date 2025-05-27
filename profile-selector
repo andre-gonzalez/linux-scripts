@@ -14,7 +14,7 @@ work_hours () {
 
 		for x in Monday Tuesday Wednesday Thursday Friday; do
 				if [ $x = $day_of_week ]; then
-						if [ "$hour" -ge 6 -a "$hour" -lt 9 ]; then
+						if [ "$hour" -ge 5 -a "$hour" -lt 9 ]; then
 								/home/frank/.scripts/work
 								exit 0
 						fi
