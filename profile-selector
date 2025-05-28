@@ -1,41 +1,67 @@
 #!/bin/sh
 
-check_display () {
-		until xdotool key enter
-		do
-				sleep 0.1
-				echo "erro"
-		done
+HEADPHONES_MAC="CC:98:8B:C1:5C:78"
+
+check_display() {
+# Check if dwm has already initialized so the script do not run into problems
+	echo "Waiting for DWM to initialize..."
+	until xwininfo -root -tree | grep -q "dwm"; do
+		sleep 0.5
+	done
 }
 
-work_hours () {
-		day_of_week=$(date +%A)
-		hour=$(date +%H)
-
-		for x in Monday Tuesday Wednesday Thursday Friday; do
-				if [ $x = $day_of_week ]; then
-						if [ "$hour" -ge 5 -a "$hour" -lt 9 ]; then
-								/home/frank/.scripts/work
-								exit 0
-						fi
-				fi
-		done
+do_not_autolock() {
+	"$HOME"/.scripts/prompt.sh "Kill xautolock?" "killall xautolock"
 }
 
-ask () {
-		answer="$(echo "work\npessoal" | dmenu -p "$1" )"
+connect_headphone() {
+	echo "Waiting for bluetoothd to start..."
+	while ! systemctl is-active --quiet bluetooth; do
+		sleep 1
+	done
+
+	bluetoothctl connect "$HEADPHONES_MAC"
+	kill -46 $(pidof dwmblocks)
+
+	echo "Waiting for Bluetooth headphones ($HEADPHONES_MAC) to connect..."
+	while true; do
+		if bluetoothctl info "$HEADPHONES_MAC" | grep -q "Connected: yes"; then
+			break
+		fi
+	done
+
+}
+
+work_hours() {
+# Check if is a day of the week and if is a time i usually begin to work
+# If so automatically start my work profile
+	day_of_week=$(date +%A)
+	hour=$(date +%H)
+
+	for x in Monday Tuesday Wednesday Thursday Friday; do
+		if [ $x = $day_of_week ]; then
+			if [ "$hour" -ge 5 -a "$hour" -lt 9 ]; then
+				# To audio to work properly is best to have my headphone
+				# connected before starting applications
+				connect_headphone
+				/home/frank/.scripts/work
+				do_not_autolock
+				exit 0
+			fi
+		fi
+	done
+}
+
+ask() {
+	answer="$(echo "work\npessoal" | dmenu -p "$1")"
 }
 
 check_display
-sleep 1
-bluetoothctl connect CC:98:8B:C1:5C:78; kill -46 $(pidof dwmblocks)
 work_hours
 ask "Starting working now?"
-
 if [ "$answer" = "work" ]; then
-		/home/frank/.scripts/work
+	/home/frank/.scripts/work
 elif [ "$answer" = "pessoal" ]; then
-		/home/frank/.scripts/pessoal
+	/home/frank/.scripts/pessoal
 fi
-
-"$HOME"/.scripts/prompt.sh "Kill xautolock?" "killall xautolock"
+do_not_autolock

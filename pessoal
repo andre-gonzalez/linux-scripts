@@ -1,16 +1,16 @@
 #!/bin/sh
 
+/usr/bin/dash $HOME/.scripts/web-pessoal &
 /usr/bin/dash $HOME/.scripts/pessoal-tmux &
+/usr/bin/bash $HOME/.scripts/configure-trackball.sh &
+start-redshift.sh &
+kill-xautolock.sh &
+rm $HOME/Downloads &
+
+#################
+# DISABLED
+#################
+# portmaster &
 # obsidian &
 # anki &
-spotify-launcher &
-/usr/bin/dash $HOME/.scripts/web-pessoal &
-/usr/bin/bash $HOME/.scripts/configure-trackball.sh &
-# portmaster &
-start-redshift.sh &
-
-kill-xautolock.sh &
-
-rm $HOME/Downloads
-
-bluetoothctl connect CC:98:8B:C1:5C:78; kill -46 $(pidof dwmblocks)
+# spotify-launcher &
