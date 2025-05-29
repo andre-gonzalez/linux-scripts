@@ -8,6 +8,6 @@ touch $TMPFILE
 
 # Make the file only readble by you
 chmod o-r $TMPFILE
-st -t neovim-anywhere -c neovim-anywhere -e nvim $TMPFILE
+st -t neovim-anywhere -c neovim-anywhere -e nvim -c 'startinsert' $TMPFILE
 cat $TMPFILE | xclip -selection clipboard
 xdotool key --clearmodifiers ctrl+v
