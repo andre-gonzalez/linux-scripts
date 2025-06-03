@@ -9,7 +9,8 @@ SELECTION=$(dmenu -p "Copy:" -l 50 <"$LIST")
 
 TEXT=$(echo "$SELECTION" | sed 's/^[^|]*|//; s/^[ \t]*//; s/[ \t]*$//')
 
+# Replace || with newlines, trim leading spaces on each line, and replace <<TAB>> with actual tab characters
 PROCESSED=$(echo "$TEXT" | sed 's/||/\
-/g' | sed 's/^[ \t]*//')
+/g' | sed 's/^[ \t]*//' | sed 's/<<TAB>>/\t/g')
 
 echo "$PROCESSED" | xclip -r -selection clipboard
