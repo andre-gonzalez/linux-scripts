@@ -1,2 +1,10 @@
 #!/bin/sh
-/usr/local/bin/st -t terminal -e tmuxp load "$HOME"/.config/tmuxp/work.yml
+
+COMPANY=$1
+
+case "$COMPANY" in
+	eureciclo) /usr/local/bin/st -t terminal -e tmuxp load "$HOME"/.config/tmuxp/work.yml;;
+	athenaworks) /usr/local/bin/st -t terminal -e tmuxp load "$HOME"/.config/tmuxp/work-new.yml;;
+	uberall)  /usr/local/bin/st -t terminal -e tmuxp load "$HOME"/.config/tmuxp/work-new.yml;;
+	*) /usr/local/bin/st -t terminal -e tmuxp load "$HOME"/.config/tmuxp/work.yml;;
+esac
