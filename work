@@ -2,21 +2,19 @@
 
 /usr/bin/dash $HOME/.scripts/web-call &
 /usr/bin/dash $HOME/.scripts/work-tmux &
-/usr/bin/dash $HOME/.scripts/web-eureciclo &
-/usr/bin/pritunl-client-electron &
+/usr/bin/dash $HOME/.scripts/web-uberall &
 /usr/bin/dash $HOME/.scripts/web-pessoal &
 /usr/bin/bash $HOME/.scripts/configure-trackball.sh &
+/usr/bin/slack &
 start-redshift.sh &
 kill-xautolock.sh &
+$HOME/.scripts/awsvpnclient &
 rm $HOME/Downloads
 
 #################
 # DISABLED
 #################
 # dbeaver &
-# /usr/bin/dash $HOME/.scripts/windows-server
 # /usr/bin/dash $HOME/.scripts/show_keybinds.sh &
-#/usr/bin/dash $HOME/.scripts/google-chat &
 # /usr/bin/dash $HOME/.scripts/web-videos &
-# /usr/bin/dash $HOME/.scripts/vpn-conectar &
 # spotify-launcher &
