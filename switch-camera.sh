@@ -27,7 +27,7 @@ block_camera() {
     echo "Blocking internal camera..."
     sudo bash -c "cat > $UDEV_RULE" <<EOF
 # Disable internal laptop camera by ignoring the device
-ATTR{idVendor}==\"$ID_VENDOR\", ATTR{idProduct}==\"$ID_PRODUCT\", ATTR{authorized}=\"0\"
+ATTR{idVendor}=="$ID_VENDOR", ATTR{idProduct}=="$ID_PRODUCT", ATTR{authorized}="0"
 EOF
     reload_udev
     echo "Internal camera blocked."
