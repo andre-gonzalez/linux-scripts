@@ -1,3 +1,42 @@
-#!/bin/sh
+#!/bin/bash
 
-pactl set-default-sink alsa_output.pci-0000_00_1f.3.analog-stereo
+CARD="alsa_card.pci-0000_00_1f.3"
+SINK="alsa_output.pci-0000_00_1f.3.analog-stereo"
+PROFILE_ON="output:analog-stereo"
+PROFILE_OFF="off"
+
+usage() {
+  echo "Usage: $0 [enable|disable|status]"
+  exit 1
+}
+
+case "$1" in
+  enable)
+    echo "Enabling laptop speakers..."
+    pactl set-card-profile "$CARD" "$PROFILE_ON"
+    pactl set-default-sink "$SINK"
+    echo "Speakers enabled and set as default sink."
+    ;;
+
+  disable)
+    echo "Disabling laptop speakers..."
+    pactl set-card-profile "$CARD" "$PROFILE_OFF"
+    echo "Speakers disabled and hidden from pavucontrol."
+    ;;
+
+  status)
+    pactl list cards | awk -v card="$CARD" '
+      $0 ~ "Card #" { current_card = "" }
+      $0 ~ "Name: " {
+        if ($2 == card) current_card = card
+      }
+      current_card && /Active Profile:/ {
+        print "Active Profile for", card, ":", $3
+        exit
+      }'
+    ;;
+
+  *)
+    usage
+    ;;
+esac
