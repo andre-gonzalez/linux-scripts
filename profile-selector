@@ -42,12 +42,6 @@ check_base_programs() {
 	done
 }
 
-# === Avoid xautolock ===
-do_not_autolock() {
-	echo "[*] Killing xautolock if running..."
-	"$HOME"/.scripts/prompt.sh "Kill xautolock?" "killall xautolock"
-}
-
 # === Connect Bluetooth headphones ===
 connect_headphone() {
 	echo "[*] Waiting for bluetoothd..."
@@ -120,5 +114,5 @@ else
 	echo "[!] No profile selected"
 fi
 
-do_not_autolock
+/home/frank/.scripts/kill-xautolock.sh
 echo "[✓] Autostart script finished"

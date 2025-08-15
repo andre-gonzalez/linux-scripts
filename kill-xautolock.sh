@@ -2,7 +2,7 @@
 set -eu
 
 ###── CONFIG ─────────────────────────────────────────────────
-HOME_SSID="QueWiFi2"
+HOME_SSID="Davi"
 IWCTL_DEV="wlan0"
 
 ###── FETCH CURRENT SSID ─────────────────────────────────────
