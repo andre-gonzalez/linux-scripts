@@ -1,7 +1,32 @@
 #!/bin/sh
-#Copy it to /usr/local/bin in order to execute iit with dmenu
-#Turn bluetooth on
+DEVICE_MAC="CC:98:8B:C1:5C:78"
+DEVICE_MAC_UNDERSCORE=$(echo "$DEVICE_MAC" | tr ':' '_')
+
+# Turn bluetooth on
 bluetoothctl power on
 
-#coonect to the headset
-bluetoothctl connect CC:98:8B:C1:5C:78; kill -46 $(pidof dwmblocks)
+# Connect to the headset
+bluetoothctl connect "$DEVICE_MAC"
+
+# Wait up to 10 seconds for PipeWire to register the sink
+for i in $(seq 1 10); do
+    SINK=$(pactl list short sinks | grep -i "bluez_output.${DEVICE_MAC_UNDERSCORE}" | awk '{print $2}')
+    if [ -n "$SINK" ]; then
+        break
+    fi
+    sleep 1
+done
+
+# If sink is found, set it as default
+if [ -n "$SINK" ]; then
+    pactl set-default-sink "$SINK"
+    # Move currently playing streams to the new sink
+    for stream in $(pactl list short sink-inputs | awk '{print $1}'); do
+        pactl move-sink-input "$stream" "$SINK"
+    done
+else
+    echo "❌ Could not find sink for $DEVICE_MAC" >&2
+fi
+
+# Update dwmblocks (if you want this)
+kill -46 "$(pidof dwmblocks)"
