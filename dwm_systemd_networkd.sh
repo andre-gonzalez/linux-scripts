@@ -1,0 +1,1 @@
+/home/frank/.config/dwmblocks/bar-functions/dwm_systemd_networkd.sh

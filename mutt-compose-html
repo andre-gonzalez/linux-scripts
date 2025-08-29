@@ -1,0 +1,32 @@
+#!/bin/bash
+
+# Get the body from stdin and output a multipart message
+
+TMPFILE=$(mktemp)
+cat > "$TMPFILE"
+
+pandoc -f markdown -t html "$TMPFILE" -o "$TMPFILE.html"
+
+# Combine plain + html with signature
+{
+  echo "Content-Type: multipart/alternative; boundary=boundary42"
+  echo
+  echo "--boundary42"
+  echo "Content-Type: text/plain; charset=utf-8"
+  echo
+  cat "$TMPFILE"
+  echo
+  cat ~/.config/mutt/uberall-2025-signature.txt
+  echo
+  echo "--boundary42"
+  echo "Content-Type: text/html; charset=utf-8"
+  echo
+  cat "$TMPFILE.html"
+  echo
+  cat ~/.config/mutt/uberall-2025-signature.html
+  echo
+  echo "--boundary42--"
+} > "$TMPFILE.final"
+
+cat "$TMPFILE.final"
+rm -f "$TMPFILE" "$TMPFILE.html" "$TMPFILE.final"
