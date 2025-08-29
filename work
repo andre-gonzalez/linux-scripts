@@ -8,9 +8,7 @@
 /usr/bin/slack &
 start-redshift.sh &
 kill-xautolock.sh &
-datagrip &
 $HOME/.scripts/awsvpnclient &
-1password &
 rm $HOME/Downloads
 
 #################

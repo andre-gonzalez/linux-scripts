@@ -6,6 +6,5 @@ case "$BROWSER" in
 	brave) brave --profile-directory="Profile 3" --window-name="call" --app=https://meet.google.com ;;
 	thorium) thorium-browser --window-name="call" --app=https://meet.google.com $URL;;
 	qutebrowser) qutebrowser --basedir /home/frank/eureciclo/web-call --qt-arg name call;;
-	chromium) chromium --profile-directory="Default" --window-name="call" --app=https://meet.google.com $URL ;;
-	*) chromium --profile-directory="Default" --window-name="call" --app=https://meet.google.com $URL
+	*) thorium-browser --window-name="call" --app=https://meet.google.com $URL;;
 esac

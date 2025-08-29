@@ -9,8 +9,7 @@
 # A  browser-independent address  bar  with bookmark  support. When  the
 # cursor is on a web browser it acts as the address bar of that browser.
 
-# browser='qutebrowser --target tab'
-browser='chromium'
+browser='qutebrowser --target tab'
 engine='https://google.com/search?q=%s'
 bookmarks="$HOME/projects/notas/pessoal/bookmarks.md"
 

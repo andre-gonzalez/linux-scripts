@@ -6,8 +6,8 @@
 # add it.
 #
 
-file="/home/frank/projects/notas/trabalho/athenaworks/uberall/uberall-todo.md"
-done="/home/frank/projects/notas/trabalho/athenaworks/uberall/todo-concluded.md"
+file="$HOME/projects/notas/trabalho/eureciclo/todo.md"
+done="$HOME/projects/notas/trabalho/eureciclo/todo-concluded.md"
 touch "$file"
 touch "$done"
 height=$(wc -l "$file" | awk '{print $1}')
