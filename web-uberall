@@ -1,0 +1,11 @@
+#!/bin/sh
+BROWSER=$1
+URL=$2
+
+case "$BROWSER" in
+	brave) brave --profile-directory="Profile 5" $URL;;
+	thorium) thorium-browser --profile-directory="Profile 2" $URL;;
+	qutebrowser) qutebrowser --basedir /home/frank/eureciclo/qutebrowser-work --qt-arg name "uberall" $URL;;
+	zen) zen-browser ;;
+	*) zen-browser ;;
+esac
