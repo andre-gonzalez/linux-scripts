@@ -1,0 +1,10 @@
+#!/bin/sh
+BROWSER=$1
+APP_URL="https://gemini.google.com/app"
+WINDOW_NAME="gemini"
+
+case "$BROWSER" in
+	brave) brave --profile-directory="Profile 3" --window-name=$WINDOW_NAME --app=$APP_URL ;;
+	thorium) thorium-browser --window-name=$WINDOW_NAME --app=$APP_URL ;;
+	*) thorium-browser --window-name=$WINDOW_NAME --app=$APP_URL ;;
+esac
