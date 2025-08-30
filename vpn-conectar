@@ -1,5 +1,0 @@
-#!/bin/sh
-
-VPN_ID=$(cat "$HOME"/.scripts/.env/pritunl_client | grep -Po '(?<=VPN_ID=).*')
-
-pritunl-client start $VPN_ID
