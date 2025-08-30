@@ -11,7 +11,7 @@ if [ $# -eq 2 ]; then
 	TIMEZONE=$2
 else
 	HOUR="$(echo "9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n1\n2\n3\n4\n5\n6\n7\n8" | dmenu -p "Hour:")"
-	TIMEZONE="$(echo "UTC\nCST\nPST\nGMT-4\nGMT-6\nGMT+2\nGMT-3" | dmenu -p "Timezone:")"
+	TIMEZONE="$(echo "PST\nEST\nGMT+1\nGMT+2\nUTC\nCST\nGMT-4\nGMT-6\nGMT-3" | dmenu -p "Timezone:")"
 # Adicionar lógica fallback aqui que se as variaveis ainda estiverem vazias de ler com read
 # elif
 # read -r -p 'Hours: ' HOUR
