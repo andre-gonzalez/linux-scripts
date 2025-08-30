@@ -3,12 +3,17 @@
 /usr/bin/dash $HOME/.scripts/web-call &
 /usr/bin/dash $HOME/.scripts/work-tmux &
 /usr/bin/dash $HOME/.scripts/web-uberall &
+/usr/bin/dash $HOME/.scripts/databricks &
 /usr/bin/dash $HOME/.scripts/web-pessoal &
 /usr/bin/bash $HOME/.scripts/configure-trackball.sh &
 /usr/bin/slack &
 start-redshift.sh &
 kill-xautolock.sh &
 $HOME/.scripts/awsvpnclient &
+datagrip &
+cursor &
+1password &
+spotify-launcher &
 rm $HOME/Downloads
 
 #################
@@ -17,4 +22,3 @@ rm $HOME/Downloads
 # dbeaver &
 # /usr/bin/dash $HOME/.scripts/show_keybinds.sh &
 # /usr/bin/dash $HOME/.scripts/web-videos &
-# spotify-launcher &
