@@ -1,10 +1,11 @@
 #!/bin/sh
 BROWSER=$1
+APP_LINK="https://dbc-4903b728-16a0.cloud.databricks.com/"
+WINDOW_NAME="databricks"
 
 case "$BROWSER" in
-	brave) brave --profile-directory="Profile 3" --window-name="databricks" --app=https://dbc-4903b728-16a0.cloud.databricks.com/;;
-	thorium) thorium-browser --app=https://dbc-4903b728-16a0.cloud.databricks.com/;;
-	# qutebrowser) qutebrowser --basedir /home/frank/eureciclo/web-call --qt-arg name call;;
-	*) thorium-browser --window-name="databricks" --app=https://dbc-4903b728-16a0.cloud.databricks.com/
-;;
+	brave) brave --profile-directory="Profile 3" --window-name=$WINDOW_NAME --app=$APP_LINK ;;
+	thorium) thorium-browser --window-name=$WINDOW_NAME --app=$APP_LINK ;;
+	chromium) chromium --profile-directory="Default" --window-name=$WINDOW_NAME --app=$APP_LINK ;;
+	*) chromium --profile-directory="Default" --window-name=$WINDOW_NAME --app=$APP_LINK ;;
 esac

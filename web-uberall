@@ -7,5 +7,6 @@ case "$BROWSER" in
 	thorium) thorium-browser --profile-directory="Profile 2" $URL;;
 	qutebrowser) qutebrowser --basedir /home/frank/eureciclo/qutebrowser-work --qt-arg name "uberall" $URL;;
 	zen) zen-browser ;;
-	*) zen-browser ;;
+	chromium) chromium --profile-directory="Default" $URL ;;
+	*) chromium --profile-directory="Default" $URL ;;
 esac
