@@ -9,7 +9,7 @@
 /usr/bin/slack &
 start-redshift.sh &
 kill-xautolock.sh &
-$HOME/.scripts/awsvpnclient &
+awsvpnclient &
 datagrip &
 cursor &
 1password &
