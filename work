@@ -8,7 +8,6 @@
 /usr/bin/bash $HOME/.scripts/configure-trackball.sh &
 /usr/bin/slack &
 start-redshift.sh &
-kill-xautolock.sh &
 awsvpnclient &
 datagrip &
 cursor &
