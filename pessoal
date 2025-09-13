@@ -4,7 +4,6 @@
 /usr/bin/dash $HOME/.scripts/pessoal-tmux &
 /usr/bin/bash $HOME/.scripts/configure-trackball.sh &
 /usr/bin/calibre &
-start-redshift.sh &
 kill-xautolock.sh &
 rm $HOME/Downloads &
 
