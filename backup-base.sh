@@ -43,7 +43,7 @@ backup() {
     DATE=$(date +%Y-%m-%d)
 
 	# Excluded directories
-    EXCLUDES="--exclude=lost+found --exclude=.cache --exclude=.config/autostart/ --exclude=.config/VirtualBox/ --exclude=.local/share/Trash --exclude=videos/ --exclude=.local/share/Steam --exclude=.local/share/qutebrowser --exclude=.local/share/cargo --exclude=.local/share/ULWGL --exclude=.local/share/snyk-ls --exclude=.config/BraveSoftware --exclude=.config/Slack --exclude=.config/heroic --exclude=.config/EmuDeck"
+    EXCLUDES="--exclude=lost+found --exclude=.cache --exclude=.config/autostart/ --exclude=.config/VirtualBox/ --exclude=.local/share/Trash --exclude=videos/ --exclude=.local/share/Steam --exclude=.local/share/qutebrowser --exclude=.local/share/cargo --exclude=.local/share/ULWGL --exclude=.local/share/snyk-ls --exclude=.config/BraveSoftware --exclude=.config/Slack --exclude=.config/heroic --exclude=.config/EmuDeck --exclude=.config/wall-d/install"
 
     # Logging the backup operation
     echo "Backing up home directory to $BACKUP_DIR/$DATE-$HOST"
