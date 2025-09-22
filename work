@@ -11,7 +11,7 @@ awsvpnclient &
 datagrip &
 cursor &
 1password &
-spotify-launcher &
+# spotify-launcher &
 rm $HOME/Downloads
 
 #################
