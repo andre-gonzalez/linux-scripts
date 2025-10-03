@@ -3,7 +3,7 @@
 /usr/bin/dash $HOME/.scripts/web-call &
 /usr/bin/dash $HOME/.scripts/work-tmux &
 /usr/bin/dash $HOME/.scripts/web-uberall &
-/usr/bin/dash $HOME/.scripts/databricks &
+# /usr/bin/dash $HOME/.scripts/databricks &
 /usr/bin/dash $HOME/.scripts/web-pessoal &
 /usr/bin/bash $HOME/.scripts/configure-trackball.sh &
 /usr/bin/slack &
