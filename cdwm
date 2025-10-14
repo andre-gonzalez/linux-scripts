@@ -1,0 +1,28 @@
+#!/bin/sh
+
+# This change dwm between laptop and ultra wide screen modes
+# Usage: cdwm laptop | ultra
+
+# Define paths
+LAPTOP_DWM="$HOME/.config/dwm/laptop-dwm"
+ULTRA_DWM="$HOME/.config/dwm/ultra-wide-dwm"
+
+# Check argument
+if [ "$1" = "laptop" ]; then
+    TARGET_DIR="$LAPTOP_DWM"
+elif [ "$1" = "ultra" ]; then
+    TARGET_DIR="$ULTRA_DWM"
+else
+    echo "Usage: $0 {laptop|ultra}"
+    exit 1
+fi
+
+# Build and install
+echo "Installing dwm from $TARGET_DIR..."
+cd "$TARGET_DIR" || exit 1
+sudo make clean install
+
+# Quit current dwm
+echo "Exiting current dwm session..."
+# This will quit dwm by sending the quit signal
+pkill dwm
