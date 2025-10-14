@@ -1,0 +1,206 @@
+#!/bin/sh
+# POSIX-compatible timezone table with current-hour highlight
+# Usage: ./timezone.sh [--select|-s] for dmenu selection
+
+# === Configuration ===
+MY_TZ="America/Sao_Paulo"  # your timezone
+PEOPLE_FILE=".env/people"
+START_HOUR=8
+END_HOUR=19
+
+# === Functions ===
+
+# Load people data from .env/people file
+load_people_data() {
+    if [ ! -f "$PEOPLE_FILE" ]; then
+        echo "Error: People configuration file not found: $PEOPLE_FILE" >&2
+        echo "Please create $PEOPLE_FILE with people data in format: Name|Timezone" >&2
+        return 1
+    fi
+
+    if [ ! -r "$PEOPLE_FILE" ]; then
+        echo "Error: Cannot read people configuration file: $PEOPLE_FILE" >&2
+        return 1
+    fi
+
+    # Read the file and substitute MY_TZ variable
+    while IFS= read -r line; do
+        # Skip empty lines and comments
+        [ -z "$line" ] && continue
+        [ "${line#\#}" != "$line" ] && continue
+
+        # Replace MY_TZ placeholder with actual timezone
+        echo "$line" | sed "s|MY_TZ|$MY_TZ|g"
+    done < "$PEOPLE_FILE"
+}
+
+# Extract people names from people data
+extract_people_names() {
+    people_data="$1"
+    echo "$people_data" | while IFS='|' read -r nm tz; do
+        [ -z "$nm" ] && continue
+        printf '%s\n' "$nm"
+    done
+}
+
+# Select people using dmenu
+select_people_with_dmenu() {
+    people_data="$1"
+
+    # Check if dmenu is available
+    if ! command -v dmenu >/dev/null 2>&1; then
+        echo "Error: dmenu is not installed or not in PATH" >&2
+        return 1
+    fi
+
+    # Extract names and create dmenu list
+    names=$(extract_people_names "$people_data")
+    if [ -z "$names" ]; then
+        echo "Error: No people found in configuration" >&2
+        return 1
+    fi
+
+    # Use dmenu with multi-selection
+    selected=$(echo "$names" | dmenu -l 10 -p "Select people (Ctrl+Enter to confirm):")
+
+    # If no selection made, return empty
+    [ -z "$selected" ] && return 0
+
+    # Return selected names (one per line)
+    echo "$selected"
+}
+
+# Filter people data based on selected names
+filter_people_by_selection() {
+    people_data="$1"
+    selected_names="$2"
+    [ -z "$selected_names" ] && return 0
+
+    echo "$people_data" | while IFS='|' read -r name tz; do
+        [ -z "$name" ] && continue
+        # Check if this name is in the selected list
+        echo "$selected_names" | while IFS= read -r selected; do
+            [ "$name" = "$selected" ] && printf '%s|%s\n' "$name" "$tz"
+        done
+    done
+}
+
+# Display timezone table for given people data
+display_timezone_table() {
+    people_data="$1"
+
+    # === Layout settings ===
+    TIME_W=7
+    MIN_NAME_W=8
+    PADDING=2
+
+    # === Colors ===
+    # ANSI escape codes (disable with NO_COLOR=1 if needed)
+    if [ -z "$NO_COLOR" ]; then
+        BOLD="$(printf '\033[1m')"
+        RESET="$(printf '\033[0m')"
+        REVERSE="$(printf '\033[7m')"  # inverse colors
+    else
+        BOLD=""; RESET=""; REVERSE=""
+    fi
+
+    # === Determine widths ===
+    max_name=0
+    echo "$people_data" | while IFS='|' read -r nm tz; do
+        [ -z "$nm" ] && continue
+        printf '%s\n' "$nm"
+    done > /tmp/.tz_names.$$
+
+    while IFS= read -r name; do
+        len=${#name}
+        [ "$len" -gt "$max_name" ] && max_name=$len
+    done < /tmp/.tz_names.$$ 2>/dev/null
+    rm -f /tmp/.tz_names.$$ 2>/dev/null
+
+    name_w=$max_name
+    [ "$name_w" -lt "$MIN_NAME_W" ] && name_w=$MIN_NAME_W
+    name_w=$((name_w + PADDING))
+
+    # === Header ===
+    CURRENT_TIME=$(date "+%R")
+    printf "Current time: %s\n\n" "$CURRENT_TIME"
+    printf "%-${name_w}s" "Name"
+    hour=$START_HOUR
+    while [ "$hour" -le "$END_HOUR" ]; do
+        label=$(printf "%02d:00" "$hour")
+        printf "%*s" "$TIME_W" "$label"
+        hour=$((hour + 1))
+    done
+    printf "\n"
+
+    # Separator
+    total_w=$((name_w + (END_HOUR - START_HOUR + 1) * TIME_W))
+    i=0; while [ "$i" -lt "$total_w" ]; do printf '-'; i=$((i + 1)); done; printf "\n"
+
+    # === Current hour (your local time) ===
+    current_hour=$(TZ="$MY_TZ" date +%H | sed 's/^0//')
+    today=$(TZ="$MY_TZ" date +%Y-%m-%d)
+
+    # === Table content ===
+    echo "$people_data" | while IFS="|" read -r name tz; do
+        [ -z "$name" ] && continue
+        printf "%-${name_w}s" "$name"
+
+        hour=$START_HOUR
+        while [ "$hour" -le "$END_HOUR" ]; do
+            ts=$(TZ="$MY_TZ" date -d "$today $hour:00" +%s)
+            tstr=$(TZ="$tz" date -d "@$ts" +%H:%M 2>/dev/null)
+            [ -z "$tstr" ] && tstr="--:--"
+
+            # Highlight column if this is the current local hour
+            if [ "$hour" -eq "$current_hour" ]; then
+                printf "%s%*s%s" "$REVERSE" "$TIME_W" "$tstr" "$RESET"
+            else
+                printf "%*s" "$TIME_W" "$tstr"
+            fi
+            hour=$((hour + 1))
+        done
+        printf "\n"
+    done
+}
+
+# === Main script logic ===
+
+# Load people data from configuration file
+PEOPLE=$(load_people_data)
+if [ $? -ne 0 ]; then
+    exit 1
+fi
+
+# Check if we have any people data
+if [ -z "$PEOPLE" ]; then
+    echo "Error: No people data found in configuration file" >&2
+    exit 1
+fi
+
+# Check command line arguments
+if [ "$1" = "--select" ] || [ "$1" = "-s" ]; then
+    # Use dmenu selection
+    selected_names=$(select_people_with_dmenu "$PEOPLE")
+    if [ $? -ne 0 ]; then
+        exit 1
+    fi
+
+    if [ -z "$selected_names" ]; then
+        echo "No people selected. Exiting."
+        exit 0
+    fi
+
+    # Filter people data based on selection
+    filtered_people=$(filter_people_by_selection "$PEOPLE" "$selected_names")
+    if [ -z "$filtered_people" ]; then
+        echo "No matching people found. Exiting."
+        exit 0
+    fi
+
+    # Display table with selected people
+    display_timezone_table "$filtered_people"
+else
+    # Display all people (original behavior)
+    display_timezone_table "$PEOPLE"
+fi
