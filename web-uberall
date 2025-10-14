@@ -5,7 +5,7 @@ URL=$2
 case "$BROWSER" in
 	brave) brave --profile-directory="Profile 5" $URL;;
 	thorium) thorium-browser --profile-directory="Profile 2" $URL;;
-	qutebrowser) qutebrowser --basedir /home/frank/eureciclo/qutebrowser-work --qt-arg name "uberall" $URL;;
+	qutebrowser) qutebrowser --basedir /home/frank/eureciclo/qutebrowser-work --qt-arg name "web-uberall" $URL;;
 	zen) zen-browser ;;
 	chromium) chromium --profile-directory="Default" $URL ;;
 	*) chromium --profile-directory="Default" $URL ;;
