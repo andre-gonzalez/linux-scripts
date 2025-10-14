@@ -1,0 +1,1 @@
+chromium --profile-directory="Profile 0" --window-name="hbo" --app=https://play.hbomax.com/
