@@ -4,7 +4,7 @@
 
 # === Configuration ===
 MY_TZ="America/Sao_Paulo"  # your timezone
-PEOPLE_FILE=".env/people"
+PEOPLE_FILE="$HOME/.scripts/.env/people"
 START_HOUR=8
 END_HOUR=19
 
