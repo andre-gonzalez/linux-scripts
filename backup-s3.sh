@@ -27,19 +27,23 @@ rclone_s3_bucket=backups-pessoal
 bandwidth_limit=100M
 
 # Make sure bucket exists.
-$RCLONE mkdir $rclone_remote:$rclone_s3_bucket
+# $RCLONE mkdir $rclone_remote:$rclone_s3_bucket
 
 # List of directories to clone. MUST be absolute path, beginning with /.
 declare -a dirs=(
   "/mnt/hd-externo/s3/arch-samsung/"
   "/mnt/hd-externo/s3/server/"
   "/mnt/hd-externo/s3/arch-samsung-wifi-networks/"
+  "/mnt/hd-externo/s3/bitwarden/"
+  "/mnt/hd-externo/s3/ente/"
 )
 
 # Copy files that do not exist in the bucket
 for i in "${dirs[@]}"
 do
 	echo "Syncing Directory: $i"
-	despaced="${i// /_}"
-	$RCLONE copy "$i" $rclone_remote:$rclone_s3_bucket"$despaced" --skip-links --ignore-existing # --bwlimit $bandwidth_limit
+	end_directory="$(basename "$i")"
+	$RCLONE copy "$i" $rclone_remote:$rclone_s3_bucket"/$end_directory" --skip-links --ignore-existing --progress # --bwlimit $bandwidth_limit
+	echo
+	echo
 done
