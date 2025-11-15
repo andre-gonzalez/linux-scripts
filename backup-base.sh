@@ -43,7 +43,7 @@ backup() {
     DATE=$(date +%Y-%m-%d)
 
 	# Excluded directories
-    EXCLUDES="--exclude=lost+found --exclude=.cache --exclude=.config/autostart/ --exclude=.config/VirtualBox/ --exclude=.local/share/Trash --exclude=videos/ --exclude=.local/share/Steam --exclude=.local/share/qutebrowser --exclude=.local/share/cargo --exclude=.local/share/ULWGL --exclude=.local/share/snyk-ls --exclude=.config/BraveSoftware --exclude=.config/Slack --exclude=.config/heroic --exclude=.config/EmuDeck --exclude=.config/wall-d/install --exclude=no-backup/ --exclude=.local/share/nvim/mason/packages --exclude=.local/share/nvim/lazy --exclude=.local/share/Anki2 --exclude=.local/share/spotify-launcher --exclude=.config/discord"
+    EXCLUDES="--exclude=lost+found --exclude=.cache --exclude=.config/autostart/ --exclude=.config/VirtualBox/ --exclude=.local/share/Trash --exclude=videos/ --exclude=.local/share/Steam --exclude=.local/share/qutebrowser --exclude=.local/share/cargo --exclude=.local/share/ULWGL --exclude=.local/share/snyk-ls --exclude=.config/BraveSoftware --exclude=.config/Slack --exclude=.config/heroic --exclude=.config/EmuDeck --exclude=.config/wall-d/install --exclude=no-backup/ --exclude=.local/share/nvim/mason/packages --exclude=.local/share/nvim/lazy --exclude=.local/share/Anki2 --exclude=.local/share/spotify-launcher --exclude=.config/discord --exclude=.config/dwm/ultra-wide-dwm/drw.o --exclude=.config/dwm/ultra-wide-dwm/dwm --exclude=.config/dwm/ultra-wide-dwm/dwm.o --exclude=.config/dwm/ultra-wide-dwm/util.o"
 
     # Logging the backup operation
     echo "Backing up home directory to $BACKUP_DIR/$DATE-$HOST"
