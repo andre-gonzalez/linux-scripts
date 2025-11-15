@@ -5,7 +5,7 @@
 #
 # Basic usage:
 #   ./rclone.sh
-#
+#   ./rclone.sh --exclude filename
 # Script requires valid credentials - set up with `rclone config`.
 
 RCLONE=/usr/bin/rclone
@@ -26,6 +26,22 @@ rclone_remote=personal
 rclone_s3_bucket=backups-pessoal
 bandwidth_limit=100M
 
+# Exclude flag
+EXCLUDE_FLAGS=()
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --exclude)
+      EXCLUDE_FLAGS+=("--exclude" "$2")
+      shift 2
+      ;;
+    *)
+      echo "Unknown option: $1"
+      exit 1
+      ;;
+  esac
+done
+
 # Make sure bucket exists.
 # $RCLONE mkdir $rclone_remote:$rclone_s3_bucket
 
@@ -43,7 +59,14 @@ for i in "${dirs[@]}"
 do
 	echo "Syncing Directory: $i"
 	end_directory="$(basename "$i")"
-	$RCLONE copy "$i" $rclone_remote:$rclone_s3_bucket"/$end_directory" --skip-links --ignore-existing --progress # --bwlimit $bandwidth_limit
+
+	$RCLONE copy "$i" \
+		$rclone_remote:$rclone_s3_bucket"/$end_directory" \
+		--skip-links \
+		--ignore-existing \
+		--progress \
+		"${EXCLUDE_FLAGS[@]}"
+		# --bwlimit $bandwidth_limit
 	echo
 	echo
 done
