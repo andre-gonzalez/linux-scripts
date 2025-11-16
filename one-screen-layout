@@ -19,4 +19,6 @@ if [ "$ISROOT" = 0 ] ; then
 	xdotool key shift+super+q
 fi ;
 
-cdwm laptop
+cdwm laptop ;
+
+dwmblocks
