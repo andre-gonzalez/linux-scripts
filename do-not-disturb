@@ -3,18 +3,48 @@
 # Supports:
 #   do-not-disturb H M   -> hours + minutes
 #   do-not-disturb H     -> hours only (minutes = 0)
-#   do-not-disturb       -> just toggle without timer
+#   do-not-disturb       -> toggle without timer
+#   do-not-disturb -h    -> show help
+
+show_help() {
+    cat << EOF
+Usage: do-not-disturb [HOURS] [MINUTES]
+
+Toggle Do Not Disturb (DND) mode on/off for dunst.
+If HOURS and MINUTES are provided, DND stays enabled for that duration.
+
+Examples:
+  do-not-disturb          Toggle DND on/off immediately
+  do-not-disturb 1        Enable DND for 1 hour
+  do-not-disturb 0 30     Enable DND for 30 minutes
+  do-not-disturb 1 15     Enable DND for 1 hour and 15 minutes
+  do-not-disturb 1 0      Enable DND for 1 hour
+  do-not-disturb -h       Show this help page
+
+Notes:
+- HOURS and MINUTES must be integers ≥ 0.
+- If only HOURS is provided, MINUTES defaults to 0.
+EOF
+}
+
+# Handle help flag
+case "$1" in
+    -h|--help)
+        show_help
+        exit 0
+        ;;
+esac
 
 status="$(dunstctl is-paused)"
 
 HOURS="${1:-}"
-MINUTES="${2:-0}"   # if only one arg given, second becomes 0
+MINUTES="${2:-0}"
 
-# If no arguments at all, both HOURS and MINUTES should be ignored
+# If no args provided, toggle only
 if [ -z "$1" ]; then
     TOTAL_SECONDS=0
 else
-    # Validate numeric input (optional but nice)
+    # Validate numeric input
     if ! [ "$HOURS" -ge 0 ] 2>/dev/null; then
         echo "Invalid hours value: $HOURS" >&2
         exit 1
