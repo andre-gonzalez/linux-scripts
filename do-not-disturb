@@ -1,10 +1,12 @@
 #!/bin/sh
 # Toggle Dunst Do Not Disturb mode.
 # Supports:
-#   do-not-disturb H M   -> hours + minutes
-#   do-not-disturb H     -> hours only (minutes = 0)
-#   do-not-disturb       -> toggle without timer
-#   do-not-disturb -h    -> show help
+#   do-not-disturb H M
+#   do-not-disturb H
+#   do-not-disturb
+#   do-not-disturb -h
+
+END_FILE="$HOME/.cache/do-not-disturb-end"
 
 show_help() {
     cat << EOF
@@ -14,16 +16,15 @@ Toggle Do Not Disturb (DND) mode on/off for dunst.
 If HOURS and MINUTES are provided, DND stays enabled for that duration.
 
 Examples:
-  do-not-disturb          Toggle DND on/off immediately
+  do-not-disturb          Toggle DND immediately
   do-not-disturb 1        Enable DND for 1 hour
+  do-not-disturb 1 15     Enable DND for 1h15m
   do-not-disturb 0 30     Enable DND for 30 minutes
-  do-not-disturb 1 15     Enable DND for 1 hour and 15 minutes
-  do-not-disturb 1 0      Enable DND for 1 hour
   do-not-disturb -h       Show this help page
 
-Notes:
-- HOURS and MINUTES must be integers ≥ 0.
-- If only HOURS is provided, MINUTES defaults to 0.
+This script also:
+  - Mutes all system audio
+  - Mutes all “notification/event” audio streams
 EOF
 }
 
@@ -40,11 +41,10 @@ status="$(dunstctl is-paused)"
 HOURS="${1:-}"
 MINUTES="${2:-0}"
 
-# If no args provided, toggle only
+# Compute total seconds if arguments were provided
 if [ -z "$1" ]; then
     TOTAL_SECONDS=0
 else
-    # Validate numeric input
     if ! [ "$HOURS" -ge 0 ] 2>/dev/null; then
         echo "Invalid hours value: $HOURS" >&2
         exit 1
@@ -57,36 +57,81 @@ else
     TOTAL_SECONDS=$(( HOURS * 3600 + MINUTES * 60 ))
 fi
 
-# Store the time do-not-disturb will end
-END_FILE="$HOME/.cache/do-not-disturb-end"
+# ------------------------------------------------------
+#  AUDIO MUTING FUNCTIONS
+# ------------------------------------------------------
 
-if [ "$TOTAL_SECONDS" -gt 0 ]; then
-    # Save the timestamp when DND should end
-    mkdir -p "$(dirname "$END_FILE")"
-    echo $(( $(date +%s) + TOTAL_SECONDS )) > "$END_FILE"
-else
-    # No timer → remove file
-    rm -f "$END_FILE"
-fi
+mute_all_audio() {
+    pactl set-sink-mute @DEFAULT_SINK@ true
+}
+
+unmute_all_audio() {
+    pactl set-sink-mute @DEFAULT_SINK@ false
+}
+
+mute_notification_streams() {
+    for stream in $(pactl list sink-inputs \
+        | grep -B2 'media.role = "event"' \
+        | grep "Sink Input" \
+        | awk '{print $3}')
+    do
+        pactl set-sink-input-mute "$stream" true
+    done
+}
+
+unmute_notification_streams() {
+    for stream in $(pactl list sink-inputs \
+        | grep -B2 'media.role = "event"' \
+        | grep "Sink Input" \
+        | awk '{print $3}')
+    do
+        pactl set-sink-input-mute "$stream" false
+    done
+}
+
+# ------------------------------------------------------
+#  DND MODE LOGIC
+# ------------------------------------------------------
 
 do_not_disturb_off() {
     dunstctl set-paused false
+
+    # Unmute everything
+    unmute_all_audio
+    unmute_notification_streams
+
+    # Reset timer file
+    rm -f "$END_FILE"
+
     notify-send "Do not disturb OFF"
-	rm -f "$END_FILE"
     kill -48 "$(pidof dwmblocks)"
 }
 
 if [ "$status" = "false" ]; then
+    # Turning ON DND
     dunstctl set-paused true
     echo "Do not disturb ON" | dmenu
     kill -48 "$(pidof dwmblocks)"
 
-    # Only sleep if user provided a time
+    # Save end timestamp
+    if [ "$TOTAL_SECONDS" -gt 0 ]; then
+        mkdir -p "$(dirname "$END_FILE")"
+        echo $(( $(date +%s) + TOTAL_SECONDS )) > "$END_FILE"
+    else
+        rm -f "$END_FILE"
+    fi
+
+    # Enable audio mute
+    mute_all_audio
+    mute_notification_streams
+
+    # Sleep if timer provided
     if [ "$TOTAL_SECONDS" -gt 0 ]; then
         sleep "$TOTAL_SECONDS"
         do_not_disturb_off
     fi
 
 elif [ "$status" = "true" ]; then
+    # Turning OFF DND
     do_not_disturb_off
 fi
