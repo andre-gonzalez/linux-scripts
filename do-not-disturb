@@ -57,9 +57,22 @@ else
     TOTAL_SECONDS=$(( HOURS * 3600 + MINUTES * 60 ))
 fi
 
+# Store the time do-not-disturb will end
+END_FILE="$HOME/.cache/do-not-disturb-end"
+
+if [ "$TOTAL_SECONDS" -gt 0 ]; then
+    # Save the timestamp when DND should end
+    mkdir -p "$(dirname "$END_FILE")"
+    echo $(( $(date +%s) + TOTAL_SECONDS )) > "$END_FILE"
+else
+    # No timer → remove file
+    rm -f "$END_FILE"
+fi
+
 do_not_disturb_off() {
     dunstctl set-paused false
     notify-send "Do not disturb OFF"
+	rm -f "$END_FILE"
     kill -48 "$(pidof dwmblocks)"
 }
 
