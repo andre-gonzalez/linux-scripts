@@ -85,7 +85,7 @@ work_hours() {
 		if [ "$x" = "$day_of_week" ]; then
 			if [ "$hour" -ge 9 ] && [ "$hour" -lt 11 ]; then
 				echo "[✓] In working hours"
-				connect_headphone
+				# connect_headphone
 				/home/frank/.scripts/work &
 				do_not_autolock
 				exit 0
