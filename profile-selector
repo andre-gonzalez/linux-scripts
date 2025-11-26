@@ -83,7 +83,7 @@ work_hours() {
 	echo "[*] Checking if it's a workday and time..."
 	for x in Monday Tuesday Wednesday Thursday Friday; do
 		if [ "$x" = "$day_of_week" ]; then
-			if [ "$hour" -ge 7 ] && [ "$hour" -lt 11 ]; then
+			if [ "$hour" -ge 9 ] && [ "$hour" -lt 11 ]; then
 				echo "[✓] In working hours"
 				connect_headphone
 				/home/frank/.scripts/work &
