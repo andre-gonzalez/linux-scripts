@@ -1,12 +1,12 @@
 #!/bin/sh
 BROWSER=$1
 URL=$2
+WINDOW_NAME="uberall"
 
 case "$BROWSER" in
-	brave) brave --profile-directory="Profile 5" $URL;;
-	thorium) thorium-browser --profile-directory="Profile 2" $URL;;
-	qutebrowser) qutebrowser --basedir /home/frank/eureciclo/qutebrowser-work --qt-arg name "web-uberall" $URL;;
+	brave) brave --profile-directory="Profile 3" --window-name=$WINDOW_NAME --app=$URL ;;
+	thorium) thorium-browser --window-name=$WINDOW_NAME --app=$URL ;;
 	zen) zen-browser ;;
-	chromium) chromium --profile-directory="Default" $URL ;;
-	*) chromium --profile-directory="Default" $URL ;;
+	chromium) chromium --profile-directory="Default" --window-name=$WINDOW_NAME --app=$URL ;;
+	*) chromium --profile-directory="Default" --window-name=$WINDOW_NAME --app=$URL ;;
 esac
