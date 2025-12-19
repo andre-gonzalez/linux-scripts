@@ -4,7 +4,6 @@ LOG="/tmp/autostart.log"
 exec > "$LOG" 2>&1
 echo "========== AUTOSTART $(date) =========="
 
-HEADPHONES_MAC="CC:98:8B:C1:5C:78"
 
 # === Environment Setup ===
 export DISPLAY=:0
@@ -42,38 +41,6 @@ check_base_programs() {
 	done
 }
 
-# === Connect Bluetooth headphones ===
-connect_headphone() {
-	echo "[*] Waiting for bluetoothd..."
-
-	TIMEOUT=15
-	while ! systemctl is-active --quiet bluetooth; do
-		sleep 1
-		TIMEOUT=$((TIMEOUT - 1))
-		if [ "$TIMEOUT" -le 0 ]; then
-			echo "[!] Timeout waiting for bluetoothd"
-			return
-		fi
-	done
-
-	echo "[*] Powering on Bluetooth, trusting and connecting to $HEADPHONES_MAC"
-	bluetoothctl power on
-	bluetoothctl trust "$HEADPHONES_MAC"
-	bluetoothctl connect "$HEADPHONES_MAC"
-
-
-	TIMEOUT=30
-	while [ $TIMEOUT -gt 0 ]; do
-		if bluetoothctl info "$HEADPHONES_MAC" | grep -q "Connected: yes"; then
-			echo "[✓] Headphones connected"
-			return
-		fi
-		sleep 1
-		TIMEOUT=$((TIMEOUT - 1))
-	done
-
-	echo "[!] Failed to connect to headphones"
-}
 
 # === Work profile based on time ===
 work_hours() {
@@ -85,7 +52,6 @@ work_hours() {
 		if [ "$x" = "$day_of_week" ]; then
 			if [ "$hour" -ge 9 ] && [ "$hour" -lt 11 ]; then
 				echo "[✓] In working hours"
-				# connect_headphone
 				/home/frank/.scripts/work &
 				do_not_autolock
 				exit 0
