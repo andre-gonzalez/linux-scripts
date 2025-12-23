@@ -30,3 +30,4 @@ fi
 
 # Update dwmblocks (if you want this)
 kill -46 "$(pidof dwmblocks)"
+kill -44 "$(pidof dwmblocks)"
