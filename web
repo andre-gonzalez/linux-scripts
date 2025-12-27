@@ -13,6 +13,13 @@
 browser='chromium'
 engine='https://google.com/search?q=%s'
 bookmarks="$HOME/projects/notas/pessoal/bookmarks.md"
+bulk_actions="$HOME/projects/notas/pessoal/bulk-bookmarks.txt"
+
+# Parse command line flags
+bulk_mode=false
+case "$1" in
+	-b|--bulk) bulk_mode=true ;;
+esac
 
 gotourl() {
 	if [ "$nbrowser" = surf ]
@@ -38,6 +45,43 @@ gotourl() {
 		$nbrowser "$choice"
 	else $browser "$choice"
 	fi
+}
+
+# Open multiple URLs in bulk mode
+gotourls() {
+	for url in "$@"; do
+		choice="$url"
+		gotourl
+	done
+}
+
+# Parse bulk actions file and extract URLs for selected action
+get_bulk_urls() {
+	action="$1"
+	in_action=false
+
+	while IFS= read -r line || [ -n "$line" ]; do
+		# Skip empty lines and comments
+		[ -z "$line" ] && continue
+		[ "${line#\#}" != "$line" ] && continue
+
+		# Check if line starts with whitespace (URL) or not (action name)
+		if echo "$line" | grep -q '^[[:space:]]'; then
+			# This is a URL line
+			if [ "$in_action" = true ]; then
+				# Trim leading and trailing whitespace, remove control characters
+				url=$(printf '%s' "$line" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//' | tr -d '\r\n')
+				[ -n "$url" ] && printf '%s\n' "$url"
+			fi
+		else
+			# This is an action name line
+			if [ "$line" = "$action" ]; then
+				in_action=true
+			else
+				in_action=false
+			fi
+		fi
+	done < "$bulk_actions"
 }
 
 searchweb() {
@@ -89,6 +133,58 @@ xprop -root | grep '^_NET_ACTIVE_WINDOW' && {
 	esac
 }
 
+# Bulk mode: show actions and open multiple URLs
+if [ "$bulk_mode" = true ]; then
+	if [ ! -f "$bulk_actions" ]; then
+		echo "Error: bulk actions file not found: $bulk_actions" >&2
+		exit 1
+	fi
+
+	# Extract action names (non-indented lines that aren't comments or empty)
+	tmpfile=$(mktemp /tmp/dmenu_bulk_actions.XXXXXX)
+	urlfile=$(mktemp /tmp/dmenu_bulk_urls.XXXXXX)
+	trap 'rm -f "$tmpfile" "$urlfile"' 0 1 15
+
+	while IFS= read -r line; do
+		[ -z "$line" ] && continue
+		[ "${line#\#}" != "$line" ] && continue
+		# Only include lines that don't start with whitespace (action names)
+		echo "$line" | grep -q '^[[:space:]]' || echo "$line"
+	done < "$bulk_actions" > "$tmpfile"
+
+	[ ! -s "$tmpfile" ] && echo "Error: no actions found in $bulk_actions" >&2 && exit 1
+
+	choice=$(dmenu -W 350 -p "Bulk Action:" -l 20 < "$tmpfile") || exit 1
+
+	# Get URLs for selected action and store in temp file
+	get_bulk_urls "$choice" > "$urlfile"
+
+	if [ ! -s "$urlfile" ]; then
+		echo "Error: no URLs found for action: $choice" >&2
+		exit 1
+	fi
+
+	# Clear winid for bulk mode to ensure each URL opens in a new tab/window
+	# instead of trying to type into the active window's address bar
+	winid=""
+	shortcut=""
+
+	# Open all URLs simultaneously in background
+	while IFS= read -r url || [ -n "$url" ]; do
+		# Trim all leading and trailing whitespace, including newlines and control characters
+		url=$(printf '%s' "$url" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//' | tr -d '\r\n')
+		[ -z "$url" ] && continue
+		choice="$url"
+		gotourl &
+	done < "$urlfile"
+
+	# Wait a moment for all browser processes to start
+	sleep 0.1
+
+	exit 0
+fi
+
+# Normal mode: single URL/bookmark selection
 tmpfile=$(mktemp /tmp/dmenu_websearch.XXXXXX)
 trap 'rm "$tmpfile"' 0 1 15
 printf '%s\n%s\n' "$uricur" "$1" > "$tmpfile"
