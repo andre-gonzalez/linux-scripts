@@ -1,0 +1,11 @@
+#!/bin/sh
+BROWSER=$1
+APP_LINK="https://chatgpt.com/"
+WINDOW_NAME="chat gpt"
+
+case "$BROWSER" in
+	brave) brave --profile-directory="Profile 3" --window-name=$WINDOW_NAME --app=$APP_LINK ;;
+	thorium) thorium-browser --window-name=$WINDOW_NAME --app=$APP_LINK ;;
+	chromium) chromium --profile-directory="Profile 0" --window-name=$WINDOW_NAME --app=$APP_LINK ;;
+	*) chromium --profile-directory="Profile 0" --window-name=$WINDOW_NAME --app=$APP_LINK ;;
+esac
