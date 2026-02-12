@@ -21,6 +21,8 @@
 STATE_FILE="/tmp/save-battery-state.json"
 TLP_CONFIG="/etc/tlp.conf"
 TLP_BACKUP="/tmp/tlp.conf.backup"
+UNDERVOLT_CONFIG="/etc/intel-undervolt.conf"
+UNDERVOLT_BACKUP="/tmp/intel-undervolt.conf.backup"
 PROMPT_SCRIPT="/home/frank/.scripts/prompt.sh"
 
 # Colors for output
@@ -60,6 +62,32 @@ prompt_and_execute() {
 check_sudo() {
 	if ! sudo -n true 2>/dev/null; then
 		log "${YELLOW}Note: Some operations require sudo privileges${NC}"
+	fi
+}
+
+# Backup intel-undervolt configuration
+backup_undervolt_config() {
+	if [ -f "$UNDERVOLT_CONFIG" ] && [ ! -f "$UNDERVOLT_BACKUP" ]; then
+		log "Backing up intel-undervolt configuration..."
+		sudo cp "$UNDERVOLT_CONFIG" "$UNDERVOLT_BACKUP" 2>/dev/null || {
+			log "${RED}Failed to backup intel-undervolt config${NC}"
+			return 1
+		}
+		log "${GREEN}intel-undervolt config backed up${NC}"
+	fi
+}
+
+# Restore intel-undervolt configuration
+restore_undervolt_config() {
+	if [ -f "$UNDERVOLT_BACKUP" ]; then
+		log "Restoring intel-undervolt configuration..."
+		sudo cp "$UNDERVOLT_BACKUP" "$UNDERVOLT_CONFIG" 2>/dev/null || {
+			log "${RED}Failed to restore intel-undervolt config${NC}"
+			return 1
+		}
+		sudo systemctl restart intel-undervolt 2>/dev/null
+		log "${GREEN}intel-undervolt config restored${NC}"
+		rm -f "$UNDERVOLT_BACKUP"
 	fi
 }
 
@@ -168,6 +196,53 @@ apply_tlp_setting() {
 		log "Setting $setting not found, adding to config..."
 		sudo sh -c "echo \"${setting}=${value}\" >> $TLP_CONFIG" 2>/dev/null
 	fi
+}
+
+# Configure intel-undervolt for a specific profile
+configure_undervolt() {
+	local profile="$1"
+	local interactive="$2"
+
+	if [ ! -f "$UNDERVOLT_CONFIG" ]; then
+		log "${RED}intel-undervolt configuration not found at $UNDERVOLT_CONFIG${NC}"
+		return 1
+	fi
+
+	# Ask once in interactive mode
+	if [ "$interactive" = "true" ]; then
+		local answer=$(echo "No\nYes" | dmenu -p "Configure intel-undervolt for $profile profile?" 2>/dev/null)
+		if [ "$answer" != "Yes" ]; then
+			log "Skipping intel-undervolt configuration"
+			return 0
+		fi
+	fi
+
+	backup_undervolt_config
+
+	log "Configuring intel-undervolt for profile: $profile"
+
+	if [ "$profile" = "maximum" ]; then
+		sudo sed -i "s|^undervolt 0 .*|undervolt 0 'CPU' -140|" "$UNDERVOLT_CONFIG"
+		sudo sed -i "s|^undervolt 1 .*|undervolt 1 'GPU' -55|" "$UNDERVOLT_CONFIG"
+		sudo sed -i "s|^undervolt 2 .*|undervolt 2 'CPU Cache' -90|" "$UNDERVOLT_CONFIG"
+		sudo sed -i "s|^undervolt 3 .*|undervolt 3 'System Agent' -20|" "$UNDERVOLT_CONFIG"
+		sudo sed -i "s|^undervolt 4 .*|undervolt 4 'Analog I/O' -20|" "$UNDERVOLT_CONFIG"
+		sudo sed -i "s|^tjoffset .*|tjoffset -10|" "$UNDERVOLT_CONFIG"
+
+	elif [ "$profile" = "balanced" ]; then
+		sudo sed -i "s|^undervolt 0 .*|undervolt 0 'CPU' -50|" "$UNDERVOLT_CONFIG"
+		sudo sed -i "s|^undervolt 1 .*|undervolt 1 'GPU' 0|" "$UNDERVOLT_CONFIG"
+		sudo sed -i "s|^undervolt 2 .*|undervolt 2 'CPU Cache' -50|" "$UNDERVOLT_CONFIG"
+		sudo sed -i "s|^undervolt 3 .*|undervolt 3 'System Agent' 0|" "$UNDERVOLT_CONFIG"
+		sudo sed -i "s|^undervolt 4 .*|undervolt 4 'Analog I/O' 0|" "$UNDERVOLT_CONFIG"
+		sudo sed -i "s|^tjoffset .*|tjoffset 0|" "$UNDERVOLT_CONFIG"
+	fi
+
+	# Enable and restart intel-undervolt service
+	log "Enabling and restarting intel-undervolt service..."
+	sudo systemctl enable intel-undervolt 2>/dev/null
+	sudo systemctl restart intel-undervolt 2>/dev/null
+	log "${GREEN}intel-undervolt configured for $profile profile${NC}"
 }
 
 # Save state for restoration
@@ -389,6 +464,9 @@ apply_profile() {
 	# Configure TLP
 	configure_tlp "$profile" "$interactive"
 
+	# Configure intel-undervolt
+	configure_undervolt "$profile" "$interactive"
+
 	# Kill applications
 	kill_applications "$profile" "$interactive"
 
@@ -413,22 +491,6 @@ apply_profile() {
 		else
 			/bin/sh /home/frank/.scripts/start-stop-compositor.sh 2>/dev/null
 		fi
-
-		# Activate undervolt if available
-		if [ "$interactive" = "true" ]; then
-			prompt_and_execute "Activate CPU undervolt?" "sudo systemctl restart intel-undervolt 2>/dev/null"
-		else
-			sudo systemctl restart intel-undervolt 2>/dev/null
-		fi
-	fi
-
-	# Activate undervolt for balanced profile as well
-	if [ "$profile" = "balanced" ]; then
-		if [ "$interactive" = "true" ]; then
-			prompt_and_execute "Activate CPU undervolt?" "sudo systemctl restart intel-undervolt 2>/dev/null"
-		else
-			sudo systemctl restart intel-undervolt 2>/dev/null
-		fi
 	fi
 
 	log "${GREEN}Profile $profile applied successfully${NC}"
@@ -440,6 +502,9 @@ restore_normal() {
 
 	# Restore TLP config
 	restore_tlp_config
+
+	# Restore intel-undervolt config
+	restore_undervolt_config
 
 	# Restore services
 	if [ -f /tmp/save-battery-stopped-services.txt ]; then
