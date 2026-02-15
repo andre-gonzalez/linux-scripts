@@ -222,11 +222,11 @@ configure_undervolt() {
 	log "Configuring intel-undervolt for profile: $profile"
 
 	if [ "$profile" = "maximum" ]; then
-		sudo sed -i "s|^undervolt 0 .*|undervolt 0 'CPU' -140|" "$UNDERVOLT_CONFIG"
-		sudo sed -i "s|^undervolt 1 .*|undervolt 1 'GPU' -55|" "$UNDERVOLT_CONFIG"
-		sudo sed -i "s|^undervolt 2 .*|undervolt 2 'CPU Cache' -90|" "$UNDERVOLT_CONFIG"
-		sudo sed -i "s|^undervolt 3 .*|undervolt 3 'System Agent' -20|" "$UNDERVOLT_CONFIG"
-		sudo sed -i "s|^undervolt 4 .*|undervolt 4 'Analog I/O' -20|" "$UNDERVOLT_CONFIG"
+		sudo sed -i "s|^undervolt 0 .*|undervolt 0 'CPU' -130|" "$UNDERVOLT_CONFIG"
+		sudo sed -i "s|^undervolt 1 .*|undervolt 1 'GPU' -50|" "$UNDERVOLT_CONFIG"
+		sudo sed -i "s|^undervolt 2 .*|undervolt 2 'CPU Cache' -80|" "$UNDERVOLT_CONFIG"
+		sudo sed -i "s|^undervolt 3 .*|undervolt 3 'System Agent' -10|" "$UNDERVOLT_CONFIG"
+		sudo sed -i "s|^undervolt 4 .*|undervolt 4 'Analog I/O' -10|" "$UNDERVOLT_CONFIG"
 		sudo sed -i "s|^tjoffset .*|tjoffset -10|" "$UNDERVOLT_CONFIG"
 
 	elif [ "$profile" = "balanced" ]; then
