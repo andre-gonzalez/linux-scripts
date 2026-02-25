@@ -16,14 +16,14 @@ case "$1" in
     pactl set-card-profile "$CARD" "$PROFILE_ON"
     pactl set-default-sink "$SINK"
     echo "Speakers enabled and set as default sink."
-    kill -44 "$(pidof dwmblocks)"
+    kill -44 $(pidof dwmblocks)
     ;;
 
   disable)
     echo "Disabling laptop speakers..."
     pactl set-card-profile "$CARD" "$PROFILE_OFF"
     echo "Speakers disabled and hidden from pavucontrol."
-    kill -44 "$(pidof dwmblocks)"
+    kill -44 $(pidof dwmblocks)
     ;;
 
   status)
