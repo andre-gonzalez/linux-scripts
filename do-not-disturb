@@ -92,7 +92,7 @@ do_not_disturb_off() {
     rm -f "$END_FILE"
 
     notify-send "Do not disturb OFF"
-    kill -48 "$(pidof dwmblocks)"
+    pkill -RTMIN+14 dwmblocks
 }
 
 if [ "$status" = "false" ]; then
@@ -108,7 +108,7 @@ if [ "$status" = "false" ]; then
         rm -f "$END_FILE"
     fi
 
-    kill -48 "$(pidof dwmblocks)"
+    pkill -RTMIN+14 dwmblocks
 
     mute_notification_streams
 
