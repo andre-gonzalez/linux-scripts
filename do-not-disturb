@@ -22,9 +22,7 @@ Examples:
   do-not-disturb 0 30     Enable DND for 30 minutes
   do-not-disturb -h       Show this help page
 
-This script also:
-  - Mutes all system audio
-  - Mutes all “notification/event” audio streams
+This script also mutes “notification/event” audio streams.
 EOF
 }
 
@@ -61,14 +59,6 @@ fi
 #  AUDIO MUTING FUNCTIONS
 # ------------------------------------------------------
 
-mute_all_audio() {
-    pactl set-sink-mute @DEFAULT_SINK@ true
-}
-
-unmute_all_audio() {
-    pactl set-sink-mute @DEFAULT_SINK@ false
-}
-
 mute_notification_streams() {
     for stream in $(pactl list sink-inputs \
         | grep -B2 'media.role = "event"' \
@@ -96,8 +86,6 @@ unmute_notification_streams() {
 do_not_disturb_off() {
     dunstctl set-paused false
 
-    # Unmute everything
-    unmute_all_audio
     unmute_notification_streams
 
     # Reset timer file
@@ -111,9 +99,8 @@ if [ "$status" = "false" ]; then
     # Turning ON DND
     dunstctl set-paused true
     echo "Do not disturb ON" | dmenu
-    kill -48 "$(pidof dwmblocks)"
 
-    # Save end timestamp
+    # Save end timestamp (before signalling dwmblocks so bar sees correct state)
     if [ "$TOTAL_SECONDS" -gt 0 ]; then
         mkdir -p "$(dirname "$END_FILE")"
         echo $(( $(date +%s) + TOTAL_SECONDS )) > "$END_FILE"
@@ -121,13 +108,14 @@ if [ "$status" = "false" ]; then
         rm -f "$END_FILE"
     fi
 
-    # Enable audio mute
-    mute_all_audio
+    kill -48 "$(pidof dwmblocks)"
+
     mute_notification_streams
 
     # Sleep if timer provided
     if [ "$TOTAL_SECONDS" -gt 0 ]; then
         sleep "$TOTAL_SECONDS"
+		rm "$END_FILE"
         do_not_disturb_off
     fi
 
