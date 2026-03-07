@@ -7,5 +7,6 @@ case "$BROWSER" in
 	thorium) thorium-browser --profile-directory="Profile 4" $URL;;
 	qutebrowser) qutebrowser $URL;;
 	chromium) chromium --profile-directory="Profile 0" $URL ;;
+	helium) helium-browser --profile-directory="Profile 1" $URL ;;
 	*) qutebrowser $1;;
 esac

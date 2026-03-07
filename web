@@ -10,7 +10,7 @@
 # cursor is on a web browser it acts as the address bar of that browser.
 
 # browser='qutebrowser --target tab'
-browser='chromium'
+browser="${BROWSER:-helium-browser}"
 engine='https://google.com/search?q=%s'
 bookmarks="$HOME/projects/notas/pessoal/bookmarks.md"
 bulk_actions="$HOME/projects/notas/pessoal/bulk-bookmarks.txt"
@@ -96,6 +96,7 @@ xprop -root | grep '^_NET_ACTIVE_WINDOW' && {
 	class=$(xprop -id "$winid" WM_CLASS | awk -F'\"' '{ print $2 }')
 	case "$class" in
 		Firefox) nbrowser='firefox' ;;
+		Helium) nbrowser='helium-browser' ;;
 		eureciclo) nbrowser='eureciclo';;
 		call) nbrowser='call';;
 		#Firefox) shortcut='ctrl+l' ;; # alternative method, uses xdotool

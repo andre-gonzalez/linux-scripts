@@ -1,0 +1,13 @@
+#!/bin/sh
+BROWSER=$1
+URL=$2
+WINDOW_NAME="web-athena"
+
+case "$BROWSER" in
+	brave) brave --profile-directory="Profile 4" --window-name=$WINDOW_NAME --app=$URL ;;
+	thorium) thorium-browser --window-name=$WINDOW_NAME --app=$URL ;;
+	zen) zen-browser ;;
+	chromium) chromium --profile-directory="Profile 5" --window-name=$WINDOW_NAME --app=$URL ;;
+	helium) helium-browser --window-name=$WINDOW_NAME  --profile-directory="Profile 2" --app=$URL ;;
+	*) ${BROWSER:-helium-browser} --window-name=$WINDOW_NAME  --profile-directory="Profile 2" --app=$URL ;;
+esac
