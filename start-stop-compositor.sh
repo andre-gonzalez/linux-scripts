@@ -1,9 +1,12 @@
 #!/bin/sh
 
-if pgrep xcompmgr &>/dev/null; then
-    echo "Turning xcompmgr OFF"
-    pkill xcompmgr &
+COMPOSITOR="picom"
+
+if pgrep "$COMPOSITOR" &>/dev/null; then
+    echo "Turning "$COMPOSITOR" OFF"
+    pkill "$COMPOSITOR" &
 else
-    echo "Turning xcompmgr ON"
-    xcompmgr -c -C -t-5 -l-5 -r4.2 -o.55 &
+    echo "Turning "$COMPOSITOR" ON"
+    # xcompmgr -c -C -t-5 -l-5 -r4.2 -o.55 &
+	"$COMPOSITOR" &
 fi
