@@ -5,46 +5,50 @@
 # GNU GPLv3
 
 # Pausing notifications
-dunstctl set-paused true
-kill -48 $(pidof dwmblocks)
+# dunstctl set-paused true
+# kill -48 $(pidof dwmblocks)
 
-for f in /tmp/countdown.*; do
-    if [ -e "$f" ]; then
-        printf "There may be another instance of this script running. If you are sure there is not, delete the file /tmp/countdown.XXXXX and try again.\n"
-    else
-        # Make a temporary file that will store the current time remaining
-        TMP=$(mktemp /tmp/countdown.XXXXX)
-        trap 'rm -rf "$TMP"; trap - EXIT; exit' EXIT INT HUP
+# Signal 3 + 34 = 37 triggers dwm_countdown block in dwmblocks
+SIGNAL=37
 
-        # If there are 3 arguments given, they become H, M, and S. Otherwise, the user is asked
-        if [ $# -eq 3 ]; then
-            HOU=$1
-            MIN=$2
-            SEC=$3
-        else
-            read -r -p 'Hours: ' HOU
-            read -r -p 'Minutes: ' MIN
-            read -r -p 'Seconds: ' SEC
-
-        fi
-
-        # Convert input to seconds
-        TIMER=$(( (HOU*3600) + (MIN*60) + SEC ))
-
-        # Count down and output remaining time to temp file
-        while [ $TIMER -gt 0 ]
-        do
-            printf "%02dh:%02dm:%02ds\n" $((TIMER/3600)) $((TIMER%3600/60)) $((TIMER%60))
-            printf "%02d:%02d:%02d\n" $((TIMER/3600)) $((TIMER%3600/60)) $((TIMER%60)) >> "$TMP"
-            sleep 1
-            TIMER=$(( TIMER - 1 ))
-        done
-
-        # Notify the user and play a sound when the timer reaches 0
-		dunstctl set-paused false
-		kill -48 $(pidof dwmblocks)
-		printf "Timer Finished" | dmenu -sb "red" -sf "black"
-        notify-send "Timer Finished!"
-        # mpv ~/scripts/alarm.ogg
+# Check for an existing instance
+for _f in /tmp/countdown.*; do
+    if [ -e "$_f" ]; then
+        printf "There may be another instance of this script running. If you are sure there is not, delete the file %s and try again.\n" "$_f"
+        exit 1
     fi
+    break
 done
+
+TMP=$(mktemp /tmp/countdown.XXXXX)
+trap 'rm -f "$TMP"; kill -$SIGNAL $(pidof dwmblocks) 2>/dev/null; trap - EXIT; exit' EXIT INT HUP
+
+# If there are 3 arguments given, they become H, M, and S. Otherwise, the user is asked
+if [ $# -eq 3 ]; then
+    HOU=$1
+    MIN=$2
+    SEC=$3
+else
+    read -r -p 'Hours: ' HOU
+    read -r -p 'Minutes: ' MIN
+    read -r -p 'Seconds: ' SEC
+fi
+
+TIMER=$(( (HOU*3600) + (MIN*60) + SEC ))
+
+while [ $TIMER -gt 0 ]; do
+    printf "%02dh:%02dm:%02ds\n" $((TIMER/3600)) $((TIMER%3600/60)) $((TIMER%60))
+    # Overwrite (not append) — file stays 1 line
+    printf "%02d:%02d:%02d\n" $((TIMER/3600)) $((TIMER%3600/60)) $((TIMER%60)) > "$TMP"
+    # Signal dwmblocks to refresh the countdown block
+    kill -$SIGNAL $(pidof dwmblocks) 2>/dev/null
+    sleep 1
+    TIMER=$(( TIMER - 1 ))
+done
+
+# Timer finished — trap will clean up TMP and signal dwmblocks
+dunstctl set-paused false
+kill -48 $(pidof dwmblocks) 2>/dev/null
+printf "Timer Finished" | dmenu -sb "red" -sf "black"
+notify-send "Timer Finished!"
+# mpv ~/scripts/alarm.ogg
