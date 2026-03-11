@@ -1,0 +1,9 @@
+#!/bin/sh
+DEVICE_MAC="E8:07:BF:00:C0:9F"
+
+# Connect to the headset
+bluetoothctl disconnect "$DEVICE_MAC"
+
+# Update dwmblocks (if you want this)
+kill -46 "$(pidof dwmblocks)"
+kill -44 "$(pidof dwmblocks)"
