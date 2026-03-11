@@ -8,6 +8,9 @@ bluetoothctl power on
 # Connect to the headset
 bluetoothctl connect "$DEVICE_MAC"
 
+# Update dwmblocks bluetooth
+kill -46 $(pidof dwmblocks)
+
 # Wait up to 10 seconds for PipeWire to register the sink
 for i in $(seq 1 10); do
     SINK=$(pactl list short sinks | grep -i "bluez_output.${DEVICE_MAC_UNDERSCORE}" | awk '{print $2}')
@@ -28,6 +31,5 @@ else
     echo "❌ Could not find sink for $DEVICE_MAC" >&2
 fi
 
-# Update dwmblocks (if you want this)
-kill -46 "$(pidof dwmblocks)"
-kill -44 "$(pidof dwmblocks)"
+# Update dwmblocks audio output
+kill -44 $(pidof dwmblocks)
