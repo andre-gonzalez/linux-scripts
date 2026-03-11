@@ -1,0 +1,87 @@
+#!/bin/sh
+# Generic Bluetooth connect script: power on, connect, optionally set best A2DP
+# profile, wait for PipeWire sink, set as default and move streams, update dwmblocks.
+# Usage: conectar-bluetooth <MAC> [--set-best-a2dp-profile]
+
+if [ -z "$1" ] || [ "$1" = --set-best-a2dp-profile ]; then
+    echo "Usage: $0 <device-mac> [--set-best-a2dp-profile]" >&2
+    exit 1
+fi
+
+DEVICE_MAC="$1"
+SET_BEST_PROFILE=""
+[ "$2" = --set-best-a2dp-profile ] && SET_BEST_PROFILE=1
+
+DEVICE_MAC_UNDERSCORE=$(echo "$DEVICE_MAC" | tr ':' '_')
+
+# Turn bluetooth on
+bluetoothctl power on
+
+# Connect to the device
+bluetoothctl connect "$DEVICE_MAC"
+
+# Update dwmblocks bluetooth
+kill -46 $(pidof dwmblocks) 2>/dev/null || true
+
+if [ -n "$SET_BEST_PROFILE" ]; then
+    # Wait up to 10 seconds for PipeWire to register the card
+    CARD=""
+    for i in $(seq 1 10); do
+        CARD=$(pactl list cards short | grep -i "bluez_card.${DEVICE_MAC_UNDERSCORE}" | awk '{print $2}')
+        if [ -n "$CARD" ]; then
+            break
+        fi
+        sleep 1
+    done
+
+    if [ -z "$CARD" ]; then
+        echo "❌ Could not find Bluetooth card for $DEVICE_MAC" >&2
+        exit 1
+    fi
+
+    # Select the best available A2DP codec profile (ordered by quality)
+    AVAILABLE_PROFILES=$(pactl list cards | sed -n "/$(echo "$CARD" | sed 's/\./\\./g')/,/^$/p" | grep -oP '^\s+\K(a2dp-sink\S*?)(?=:)')
+    BEST_PROFILE=""
+    for codec in a2dp-sink-ldac a2dp-sink-aptx_hd a2dp-sink-aptx a2dp-sink-aac a2dp-sink-sbc_xq a2dp-sink-sbc a2dp-sink; do
+        if echo "$AVAILABLE_PROFILES" | grep -qx "$codec"; then
+            BEST_PROFILE="$codec"
+            break
+        fi
+    done
+
+    if [ -n "$BEST_PROFILE" ]; then
+        echo "Setting profile: $BEST_PROFILE"
+        pactl set-card-profile "$CARD" "$BEST_PROFILE"
+        sleep 1
+    else
+        echo "⚠️  No A2DP profile found, using default" >&2
+    fi
+fi
+
+# Wait up to 10 seconds for PipeWire to register the sink
+SINK=""
+for i in $(seq 1 10); do
+    SINK=$(pactl list short sinks | grep -i "bluez_output.${DEVICE_MAC_UNDERSCORE}" | awk '{print $2}')
+    if [ -n "$SINK" ]; then
+        break
+    fi
+    sleep 1
+done
+
+# If sink is found, set it as default
+if [ -n "$SINK" ]; then
+    pactl set-default-sink "$SINK"
+    # Move currently playing streams to the new sink
+    for stream in $(pactl list short sink-inputs | awk '{print $1}'); do
+        pactl move-sink-input "$stream" "$SINK"
+    done
+    [ -n "$SET_BEST_PROFILE" ] && [ -n "$BEST_PROFILE" ] && echo "✅ Connected with $BEST_PROFILE → $SINK"
+else
+    echo "❌ Could not find sink for $DEVICE_MAC" >&2
+fi
+
+# Update dwmblocks audio output
+kill -44 $(pidof dwmblocks) 2>/dev/null || true
+
+# Update dwmblocks bluetooth
+kill -46 $(pidof dwmblocks) 2>/dev/null || true
