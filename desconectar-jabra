@@ -1,3 +1,2 @@
 #!/bin/sh
-bluetoothctl disconnect 84:D3:52:63:69:E8; kill -46 $(pidof dwmblocks) ; kill -44 $(pidof dwmblocks)
-bluetoothctl power off
+exec "$(dirname "$0")/desconectar-bluetooth" "84:D3:52:63:69:E8"
