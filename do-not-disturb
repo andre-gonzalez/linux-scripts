@@ -4,23 +4,27 @@
 #   do-not-disturb H M
 #   do-not-disturb H
 #   do-not-disturb
+#   do-not-disturb -u HH:MM
 #   do-not-disturb -h
 
 END_FILE="$HOME/.cache/do-not-disturb-end"
 
 show_help() {
     cat << EOF
-Usage: do-not-disturb [HOURS] [MINUTES]
+Usage: do-not-disturb [OPTIONS] [HOURS] [MINUTES]
 
 Toggle Do Not Disturb (DND) mode on/off for dunst.
 If HOURS and MINUTES are provided, DND stays enabled for that duration.
+With -u/--until, DND stays enabled until the given time (24h HH:MM).
 
 Examples:
-  do-not-disturb          Toggle DND immediately
-  do-not-disturb 1        Enable DND for 1 hour
-  do-not-disturb 1 15     Enable DND for 1h15m
-  do-not-disturb 0 30     Enable DND for 30 minutes
-  do-not-disturb -h       Show this help page
+  do-not-disturb              Toggle DND immediately
+  do-not-disturb 1            Enable DND for 1 hour
+  do-not-disturb 1 15         Enable DND for 1h15m
+  do-not-disturb 0 30         Enable DND for 30 minutes
+  do-not-disturb -u 14:30     Enable DND until 14:30 (today or tomorrow)
+  do-not-disturb --until 09:00   Enable DND until 09:00
+  do-not-disturb -h           Show this help page
 
 This script also mutes “notification/event” audio streams.
 EOF
@@ -36,24 +40,55 @@ esac
 
 status="$(dunstctl is-paused)"
 
-HOURS="${1:-}"
-MINUTES="${2:-0}"
+TOTAL_SECONDS=0
+END_TS=""
 
-# Compute total seconds if arguments were provided
-if [ -z "$1" ]; then
-    TOTAL_SECONDS=0
-else
-    if ! [ "$HOURS" -ge 0 ] 2>/dev/null; then
-        echo "Invalid hours value: $HOURS" >&2
-        exit 1
-    fi
-    if ! [ "$MINUTES" -ge 0 ] 2>/dev/null; then
-        echo "Invalid minutes value: $MINUTES" >&2
-        exit 1
-    fi
+# Handle -u/--until HH:MM
+case "$1" in
+    -u|--until)
+        if [ -z "${2:-}" ]; then
+            echo "do-not-disturb: missing time for -u/--until (use HH:MM)" >&2
+            exit 1
+        fi
+        TIME_STR="$2"
+        now=$(date +%s)
+        end_ts=$(date -d "$TIME_STR" +%s 2>/dev/null)
+        if [ -z "$end_ts" ]; then
+            echo "do-not-disturb: invalid time '$TIME_STR' (use HH:MM, 24-hour)" >&2
+            exit 1
+        fi
+        if [ "$end_ts" -le "$now" ]; then
+            end_ts=$(date -d "tomorrow $TIME_STR" +%s 2>/dev/null)
+        fi
+        if [ -z "$end_ts" ] || [ "$end_ts" -le "$now" ]; then
+            echo "do-not-disturb: invalid time '$TIME_STR'" >&2
+            exit 1
+        fi
+        TOTAL_SECONDS=$(( end_ts - now ))
+        END_TS=$end_ts
+        ;;
+    *)
+        HOURS="${1:-}"
+        MINUTES="${2:-0}"
 
-    TOTAL_SECONDS=$(( HOURS * 3600 + MINUTES * 60 ))
-fi
+        # Compute total seconds if duration arguments were provided
+        if [ -n "$1" ]; then
+            if ! [ "$HOURS" -ge 0 ] 2>/dev/null; then
+                echo "Invalid hours value: $HOURS" >&2
+                exit 1
+            fi
+            if ! [ "$MINUTES" -ge 0 ] 2>/dev/null; then
+                echo "Invalid minutes value: $MINUTES" >&2
+                exit 1
+            fi
+
+            TOTAL_SECONDS=$(( HOURS * 3600 + MINUTES * 60 ))
+            if [ "$TOTAL_SECONDS" -gt 0 ]; then
+                END_TS=$(( $(date +%s) + TOTAL_SECONDS ))
+            fi
+        fi
+        ;;
+esac
 
 # ------------------------------------------------------
 #  AUDIO MUTING FUNCTIONS
@@ -101,9 +136,9 @@ if [ "$status" = "false" ]; then
     echo "Do not disturb ON" | dmenu
 
     # Save end timestamp (before signalling dwmblocks so bar sees correct state)
-    if [ "$TOTAL_SECONDS" -gt 0 ]; then
+    if [ "$TOTAL_SECONDS" -gt 0 ] && [ -n "$END_TS" ]; then
         mkdir -p "$(dirname "$END_FILE")"
-        echo $(( $(date +%s) + TOTAL_SECONDS )) > "$END_FILE"
+        echo "$END_TS" > "$END_FILE"
     else
         rm -f "$END_FILE"
     fi
