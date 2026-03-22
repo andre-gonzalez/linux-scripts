@@ -312,7 +312,7 @@ manage_services() {
 
 	# Services to manage for Maximum Battery profile
 	if [ "$profile" = "maximum" ]; then
-		local services="tailscaled preload libvirtd docker docker.socket containerd awsvpnclient cronie iwd systemd-networkd ufw firewalld fail2ban apparmor bluetooth"
+		local services="tailscaled preload libvirtd docker docker.socket containerd awsvpnclient cronie systemd-networkd ufw firewalld fail2ban apparmor"
 	# Services to manage for Balanced profile
 	elif [ "$profile" = "balanced" ]; then
 		local services="tailscaled preload libvirtd docker docker.socket containerd awsvpnclient"
@@ -401,26 +401,28 @@ manage_hardware() {
 		if [ "$interactive" = "true" ]; then
 			prompt_and_execute "Switch to integrated GPU?" "envycontrol -s integrated 2>/dev/null"
 			prompt_and_execute "Disable Bluetooth?" "bluetoothctl power off 2>/dev/null; sudo systemctl stop bluetooth 2>/dev/null"
-			prompt_and_execute "Disable WiFi?" "rfkill block wifi 2>/dev/null"
+			prompt_and_execute "Disable WiFi?" "sudo systemctl stop iwd 2>/dev/null; rfkill block wifi 2>/dev/null"
 			prompt_and_execute "Disable swap?" "sudo swapoff -a 2>/dev/null"
 		else
 			envycontrol -s integrated 2>/dev/null
 			bluetoothctl power off 2>/dev/null
 			sudo systemctl stop bluetooth 2>/dev/null
-			rfkill block wifi 2>/dev/null
+			sudo systemctl stop iwd 2>/dev/null; rfkill block wifi 2>/dev/null
 			sudo swapoff -a 2>/dev/null
 		fi
 		log "Hardware configured for maximum battery"
 
 	elif [ "$profile" = "balanced" ]; then
-		# Balanced: Switch to integrated GPU, disable Bluetooth
+		# Balanced: Switch to integrated GPU, disable Bluetooth and WiFi
 		if [ "$interactive" = "true" ]; then
 			prompt_and_execute "Switch to integrated GPU?" "envycontrol -s integrated 2>/dev/null"
 			prompt_and_execute "Disable Bluetooth?" "bluetoothctl power off 2>/dev/null; sudo systemctl stop bluetooth 2>/dev/null"
+			prompt_and_execute "Disable WiFi?" "sudo systemctl stop iwd 2>/dev/null; rfkill block wifi 2>/dev/null"
 		else
 			envycontrol -s integrated 2>/dev/null
 			bluetoothctl power off 2>/dev/null
 			sudo systemctl stop bluetooth 2>/dev/null
+			sudo systemctl stop iwd 2>/dev/null; rfkill block wifi 2>/dev/null
 		fi
 		log "Hardware configured for balanced profile"
 	fi
