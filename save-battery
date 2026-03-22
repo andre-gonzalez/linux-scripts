@@ -259,7 +259,7 @@ kill_applications() {
 
 	# Applications to kill for Maximum Battery profile
 	if [ "$profile" = "maximum" ]; then
-		local apps="insync spotify_player firefox chrome brave chromium discord slack telegram thunderbird evolution dropbox onedrive nextcloud vlc mpv obs studio steam lutris wine redshift dunst newsboat dwmblocks unclutter"
+		local apps="insync spotify_player firefox chrome brave chromium discord slack telegram thunderbird evolution dropbox onedrive nextcloud vlc mpv obs studio steam lutris wine redshift dunst newsboat dwmblocks unclutter helium-browser"
 	# Applications to kill for Balanced profile (only resource-heavy)
 	elif [ "$profile" = "balanced" ]; then
 		local apps="spotify_player discord slack steam lutris obs"
