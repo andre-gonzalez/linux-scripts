@@ -1,0 +1,42 @@
+#!/bin/sh
+# Cycle the default audio output to the next available sink.
+# Moves all active streams to the new sink and updates dwmblocks.
+
+SINKS=$(pactl list short sinks | awk '{print $2}')
+
+if [ -z "$SINKS" ]; then
+    echo "No audio sinks found" >&2
+    exit 1
+fi
+
+CURRENT=$(pactl get-default-sink)
+
+# Find the next sink in the list, wrapping around to the first
+NEXT=""
+FOUND=0
+FIRST=""
+
+for SINK in $SINKS; do
+    [ -z "$FIRST" ] && FIRST="$SINK"
+    if [ "$FOUND" = "1" ]; then
+        NEXT="$SINK"
+        break
+    fi
+    [ "$SINK" = "$CURRENT" ] && FOUND=1
+done
+
+# Wrap around if current was the last sink (or not found)
+[ -z "$NEXT" ] && NEXT="$FIRST"
+
+pactl set-default-sink "$NEXT"
+
+# Move all currently playing streams to the new sink
+for STREAM in $(pactl list short sink-inputs | awk '{print $1}'); do
+    pactl move-sink-input "$STREAM" "$NEXT"
+done
+
+echo "Switched to: $NEXT"
+
+# Update dwmblocks audio and bluetooth blocks
+kill -44 $(pidof dwmblocks) 2>/dev/null || true
+kill -46 $(pidof dwmblocks) 2>/dev/null || true
