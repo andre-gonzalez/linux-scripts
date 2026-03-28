@@ -14,17 +14,10 @@ browser="${BROWSER:-helium-browser}"
 engine='https://google.com/search?q=%s'
 
 get_bang_engine() {
-	case "$1" in
-		yt|youtube)   echo 'https://www.youtube.com/results?search_query=%s' ;;
-		gh|github)    echo 'https://github.com/search?q=%s' ;;
-		w|wiki)       echo 'https://en.wikipedia.org/w/index.php?search=%s' ;;
-		r|reddit)     echo 'https://www.reddit.com/search/?q=%s' ;;
-		map|maps)     echo 'https://www.google.com/maps/search/%s' ;;
-		tr|translate) echo 'https://translate.google.com/?q=%s' ;;
-		*)            echo '' ;;
-	esac
+	grep -m1 "^$1 - " "$bangs" | awk -F' - ' '{ print $2 }'
 }
 bookmarks="$HOME/projects/notas/pessoal/bookmarks.md"
+bangs="$HOME/projects/notas/pessoal/bangs.md"
 bulk_actions="$HOME/projects/notas/pessoal/bulk-bookmarks.txt"
 
 # Parse command line flags
