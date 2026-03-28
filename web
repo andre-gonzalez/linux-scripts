@@ -12,6 +12,18 @@
 # browser='qutebrowser --target tab'
 browser="${BROWSER:-helium-browser}"
 engine='https://google.com/search?q=%s'
+
+get_bang_engine() {
+	case "$1" in
+		yt|youtube)   echo 'https://www.youtube.com/results?search_query=%s' ;;
+		gh|github)    echo 'https://github.com/search?q=%s' ;;
+		w|wiki)       echo 'https://en.wikipedia.org/w/index.php?search=%s' ;;
+		r|reddit)     echo 'https://www.reddit.com/search/?q=%s' ;;
+		map|maps)     echo 'https://www.google.com/maps/search/%s' ;;
+		tr|translate) echo 'https://translate.google.com/?q=%s' ;;
+		*)            echo '' ;;
+	esac
+}
 bookmarks="$HOME/projects/notas/pessoal/bookmarks.md"
 bulk_actions="$HOME/projects/notas/pessoal/bulk-bookmarks.txt"
 
@@ -206,6 +218,21 @@ checkurl() {
 	echo "$prepath" |  grep -FvZ '.' && return 1
 	echo "$prepath" |  grep -EZ '^([[:alnum:]~_:-]+\.?){1,3}' && return 0
 }
+
+# Check for bang search (!yt query, !gh repo, etc.)
+case "$choice" in
+	!?*)
+		bang=$(printf '%s' "$choice" | awk '{ print substr($1, 2) }')
+		query=$(printf '%s' "$choice" | cut -d' ' -f2-)
+		bang_engine=$(get_bang_engine "$bang")
+		if [ -n "$bang_engine" ]; then
+			engine="$bang_engine"
+			choice="$query"
+			searchweb
+			exit 0
+		fi
+		;;
+esac
 
 if checkurl
 then
