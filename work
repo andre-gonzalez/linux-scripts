@@ -17,7 +17,7 @@ run_if_not_running "web-pessoal" /usr/bin/dash "$HOME/.scripts/web-pessoal"
 /usr/bin/bash "$HOME/.scripts/configure-trackball.sh" &
 run_if_not_running "slack" /usr/bin/slack
 run_if_not_running "awsvpnclient" "$HOME/.local/bin/awsvpnclient"
-run_if_not_running "datagrip" datagrip
+# run_if_not_running "datagrip" datagrip
 # cursor &
 # 1password &
 # spotify-launcher &
