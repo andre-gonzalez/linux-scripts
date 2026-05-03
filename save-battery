@@ -379,7 +379,7 @@ manage_display() {
 	elif [ "$profile" = "balanced" ]; then
 		# Balanced: Reduced brightness, moderate DPMS
 		if [ "$interactive" = "true" ]; then
-			prompt_and_execute "Set brightness to 30%?" "brightnessctl set 30% 2>/dev/null && kill -45 \$(pidof dwmblocks) 2>/dev/null"
+			prompt_and_execute "Set brightness to 60%?" "brightnessctl set 60% 2>/dev/null && kill -45 \$(pidof dwmblocks) 2>/dev/null"
 			prompt_and_execute "Set DPMS to 120 seconds?" "xset dpms 120 120 120 2>/dev/null"
 			prompt_and_execute "Disable HDMI-1 output?" "xrandr --output HDMI-1 --off 2>/dev/null"
 		else
