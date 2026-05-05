@@ -2,8 +2,18 @@
 set -eu
 
 ###── CONFIG ─────────────────────────────────────────────────
-HOME_SSID="Davi"
+# space-separated list of SSIDs that should kill xautolock
+HOME_SSIDS="QUEWIFI-5G QUEWIFI-2G Davi"
 IWCTL_DEV="wlan0"
+
+###── HELPERS ────────────────────────────────────────────────
+in_list() {
+  _needle="$1"; shift
+  for _item; do
+    [ "$_needle" = "$_item" ] && return 0
+  done
+  return 1
+}
 
 ###── FETCH CURRENT SSID ─────────────────────────────────────
 # suppress errors if wireless is down
@@ -18,7 +28,8 @@ CURRENT_SSID=$(
 )
 
 ###── IF ON HOME SSID, KILL xautolock ────────────────────────
-if [ "$CURRENT_SSID" = "$HOME_SSID" ]; then
+# shellcheck disable=SC2086
+if in_list "$CURRENT_SSID" $HOME_SSIDS; then
   # find the first xautolock PID (if any)
   pid=$(ps -Af | grep 'xautolock' | awk '{print $2}' | head -n1)
     if [ -n "$pid" ]; then
