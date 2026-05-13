@@ -16,8 +16,8 @@ prompt="Add/delete a task: "
 
 cmd=$(dmenu -l "$height" -p "$prompt" "$@" < "$file")
 while [ -n "$cmd" ]; do
- 	if grep -q "^$cmd\$" "$file"; then
-		grep -v "^$cmd\$" "$file" > "$file.$$"
+ 	if awk -v l="$cmd" '$0==l{found=1;exit} END{exit !found}' "$file"; then
+		awk -v l="$cmd" '$0!=l' "$file" > "$file.$$"
 		when=$(date "+%Y-%m-%d_%R")
 		echo "$cmd" - "$when" >> "$done"
 		mv "$file.$$" "$file"
