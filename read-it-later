@@ -1,0 +1,30 @@
+#!/bin/sh
+
+. "$HOME/.scripts/.env/wallabag"
+
+base_url=$(xclip -o -sel clip)
+
+wallabag_host="http://servarr.ewe-musical.ts.net:7780"
+
+token=$(curl -sf \
+  -X POST "$wallabag_host/oauth/v2/token" \
+  -d "grant_type=password" \
+  -d "client_id=$wallabag_client_id" \
+  -d "client_secret=$wallabag_client_secret" \
+  -d "username=$wallabag_user" \
+  -d "password=$wallabag_password" \
+  | grep -o '"access_token":"[^"]*"' | cut -d'"' -f4)
+
+if [ -z "$token" ]; then
+  notify-send -u critical "Wallabag" "Authentication Error"
+  exit 1
+fi
+
+result=$(curl -sf \
+  -X POST "$wallabag_host/api/entries.json" \
+  -H "Authorization: Bearer $token" \
+  --data-urlencode "url=$base_url")
+
+title=$(printf '%s' "$result" | grep -o '"title":"[^"]*"' | cut -d'"' -f4)
+
+notify-send "Wallabag" "Sent: ${title:-$base_url}"
