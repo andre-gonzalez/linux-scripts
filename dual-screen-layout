@@ -3,19 +3,47 @@
 # To script works as root
 xhost +SI:localuser:root
 
-xrandr --output eDP-1 --mode 1920x1080 --pos 320x1080 --rotate normal --output HDMI-1 --primary --mode 2560x1080 --rate 100 --dpi 103 --scale 1x1 --pos 0x0 --rotate normal
+# Output names differ between machines (eDP-1 vs eDP, HDMI-1 vs HDMI-A-0), so
+# detect them at runtime instead of hardcoding.
+internal=$(xrandr --query | awk '/ connected/ && $1 ~ /^(eDP|LVDS)/ { print $1; exit }')
+external=$(xrandr --query | awk '/ connected/ && $1 ~ /^HDMI/    { print $1; exit }')
+
+if [ -z "$external" ] || [ -z "$internal" ]; then
+	printf 'error: need both the laptop panel and an HDMI screen connected\n' >&2
+	exit 1
+fi
+
+# Ultrawide external at 2560x1080@100 if available, otherwise its preferred mode.
+if xrandr --query | awk -v o="$external" '
+	$1 == o { f = 1; next }
+	/ connected/ || / disconnected/ { f = 0 }
+	f && /2560x1080/ && /100/ { found = 1 }
+	END { exit !found }'; then
+	ext_mode="--mode 2560x1080 --rate 100"
+else
+	ext_mode="--auto"
+fi
+
+# Ultrawide on top as primary at 0x0; laptop panel (native mode) centered below.
+# shellcheck disable=SC2086 # ext_mode is an intentional word split
+xrandr --output "$external" --primary $ext_mode --dpi 103 --scale 1x1 --pos 0x0 --rotate normal
+xrandr --output "$internal" --auto --pos 320x1080 --rotate normal
 
 setxkbmap -layout us -variant dvorak-intl && setxkbmap -option caps:escape
 
-for i in $(seq 1 5)
-do
-		xdotool key super+period && xdotool key super+$i && xdotool key super+period && xdotool key super+$i key shift+super+period
+for i in $(seq 1 5); do
+	xdotool key super+period && xdotool key super+"$i" && xdotool key super+period && xdotool key super+"$i" key shift+super+period
 done
-
 
 ISROOT=$(id -u)
 
-if [ "$ISROOT" = 0 ] ; then
+if [ "$ISROOT" = 0 ]; then
 	cd /home/frank/.config/dwm/ultra-wide-dwm/ && make clean install
 	xdotool key shift+super+q
 fi
+
+# When run as the normal user (e.g. from the hotplug watcher), switch dwm to
+# the ultra-wide build. Mirrors one-screen-layout's "cdwm laptop" tail.
+cdwm ultra
+
+dwmblocks
