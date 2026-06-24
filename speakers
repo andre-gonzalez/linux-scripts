@@ -1,44 +1,85 @@
-#!/bin/bash
-
-CARD="alsa_card.pci-0000_00_1f.3"
-SINK="alsa_output.pci-0000_00_1f.3.analog-stereo"
-PROFILE_ON="output:analog-stereo"
-PROFILE_OFF="off"
+#!/bin/sh
+# Enable/disable the laptop's built-in speakers.
+#
+# Card and profile names differ between machines and between PulseAudio's
+# classic naming (output:analog-stereo) and PipeWire/UCM naming
+# (HiFi (Mic1, Mic2, Speaker)), so detect them at runtime instead of
+# hardcoding. The internal analog card is the PCI sound card that exposes a
+# speaker/analog output profile (as opposed to the HDMI/DisplayPort cards).
 
 usage() {
-  echo "Usage: $0 [enable|disable|status]"
-  exit 1
+	echo "Usage: $0 [enable|disable|status]"
+	exit 1
 }
 
+# Print the internal analog card name, or nothing if none is found.
+detect_card() {
+	pactl list cards 2>/dev/null | awk '
+		/^\tName: / { card=$2; pci = (card ~ /^alsa_card\.pci/) }
+		pci && /\(sinks: [1-9]/ {
+			line=$0; sub(/^\t+/,"",line)
+			idx=index(line, ": "); pname=substr(line,1,idx-1)
+			if (pname ~ /Speaker/ || pname ~ /analog-stereo/) { print card; exit }
+		}'
+}
+
+# Print the best available speaker output profile for the given card.
+detect_profile() {
+	pactl list cards 2>/dev/null | awk -v target="$1" '
+		/^\tName: / { card=$2; want = (card == target) }
+		want && /\(sinks: [1-9]/ {
+			line=$0; sub(/^\t+/,"",line)
+			idx=index(line, ": "); pname=substr(line,1,idx-1)
+			if ((pname ~ /Speaker/ || pname ~ /analog-stereo/) && line ~ /available: yes/) {
+				match(line, /priority: [0-9]+/); pri=substr(line,RSTART+10,RLENGTH-10)+0
+				if (pri >= bestpri) { bestpri=pri; best=pname }
+			}
+		}
+		END { if (best != "") print best }'
+}
+
+CARD=$(detect_card)
+if [ -z "$CARD" ]; then
+	printf 'error: no internal analog sound card found\n' >&2
+	exit 1
+fi
+
 case "$1" in
-  enable)
-    echo "Enabling laptop speakers..."
-    pactl set-card-profile "$CARD" "$PROFILE_ON"
-    pactl set-default-sink "$SINK"
-    echo "Speakers enabled and set as default sink."
-    kill -44 $(pidof dwmblocks)
-    ;;
+enable)
+	PROFILE=$(detect_profile "$CARD")
+	if [ -z "$PROFILE" ]; then
+		printf 'error: no speaker output profile available for %s\n' "$CARD" >&2
+		exit 1
+	fi
+	echo "Enabling laptop speakers ($CARD -> $PROFILE)..."
+	pactl set-card-profile "$CARD" "$PROFILE"
+	# The card name embeds its PCI id (e.g. pci-0000_c4_00.6); the matching
+	# sink shares that id. Set it as the default sink if it exists.
+	pci_id=${CARD#alsa_card.}
+	sink=$(pactl list short sinks 2>/dev/null | awk -v id="$pci_id" '$2 ~ id { print $2; exit }')
+	[ -n "$sink" ] && pactl set-default-sink "$sink"
+	echo "Speakers enabled and set as default sink."
+	kill -44 "$(pidof dwmblocks)" 2>/dev/null
+	;;
 
-  disable)
-    echo "Disabling laptop speakers..."
-    pactl set-card-profile "$CARD" "$PROFILE_OFF"
-    echo "Speakers disabled and hidden from pavucontrol."
-    kill -44 $(pidof dwmblocks)
-    ;;
+disable)
+	echo "Disabling laptop speakers ($CARD)..."
+	pactl set-card-profile "$CARD" off
+	echo "Speakers disabled and hidden from pavucontrol."
+	kill -44 "$(pidof dwmblocks)" 2>/dev/null
+	;;
 
-  status)
-    pactl list cards | awk -v card="$CARD" '
-      $0 ~ "Card #" { current_card = "" }
-      $0 ~ "Name: " {
-        if ($2 == card) current_card = card
-      }
-      current_card && /Active Profile:/ {
-        print "Active Profile for", card, ":", $3
-        exit
-      }'
-    ;;
+status)
+	pactl list cards 2>/dev/null | awk -v card="$CARD" '
+		/^\tName: / { current = ($2 == card) }
+		current && /Active Profile:/ {
+			sub(/^\t*Active Profile: /, "")
+			print "Active Profile for " card ": " $0
+			exit
+		}'
+	;;
 
-  *)
-    usage
-    ;;
+*)
+	usage
+	;;
 esac
