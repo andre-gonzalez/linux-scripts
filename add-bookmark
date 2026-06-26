@@ -1,0 +1,123 @@
+#!/bin/sh
+
+# add-bookmark: copy a URL, hit a DWM keybind, pick a tag and name, and it gets
+# inserted into the bookmarks file (alphabetically, with the tag block re-sorted).
+#
+# Usage:
+#   add-bookmark            # prompt for tag (Personal/Athenaworks/Work) and name
+#   add-bookmark -t P       # preset the tag (P|A|W, case-insensitive), skip picker
+#
+# The URL is read from the CLIPBOARD selection (Ctrl+C). Override the target file
+# for testing with:  BOOKMARKS=./bookmarks.md add-bookmark
+#
+# Dependencies: xclip, dmenu, notify-send (optional, for feedback).
+
+bookmarks="${BOOKMARKS:-$HOME/projects/notas/pessoal/bookmarks.md}"
+
+notify() { command -v notify-send >/dev/null 2>&1 && notify-send "add-bookmark" "$1"; }
+die() {
+	notify "$1"
+	echo "add-bookmark: $1" >&2
+	exit 1
+}
+
+# --- dependency checks ---
+for dep in xclip dmenu; do
+	command -v "$dep" >/dev/null 2>&1 || die "missing dependency: $dep"
+done
+
+# --- parse flags ---
+tag=""
+case "$1" in
+-t | --tag)
+	tag=$(printf '%s' "$2" | tr 'paw' 'PAW')
+	case "$tag" in
+	P | A | W) ;;
+	*) die "invalid tag '$2' (use P, A, or W)" ;;
+	esac
+	;;
+esac
+
+# --- read + validate clipboard ---
+url=$(xclip -o -selection clipboard 2>/dev/null | tr -d '\r\n' |
+	sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+[ -n "$url" ] || die "clipboard is empty"
+case "$url" in
+http://* | https://*) ;;
+*) die "clipboard is not an http(s) URL" ;;
+esac
+
+# --- target file must exist ---
+[ -f "$bookmarks" ] || die "bookmarks file not found: $bookmarks"
+
+# --- tag picker (skipped when preset via -t) ---
+if [ -z "$tag" ]; then
+	label=$(printf 'Personal\nAthenaworks\nWork\n' | dmenu -W 350 -p "Tag:" -l 3) || exit 1
+	case "$label" in
+	Personal) tag=P ;;
+	Athenaworks) tag=A ;;
+	Work) tag=W ;;
+	*) die "no tag selected" ;;
+	esac
+fi
+
+# --- name prompt (empty prefill) ---
+name=$(printf '' | dmenu -W 350 -p "Name:") || exit 1
+name=$(printf '%s' "$name" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+[ -n "$name" ] || exit 0 # blank/Escape => abort silently, no nameless entries
+
+# truncate to the 36-char name column, notifying when it happens
+short=$(printf '%s' "$name" | cut -c1-36)
+if [ "$short" != "$name" ]; then
+	name="$short"
+	notify "name truncated to 36 chars: $name"
+fi
+
+# --- duplicate URL check ---
+if grep -Fq -- " - $url" "$bookmarks"; then
+	confirm=$(printf 'No\nYes\n' | dmenu -W 350 -p "URL already bookmarked. Add anyway?" -l 2) ||
+		exit 1
+	[ "$confirm" = "Yes" ] || exit 0
+fi
+
+# --- build the new line (' - ' lands at column 41) ---
+newline=$(printf '|%s| %-36s - %s' "$tag" "$name" "$url")
+
+# --- rebuild file atomically: header verbatim, then re-sorted P / A / W blocks ---
+dir=$(dirname -- "$bookmarks")
+tmp=$(mktemp "$dir/.add-bookmark.XXXXXX") || die "mktemp failed"
+trap 'rm -f "$tmp"' 0 1 2 15
+
+# header = everything before the first bookmark line (frontmatter + blank line)
+awk '/^\|[PAW]\| /{exit} {print}' "$bookmarks" >"$tmp"
+
+# Each tag block, with the new line injected into its block, then re-sorted by
+# name (case-insensitive). The new line is emitted BEFORE the grep so that
+# pre-sort order is irrelevant (sort fixes it). We sort on a derived key: the
+# name field (lowercased, trailing padding stripped), tab-separated from the
+# full line. `sort -t<tab> -k1,1` restricts the comparison to that key field, so
+# the URL never influences ordering and locale collation can't fold in the
+# separator. Accents (e.g. ç) still collate naturally under the session locale.
+TAB=$(printf '\t')
+for t in P A W; do
+	{
+		[ "$t" = "$tag" ] && printf '%s\n' "$newline"
+		grep "^|$t| " "$bookmarks"
+	} | awk -F' - ' '{ key=$1; sub(/[[:space:]]+$/, "", key); print tolower(key) "\t" $0 }' |
+		sort -t"$TAB" -k1,1 -s | cut -f2-
+done >>"$tmp"
+
+# --- sanity-check before clobbering anything ---
+[ -s "$tmp" ] || die "generated file is empty, aborting"
+old_count=$(wc -l <"$bookmarks")
+new_count=$(wc -l <"$tmp")
+expected=$((old_count + 1))
+[ "$new_count" -eq "$expected" ] ||
+	die "line-count check failed (got $new_count, expected $expected); aborting"
+
+# --- backup + atomic replace ---
+cp -- "$bookmarks" "$bookmarks.bak" || die "backup failed"
+mv -- "$tmp" "$bookmarks" || die "write failed"
+trap - 0 1 2 15
+
+notify "Bookmark added: $name [$tag]"
