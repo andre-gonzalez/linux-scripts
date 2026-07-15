@@ -11,7 +11,7 @@
 
 # browser='qutebrowser --target tab'
 browser="${BROWSER:-helium-browser}"
-engine='https://google.com/search?q=%s'
+engine='https://chatgpt.com/?q=%s'
 
 get_bang_engine() {
 	grep -m1 "^$1 - " "$bangs" | awk -F' - ' '{ print $2 }'
