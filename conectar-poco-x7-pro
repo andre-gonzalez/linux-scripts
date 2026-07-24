@@ -1,0 +1,2 @@
+#!/bin/sh
+exec "$(dirname "$0")/conectar-bluetooth" "E8:98:47:77:4B:76"
