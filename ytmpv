@@ -1,0 +1,195 @@
+#!/bin/sh
+# ytmpv - play YouTube URLs in mpv, falling back to a yt-dlp-fed stream when
+# YouTube refuses to serve mpv directly.
+#
+# Background
+# ----------
+# When YouTube flags an IP it answers the player request with LOGIN_REQUIRED
+# ("Sign in to confirm you're not a bot"). Only account cookies satisfy that;
+# a PO token does not. But once authenticated, yt-dlp's only working client is
+# `tv` (TVHTML5), whose media URLs carry siu=1 - a session-identity URL whose
+# *first* fetch must come from the process that extracted it. mpv delegates
+# fetching to ffmpeg, a separate process, so ffmpeg always gets HTTP 403.
+#
+# That is why cookies are deliberately NOT configured globally. Setting them in
+# ~/.config/yt-dlp/config (which mpv does read) or in mpv's ytdl-raw-options
+# moves *every* video onto the session-bound tv client, turning videos that
+# currently play fine into 403s.
+#
+# This wrapper leaves the fast default path alone and only on failure hands the
+# fetching to yt-dlp, which can read its own session-bound URLs.
+#
+# Usage
+# -----
+#   ytmpv [mpv options...] <youtube-url>
+#
+# Environment
+# -----------
+#   YTMPV_MODE     download (default) | pipe
+#                  download: full seeking and correct duration; waits for the
+#                            download to finish before playback starts.
+#                  pipe:     starts almost immediately; no forward seeking past
+#                            the cache.
+#   YTMPV_COOKIES  cookie file for the fallback
+#                  (default ~/.local/share/yt-cookies.txt; used only if it
+#                  exists - a transient block often clears without cookies once
+#                  yt-dlp is the one fetching).
+#   YTMPV_FORMAT   yt-dlp format string (default: mpv's own ytdl-format).
+#   YTMPV_KEEP     1 to keep the downloaded file instead of deleting it.
+
+set -u
+
+MPV_CONFIG="${MPV_CONFIG:-$HOME/.config/mpv/config}"
+MODE="${YTMPV_MODE:-download}"
+COOKIES="${YTMPV_COOKIES:-$HOME/.local/share/yt-cookies.txt}"
+KEEP="${YTMPV_KEEP:-0}"
+CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/ytmpv"
+
+note() {
+	printf '\033[33m[ytmpv]\033[0m %s\n' "$1" >&2
+}
+
+die() {
+	printf '\033[31m[ytmpv]\033[0m error: %s\n' "$1" >&2
+	exit 1
+}
+
+# --- locate the single YouTube URL among the arguments -----------------------
+url=''
+url_count=0
+for arg in "$@"; do
+	case "$arg" in
+	http://*youtube.com/* | https://*youtube.com/* | \
+		http://*youtu.be/* | https://*youtu.be/* | ytdl://*)
+		url="$arg"
+		url_count=$((url_count + 1))
+		;;
+	esac
+done
+
+# Anything that is not exactly one YouTube URL (several files, a local path, no
+# arguments at all) is plain mpv's business.
+if [ "$url_count" -ne 1 ]; then
+	exec mpv "$@"
+fi
+
+video_id=$(printf '%s' "$url" | grep -oE '[?&]v=[A-Za-z0-9_-]{11}' | head -1 | cut -c4-)
+if [ -z "$video_id" ]; then
+	video_id=$(printf '%s' "$url" | grep -oE 'youtu\.be/[A-Za-z0-9_-]{11}' | head -1 | cut -c10-)
+fi
+
+# Stay in sync with mpv's own format preference rather than duplicating it.
+format="${YTMPV_FORMAT:-}"
+if [ -z "$format" ] && [ -r "$MPV_CONFIG" ]; then
+	format=$(sed -n 's/^[[:space:]]*ytdl-format[[:space:]]*=[[:space:]]*//p' "$MPV_CONFIG" | tail -1)
+fi
+[ -n "$format" ] || format='bestvideo+bestaudio/best'
+
+# --- attempt 1: plain mpv (the fast path, unchanged behaviour) ---------------
+log=$(mktemp "${TMPDIR:-/tmp}/ytmpv-XXXXXX") || die 'cannot create temp log'
+trap 'rm -f "$log"' EXIT HUP INT TERM
+
+mpv --log-file="$log" "$@"
+rc=$?
+
+# mpv exits 0 even when ytdl_hook fails and writes its errors to stdout, so the
+# log file is the only reliable signal.
+started=0
+grep -q 'Starting playback' "$log" && started=1
+
+fatal=0
+grep -qE "ytdl_hook\] ERROR|youtube-dl failed|Failed to recognize file format|HTTP error 403|No video or audio streams selected|Sign in to confirm" \
+	"$log" && fatal=1
+
+# Played fine, or failed for some reason we should not paper over.
+if [ "$started" -eq 1 ] || [ "$fatal" -eq 0 ]; then
+	exit "$rc"
+fi
+
+reason=$(grep -oE 'Sign in to confirm[^"]*|HTTP error 403' "$log" | head -1)
+if [ -n "$reason" ]; then
+	note "mpv could not play this URL ($reason)"
+else
+	note 'mpv could not play this URL'
+fi
+note "retrying with yt-dlp doing the fetching (mode: $MODE)"
+
+command -v yt-dlp >/dev/null 2>&1 || die 'yt-dlp not found in PATH'
+
+# --- rebuild the argument list for the fallback ------------------------------
+# Every option the user passed is preserved; only the URL is dropped, to be
+# replaced by the local file or by stdin. POSIX sh has no arrays, so rotate the
+# positional parameters: append the kept arguments, then shift the originals off
+# the front.
+for arg in "$@"; do
+	if [ "$arg" != "$url" ]; then
+		set -- "$@" "$arg"
+	fi
+	shift
+done
+
+# Playing a file or a pipe no longer triggers mpv's [protocol.https] auto
+# profile, so apply it explicitly to keep speed and friends consistent.
+if [ -r "$MPV_CONFIG" ] && grep -qE '^\[protocol\.https\]' "$MPV_CONFIG"; then
+	set -- "$@" --profile=protocol.https
+fi
+
+# sponsorblock.lua recovers the video id from a Referer header when the path is
+# not a YouTube URL, so segment skipping survives the fallback.
+if [ -n "$video_id" ]; then
+	set -- "$@" "--http-header-fields=Referer: $url"
+fi
+
+# --- cookies ----------------------------------------------------------------
+# Kept as a single optional pair of arguments rather than an array.
+if [ -f "$COOKIES" ]; then
+	note "using cookies from $COOKIES"
+else
+	note "no cookie file at $COOKIES - trying without cookies"
+	note 'if this fails, export cookies as described at'
+	note '  https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies'
+	note 'using a private window (cookies from a normal tab rotate and go stale)'
+	COOKIES=''
+fi
+
+# --- fallback playback ------------------------------------------------------
+if [ "$MODE" = 'pipe' ]; then
+	# mpv is last in the pipeline, so $? is already mpv's status.
+	if [ -n "$COOKIES" ]; then
+		yt-dlp --no-config --cookies "$COOKIES" -f "$format" -o - "$url" | mpv "$@" -
+	else
+		yt-dlp --no-config -f "$format" -o - "$url" | mpv "$@" -
+	fi
+	exit $?
+fi
+
+mkdir -p "$CACHE_DIR" || die "cannot create $CACHE_DIR"
+out="$CACHE_DIR/${video_id:-video}.%(ext)s"
+
+note "downloading (format: $format)"
+if [ -n "$COOKIES" ]; then
+	yt-dlp --no-config --cookies "$COOKIES" -f "$format" \
+		--no-part --force-overwrites -o "$out" "$url" || dl_failed=1
+else
+	yt-dlp --no-config -f "$format" \
+		--no-part --force-overwrites -o "$out" "$url" || dl_failed=1
+fi
+[ "${dl_failed:-0}" = 1 ] && die 'yt-dlp could not fetch this video either - see its error above'
+
+# Locate what was written without relying on GNU find extensions.
+file=''
+for candidate in "$CACHE_DIR/${video_id:-video}".*; do
+	if [ -f "$candidate" ]; then
+		file="$candidate"
+		break
+	fi
+done
+[ -n "$file" ] || die 'download reported success but produced no file'
+
+if [ "$KEEP" = '1' ]; then
+	note "keeping $file"
+else
+	trap 'rm -f "$log" "$file"' EXIT HUP INT TERM
+fi
+
+mpv "$@" "$file"
