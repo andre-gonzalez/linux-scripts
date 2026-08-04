@@ -1,0 +1,47 @@
+#!/bin/sh
+#
+# Open a file from $HOME via dmenu fuzzy search.
+#
+# Lists every file fd would show (honouring ~/.config/fd/ignore and every
+# .gitignore), most recently modified first, as $HOME-relative paths. dmenu is
+# built with the fuzzymatch patch, so typing directory and filename fragments
+# together works: "notasbook" finds projects/notas/pessoal/bookmarks.md.
+#
+# Text files open in the editor inside st; everything else goes to xdg-open,
+# which already has sane handlers for pdf (zathura), images (feh) and video
+# (mpv). text/plain is deliberately NOT left to xdg-open: it is mapped to
+# LibreOffice Writer, and nvim.desktop is Terminal=true with no
+# xdg-terminal-exec installed.
+
+# dmenu -f grabs the keyboard before reading stdin, so keystrokes typed while
+# the list is built are captured instead of leaking to the focused window.
+# No -i: this dmenu build has no such flag (it would die) and already matches
+# case-insensitively by default.
+choice=$(
+	cd "$HOME" || exit 1
+	fd --type f . -X stat --printf '%Y\t%n\n' |
+		sort -rn |
+		cut -f2- |
+		sed 's|^\./||' |
+		dmenu -f -l 20 -p "Open:"
+) || exit 0
+
+[ -n "$choice" ] || exit 0
+
+target="$HOME/$choice"
+
+# dmenu prints the raw input when nothing matches, or on Shift+Return.
+if [ ! -f "$target" ]; then
+	notify-send "Open file" "No such file: $choice"
+	exit 1
+fi
+
+# $EDITOR is unset for anything dwm spawns; it only exists in the fish config.
+case "$(file -bL --mime-type -- "$target")" in
+text/* | application/json | inode/x-empty)
+	exec st -e "${EDITOR:-nvim}" -- "$target"
+	;;
+*)
+	exec xdg-open "$target"
+	;;
+esac
