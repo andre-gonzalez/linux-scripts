@@ -1,0 +1,178 @@
+#!/bin/sh
+
+# youtube-feed: turn a YouTube URL sitting in the clipboard into a
+# FreshRSS-ready feed URL, and leave both the name and the feed URL in the
+# clipboard history.
+#
+# Usage:
+#   youtube-feed              # read the URL from the CLIPBOARD selection
+#   youtube-feed <url>        # use this URL instead (handy for testing)
+#
+# Accepts channel URLs (@handle, /channel/UC..., legacy /c/ and /user/, the
+# /videos tab, m.youtube.com), video URLs (watch?v=..., youtu.be/...) and
+# playlist URLs (/playlist?list=PL...). A watch URL that also carries a
+# list= parameter resolves to the CHANNEL, since that is usually the
+# subscription you actually want.
+#
+# Why UULF instead of the plain channel feed
+# ------------------------------------------
+# https://www.youtube.com/feeds/videos.xml?channel_id=UC... includes shorts.
+# Every channel also has an implicit "long-form uploads" playlist whose id is
+# the channel id with UC swapped for UULF, and its feed contains no shorts.
+# (Verified against Veritasium: the entries UULF drops are all ~90-100s and
+# resolve at /shorts/<id>, while the ones it keeps are 20-40min and redirect
+# away from /shorts/. UUSH, despite the folklore, is NOT shorts-only.)
+#
+# The cost of UULF is the feed title: every UULF feed is called "Videos", and
+# the real name only lives in <author><name>. So the name is copied first and
+# the feed URL second: paste the URL straight into FreshRSS with Ctrl+V, then
+# reach back for the name with clipmenu (Mod+Shift+V).
+#
+# Two xclip calls in a row race clipmenud, which then records only the second
+# one - hence the deliberate gap between the copies.
+#
+# Dependencies: curl, xclip; notify-send (optional, for feedback).
+
+set -u
+
+UA='Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36'
+TITLE='YouTube feed'
+TIMEOUT=15
+CLIP_GAP=0.5
+
+notif_id=''
+
+# One notification that morphs in place, rather than a stack of toasts for a
+# script that finishes in about a second.
+note() {
+	command -v notify-send >/dev/null 2>&1 || return 0
+	if [ -n "$notif_id" ]; then
+		notif_id=$(notify-send --print-id --replace-id="$notif_id" -t 4000 "$TITLE" "$1")
+	else
+		notif_id=$(notify-send --print-id -t 4000 "$TITLE" "$1")
+	fi
+}
+
+die() {
+	if command -v notify-send >/dev/null 2>&1; then
+		if [ -n "$notif_id" ]; then
+			notify-send --print-id --replace-id="$notif_id" \
+				--urgency=critical "$TITLE" "✗ $1" >/dev/null
+		else
+			notify-send --urgency=critical "$TITLE" "✗ $1"
+		fi
+	fi
+	printf 'youtube-feed: %s\n' "$1" >&2
+	exit 1
+}
+
+# --- dependency checks -------------------------------------------------------
+for dep in curl xclip; do
+	command -v "$dep" >/dev/null 2>&1 || die "missing dependency: $dep"
+done
+
+# --- input: argument wins over the clipboard ---------------------------------
+if [ "$#" -gt 0 ] && [ -n "$1" ]; then
+	url=$1
+else
+	url=$(xclip -o -selection clipboard 2>/dev/null)
+fi
+url=$(printf '%s' "$url" | tr -d '\r\n' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+[ -n "$url" ] || die "Clipboard is empty"
+
+case "$url" in
+http://* | https://*) ;;
+*) die "Clipboard is not an http(s) URL" ;;
+esac
+
+host=${url#*://}
+host=${host%%/*}
+host=${host%%\?*}
+case "$host" in
+youtube.com | www.youtube.com | m.youtube.com | music.youtube.com | youtu.be | www.youtu.be) ;;
+*) die "Not a YouTube URL ($host)" ;;
+esac
+
+# --- scratch files -----------------------------------------------------------
+page=$(mktemp "${TMPDIR:-/tmp}/youtube-feed.XXXXXX") || die "mktemp failed"
+feed=$(mktemp "${TMPDIR:-/tmp}/youtube-feed.XXXXXX") || die "mktemp failed"
+trap 'rm -f "$page" "$feed"' 0 1 2 15
+
+fetch() { # fetch <url> <outfile> <what>, prints the HTTP status code
+	_code=$(curl -sL -A "$UA" --max-time "$TIMEOUT" -o "$2" -w '%{http_code}' "$1")
+	_rc=$?
+	if [ "$_rc" -ne 0 ]; then
+		[ "$_rc" -eq 28 ] && die "Timed out fetching the $3 (${TIMEOUT}s)"
+		die "Network error fetching the $3 (curl $_rc)"
+	fi
+	printf '%s' "$_code"
+}
+
+# XML/HTML entities survive into channel names often enough to matter.
+unescape() {
+	sed -e 's/&#39;/'"'"'/g' -e "s/&apos;/'/g" -e 's/&quot;/"/g' \
+		-e 's/&lt;/</g' -e 's/&gt;/>/g' -e 's/&amp;/\&/g'
+}
+
+# --- work out which playlist feed to build -----------------------------------
+# A bare playlist URL is its own feed; a watch URL that happens to carry list=
+# is treated as a video, i.e. resolved to the channel behind it.
+playlist_id=''
+case "$url" in
+*list=PL*)
+	case "$url" in
+	*v=*) ;;
+	*) playlist_id=$(printf '%s' "$url" | grep -o 'list=PL[A-Za-z0-9_-]*' | head -1 | cut -d= -f2) ;;
+	esac
+	;;
+esac
+
+if [ -n "$playlist_id" ]; then
+	note 'Resolving playlist…'
+else
+	note 'Resolving channel…'
+
+	code=$(fetch "$url" "$page" 'channel page')
+	[ "$code" = 200 ] || die "YouTube returned HTTP $code for that URL"
+
+	# The canonical link is the only trustworthy anchor on a channel page: the
+	# first bare "channelId" hits belong to RECOMMENDED channels, not this one.
+	channel_id=$(grep -o 'rel="canonical" href="https://www\.youtube\.com/channel/UC[A-Za-z0-9_-]\{22\}"' \
+		"$page" | head -1 | grep -o 'UC[A-Za-z0-9_-]\{22\}')
+
+	# Watch pages have no channel canonical, but do name their owner.
+	[ -n "$channel_id" ] || channel_id=$(grep -o '"externalChannelId":"UC[A-Za-z0-9_-]\{22\}"' \
+		"$page" | head -1 | grep -o 'UC[A-Za-z0-9_-]\{22\}')
+
+	[ -n "$channel_id" ] || die 'Could not find a channel ID on that page'
+
+	playlist_id="UULF${channel_id#UC}"
+fi
+
+# --- verify the feed really exists before it reaches the clipboard -----------
+feed_url="https://www.youtube.com/feeds/videos.xml?playlist_id=$playlist_id"
+
+note 'Verifying feed…'
+code=$(fetch "$feed_url" "$feed" 'feed')
+case "$code" in
+200) ;;
+404) die 'Feed not found (HTTP 404) — channel with no long-form videos?' ;;
+*) die "Feed returned HTTP $code" ;;
+esac
+
+# For a channel the feed <title> is the useless literal "Videos" and the real
+# name is the author; for a playlist the <title> IS the playlist name, which is
+# what belongs in FreshRSS.
+case "$playlist_id" in
+UULF*) name=$(sed -n 's|.*<name>\([^<]*\)</name>.*|\1|p' "$feed" | head -1 | unescape) ;;
+*) name=$(sed -n 's|.*<title>\([^<]*\)</title>.*|\1|p' "$feed" | head -1 | unescape) ;;
+esac
+[ -n "$name" ] || name=$playlist_id
+
+# --- copy: name first, feed URL last, so Ctrl+V gives the URL ---------------
+printf '%s' "$name" | xclip -r -selection clipboard
+sleep "$CLIP_GAP" # clipmenud only records the second of two rapid copies
+printf '%s' "$feed_url" | xclip -r -selection clipboard
+
+note "✓ $name — feed copied"
+printf '%s\n' "$feed_url"
