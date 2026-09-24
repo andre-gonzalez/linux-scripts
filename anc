@@ -1,0 +1,39 @@
+#!/bin/sh
+# Switch the earbuds' ANC mode via something-x.
+# Usage: anc [noise-cancellation|transparency|off]
+# With no argument, prompts for the mode with dmenu.
+
+DEVICE_MAC="2C:BE:EE:6A:52:5E"
+
+choice="$1"
+if [ -z "$choice" ]; then
+	choice=$(printf 'Noise Cancellation\nTransparency\nOff' | dmenu -p "ANC mode:")
+	[ -z "$choice" ] && exit 0
+fi
+
+case $(printf '%s' "$choice" | tr '[:upper:]' '[:lower:]') in
+"noise cancellation" | noise-cancellation | nc | anc | on)
+	mode=on
+	label="Noise Cancellation"
+	;;
+transparency | t)
+	mode=transparency
+	label="Transparency"
+	;;
+off)
+	mode=off
+	label="Off"
+	;;
+*)
+	printf 'error: unknown mode: %s\n' "$choice" >&2
+	printf 'usage: %s [noise-cancellation|transparency|off]\n' "$0" >&2
+	exit 1
+	;;
+esac
+
+if something-x --device "$DEVICE_MAC" --anc "$mode"; then
+	notify-send "ANC" "$label"
+else
+	notify-send -u critical "ANC" "Failed to set $label"
+	exit 1
+fi
