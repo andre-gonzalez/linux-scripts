@@ -1,0 +1,33 @@
+#!/bin/sh
+# Select a screen region, OCR it, and copy the text to the clipboard.
+#
+# Languages come from OCR_LANGS (tesseract "+" syntax, default eng+por);
+# any not installed are skipped, e.g. install tesseract-data-por for Portuguese.
+
+OCR_LANGS=${OCR_LANGS:-eng+por}
+
+img=$(mktemp --suffix=.png)
+trap 'rm -f "$img"' EXIT
+
+QT_ENABLE_HIGHDPI_SCALING=0 flameshot gui --raw >"$img"
+[ -s "$img" ] || exit 0 # selection cancelled
+
+# Upscale: tesseract is far more accurate on small UI fonts at 2x
+magick "$img" -resize 200% "$img"
+
+available=$(tesseract --list-langs 2>/dev/null | tail -n +2)
+langs=""
+for l in $(printf '%s' "$OCR_LANGS" | tr '+' ' '); do
+	printf '%s\n' "$available" | grep -qx "$l" && langs="${langs:+$langs+}$l"
+done
+[ -n "$langs" ] || langs=eng
+
+text=$(tesseract "$img" - -l "$langs" --psm 6 -c preserve_interword_spaces=1 2>/dev/null)
+
+if [ -z "$text" ]; then
+	notify-send "OCR" "No text found"
+	exit 1
+fi
+
+printf '%s' "$text" | xclip -selection clipboard
+notify-send "OCR copied ($langs)" "$(printf '%s' "$text" | head -c 200)"
