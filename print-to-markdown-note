@@ -1,5 +1,5 @@
 #!/bin/sh
 
 NOME=$(cat '' | dmenu)
-flameshot gui -c -p $HOME/projects/notas/_attachment/$NOME
+QT_ENABLE_HIGHDPI_SCALING=0 flameshot gui -c -p $HOME/projects/notas/_attachment/$NOME
 echo -n ![$NOME]\(_attachment/$NOME.png\) | xclip -selection clipboard
