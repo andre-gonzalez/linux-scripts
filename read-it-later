@@ -4,7 +4,7 @@
 
 base_url=$(xclip -o -sel clip)
 
-wallabag_host="http://servarr.ewe-musical.ts.net:7780"
+wallabag_host="https://wallabag.franktech.dev
 
 token=$(curl -sf \
   -X POST "$wallabag_host/oauth/v2/token" \

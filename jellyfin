@@ -1,1 +1,1 @@
-helium-browser --profile-directory="Profile 1" --window-name="jellyfin" --app=http://servarr.ewe-musical.ts.net:8096
+helium-browser --profile-directory="Profile 1" --window-name="jellyfin" --app=https://jellyfin.franktech.dev

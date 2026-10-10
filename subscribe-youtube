@@ -43,7 +43,7 @@
 # them.
 #
 # Credentials live in ~/.scripts/.env/freshrss (mode 600, git-ignored):
-#   freshrss_url=http://servarr.ewe-musical.ts.net:81
+#   freshrss_url=https://freshrss.franktech.dev
 #   freshrss_user=frank
 #   freshrss_api_password=...     # Profile -> API management, NOT the login password
 #   freshrss_category=Videos
