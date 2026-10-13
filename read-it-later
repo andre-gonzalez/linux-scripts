@@ -2,9 +2,9 @@
 
 . "$HOME/.scripts/.env/wallabag"
 
-base_url=$(xclip -o -sel clip)
+base_url=${1:-$(xclip -o -sel clip)}
 
-wallabag_host="https://wallabag.franktech.dev
+wallabag_host="https://wallabag.franktech.dev"
 
 token=$(curl -sf \
   -X POST "$wallabag_host/oauth/v2/token" \
