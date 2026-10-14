@@ -1,0 +1,97 @@
+#!/bin/sh
+# converter-em-subvolume — turn directories into nested btrfs subvolumes.
+#
+# Snapper snapshots one subvolume and stops at the nested ones, so a
+# directory that is its own subvolume stays out of the /home snapshots.
+# Caches and game installs churn gigabytes that the snapshots would
+# otherwise keep for days after they are deleted.
+#
+# Run it once per machine, with the programs that use the directories closed.
+# New installs get the subvolumes from the systemd-tmpfiles rules in the
+# ansible (light_workstation_nosnapshot_dirs) and nix_os (btrfs.nix) repos.
+#
+# The copy uses reflinks, so it needs almost no free space. The old blocks
+# come back only after the snapshots that hold them are deleted (limpar-disco).
+#
+# Usage:
+#   converter-em-subvolume              ~/.cache and ~/.local/share/Steam
+#   converter-em-subvolume DIR...       the given directories
+
+if [ "$(id -u)" -eq 0 ]; then
+	printf 'error: %s\n' "rode como usuário normal, sem sudo" >&2
+	exit 1
+fi
+
+if [ "$#" -eq 0 ]; then
+	set -- "$HOME/.cache" "$HOME/.local/share/Steam"
+fi
+
+# Programs with a file or working directory open under $1.
+users_of() {
+	find /proc/[0-9]*/fd /proc/[0-9]*/cwd -maxdepth 1 \
+		\( -lname "$1" -o -lname "$1/*" \) 2>/dev/null |
+		cut -d / -f 3 | sort -u |
+		while read -r pid; do
+			cat "/proc/$pid/comm" 2>/dev/null
+		done | sort -u | tr '\n' ' '
+}
+
+convert() {
+	dir=${1%/}
+	old="$dir.old-subvolume"
+
+	if [ ! -e "$dir" ]; then
+		mkdir -p "$(dirname "$dir")" &&
+			btrfs subvolume create "$dir" >/dev/null &&
+			printf 'criado: %s\n' "$dir"
+		return
+	fi
+	if [ "$(stat -f -c %T "$dir")" != btrfs ]; then
+		printf 'error: %s não está em btrfs\n' "$dir" >&2
+		return 1
+	fi
+	# The root directory of every btrfs subvolume has inode 256.
+	if [ "$(stat -c %i "$dir")" -eq 256 ]; then
+		printf 'já é subvolume: %s\n' "$dir"
+		return
+	fi
+	if [ -e "$old" ]; then
+		printf 'error: %s já existe, de uma execução anterior\n' "$old" >&2
+		return 1
+	fi
+
+	busy=$(users_of "$dir")
+	if [ -n "$busy" ]; then
+		printf '%s está em uso por: %s\n' "$dir" "$busy"
+		printf 'Feche esses programas antes. Continuar mesmo assim? [y/N] '
+		read -r answer
+		case "$answer" in
+		y | Y | s | S) ;;
+		*) return 1 ;;
+		esac
+	fi
+
+	mode=$(stat -c %a "$dir")
+	mv -- "$dir" "$old" || return 1
+	if ! btrfs subvolume create "$dir" >/dev/null; then
+		mv -- "$old" "$dir"
+		printf 'error: não foi possível criar o subvolume %s\n' "$dir" >&2
+		return 1
+	fi
+	chmod "$mode" "$dir"
+	if ! cp -a --reflink=always -- "$old/." "$dir/"; then
+		# An empty subvolume can be removed with rmdir by its owner.
+		rm -rf -- "$dir"
+		mv -- "$old" "$dir"
+		printf 'error: cópia falhou, %s restaurado\n' "$dir" >&2
+		return 1
+	fi
+	rm -rf -- "$old"
+	printf 'convertido: %s\n' "$dir"
+}
+
+status=0
+for dir in "$@"; do
+	convert "$dir" || status=1
+done
+exit "$status"
