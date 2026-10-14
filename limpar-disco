@@ -1,46 +1,270 @@
 #!/bin/sh
+# limpar-disco — get space back on the SSD.
+#
+# Run as the normal user, never with sudo: the user steps (trash, ~/.cache,
+# yay, pip, uv) must see the real $HOME, and yay refuses to run as root. Each
+# root step calls sudo itself; the password is asked once at the start.
+#
+# Order matters on btrfs with snapper: a snapshot taken before the cleanup
+# still holds every block the cleanup deletes. So the snapshots come last —
+# a fresh "limpar-disco" snapshot is taken after everything else, and the
+# older ones are offered for deletion in fzf.
+#
+# Works on Arch and NixOS: a step whose command is missing is skipped.
+# Balancing is left to btrfs-balance.sh on purpose.
 
-# Remove package manager cache
-yay --noconfirm --needed -Sc &&
+PROMPT_NO_YES='No\nYes'
+BACKUP_LOG_DIR="$HOME/.local/state/backup-scripts"
+BACKUP_STAGING_DIR="/var/tmp/backup-staging"
+STEAM_DIR="$HOME/.local/share/Steam"
+NCDU_CMD="ncdu --exclude .snapshots --exclude-kernfs /"
+FZF_HEADER='Tab: marcar  ctrl-a: todos  Enter: apagar  Esc: nada'
+# Caches in ~/.cache below this size are not offered in fzf.
+CACHE_MIN_KB=102400
 
-# Empty trash
-trash-empty -f &&
+if [ "$(id -u)" -eq 0 ]; then
+	printf 'error: %s\n' "rode limpar-disco como usuário normal, sem sudo" >&2
+	exit 1
+fi
 
-# Removed unused dependecies
-pacman -Rsn --noconfirm $(pacman -Qdtq)  &&
+have() {
+	command -v "$1" >/dev/null 2>&1
+}
 
-# Remove python cache
-pip cache purge &&
+step() {
+	printf '\n==> %s\n' "$1"
+}
 
-# Clean docker
-docker image prune -a &&
-docker system prune -a &&
-docker volume prune &&
-docker container prune
+skip() {
+	printf '    pulado: %s\n' "$1"
+}
 
-# Clean cache in /var
-trash-put /var/cache/
+# confirm "question" — dmenu in X, the terminal otherwise. "No" is the default.
+confirm() {
+	if [ -n "$DISPLAY" ] && have dmenu; then
+		answer=$(printf '%b' "$PROMPT_NO_YES" | dmenu -p "$1")
+	else
+		printf '%s [y/N] ' "$1"
+		read -r answer
+	fi
+	case "$answer" in
+	Yes | y | Y | yes | s | S | sim) return 0 ;;
+	*) return 1 ;;
+	esac
+}
 
-# Clean cache in home direcotry
-trash-put --recursive "$HOME"/.cache/go-build/
-trash-put --recursive "$HOME"/.cache/yay/
+avail_bytes() {
+	df -B1 --output=avail / | tail -n 1 | tr -d ' '
+}
 
-# Remove go/ directory
-trash-put --recursive "$HOME"/go/
+human() {
+	numfmt --to=iec-i --suffix=B "$1"
+}
 
-# Clean logs older than 1 week
-journalctl --vacuum-time=1w
+# A cache that belongs to a running program is not deleted: removing a live
+# browser profile cache can corrupt it.
+cache_process() {
+	case "$1" in
+	net.imput.helium) printf 'helium' ;;
+	google-chrome) printf 'chrome' ;;
+	mozilla) printf 'firefox' ;;
+	*) printf '%s' "$1" ;;
+	esac
+}
 
-# Ask to start bleachbit
-"$HOME"/.scripts/prompt.sh "Start bleachbit?" bleachbit
+# Match the process name, not the command line: -f finds "uv" in any
+# command that contains those two letters.
+is_running() {
+	pgrep -i -x -- "$1" >/dev/null 2>&1
+}
 
-# Ask to start baobab
-# "$HOME"/.scripts/prompt.sh "Start baobab?" baobab
+FREE_BEFORE=$(avail_bytes)
 
-# Ask to start ncdu
-"$HOME"/.scripts/prompt.sh "Start ncdu?" ncdu
+sudo -v || exit 1
+# Keep the sudo timestamp alive while fzf and dmenu wait for input.
+while kill -0 "$$" 2>/dev/null; do
+	sudo -n true 2>/dev/null
+	sleep 50
+done &
+SUDO_KEEPALIVE=$!
+trap 'kill "$SUDO_KEEPALIVE" 2>/dev/null' EXIT
+trap 'exit 130' INT TERM
 
-printf "\n AVISO: Não esqueça de elimnar snapshots antigos do timeshift!!!\n"
-printf "Se precisar de mais espaço rode o código abaixo nos repositórios \n git reflog expire --all --expire=now \n git gc --prune=now --aggressive\n"
-printf "rode pacman -Qtd para ver pacotes para desinstalar\n"
-printf "Você pode instalar o ancient-packages para ver pacotes que você tem instalado que não estão mais nos repositórios\n"
+step "Lixeira"
+if have trash-empty; then
+	trash-empty -f
+else
+	skip "trash-empty não instalado"
+fi
+
+step "Pacotes do sistema"
+if have yay; then
+	yay -Sc --noconfirm
+fi
+if have paccache; then
+	# -k0: the current versions go too; pacman downloads them again if needed.
+	sudo paccache -r -k0
+elif have pacman; then
+	skip "paccache não instalado (pacman-contrib)"
+fi
+if have pacman; then
+	orphans=$(pacman -Qdtq)
+	if [ -n "$orphans" ]; then
+		printf 'Pacotes órfãos:\n%s\n' "$orphans"
+		# shellcheck disable=SC2086 # one package name per word
+		sudo pacman -Rsn $orphans
+	else
+		printf '    nenhum pacote órfão\n'
+	fi
+fi
+if have nix-collect-garbage; then
+	nix-env --list-generations -p /nix/var/nix/profiles/system 2>/dev/null | tail -n 5
+	if confirm "Apagar gerações do Nix com mais de 7 dias?"; then
+		sudo nix-collect-garbage --delete-older-than 7d
+		nix-collect-garbage --delete-older-than 7d
+		sudo nix-store --optimise
+	fi
+fi
+
+step "Caches de ferramentas"
+have pip && pip cache purge
+have uv && uv cache clean
+have go && go clean -cache -modcache
+for dir in debuginfod_client thumbnails; do
+	if [ -d "$HOME/.cache/$dir" ]; then
+		rm -rf -- "${HOME:?}/.cache/$dir"
+		printf '    apagado: ~/.cache/%s\n' "$dir"
+	fi
+done
+
+step "Docker"
+if have docker && docker info >/dev/null 2>&1; then
+	docker system prune -a -f
+	docker volume prune -a -f
+else
+	skip "docker não instalado ou parado"
+fi
+
+step "Logs do sistema"
+sudo journalctl --vacuum-time=1w
+
+step "Backups"
+if [ -d "$BACKUP_LOG_DIR" ]; then
+	# Keep the newest log whatever its age, for diagnosis of the last run.
+	# -mtime +6 is "7 days or more": find rounds the age down to whole days.
+	newest_log=$(find "$BACKUP_LOG_DIR" -maxdepth 1 -type f -name 'backup-*.log' | sort | tail -n 1)
+	find "$BACKUP_LOG_DIR" -maxdepth 1 -type f -name 'backup-*.log' -mtime +6 \
+		! -path "$newest_log" -print -delete
+fi
+for archive in "$BACKUP_STAGING_DIR"/*/*.7z; do
+	[ -f "$archive" ] || continue
+	size=$(du -h -- "$archive" | cut -f 1)
+	date=$(date -r "$archive" '+%Y-%m-%d')
+	printf '    arquivo de backup esquecido: %s (%s, %s)\n' "$archive" "$size" "$date"
+	if confirm "Apagar $(basename "$archive") ($size)? Pode ser a única cópia."; then
+		sudo rm -f -- "$archive"
+	fi
+done
+
+step "Caches em ~/.cache"
+if have fzf && [ -d "$HOME/.cache" ]; then
+	du -sk "$HOME"/.cache/* "$HOME"/.cache/.[!.]* 2>/dev/null |
+		awk -v min="$CACHE_MIN_KB" '$1 >= min' | sort -rn |
+		while read -r kb path; do
+			printf '%10s  %s\n' "$(human $((kb * 1024)))" "${path##*/}"
+		done |
+		fzf --multi --reverse --header="$FZF_HEADER" --bind 'ctrl-a:select-all' |
+		while read -r _size name; do
+			process=$(cache_process "$name")
+			if is_running "$process"; then
+				printf '    mantido: ~/.cache/%s (%s está aberto)\n' "$name" "$process"
+				continue
+			fi
+			rm -rf -- "${HOME:?}/.cache/$name"
+			printf '    apagado: ~/.cache/%s\n' "$name"
+		done
+else
+	skip "fzf não instalado"
+fi
+
+step "Steam"
+if [ -d "$STEAM_DIR/steamapps/shadercache" ]; then
+	size=$(du -sh "$STEAM_DIR/steamapps/shadercache" | cut -f 1)
+	if is_running steam; then
+		skip "Steam está aberto"
+	elif confirm "Apagar o shadercache da Steam ($size)?"; then
+		rm -rf -- "$STEAM_DIR/steamapps/shadercache"
+		printf '    apagado: shadercache (%s)\n' "$size"
+	fi
+else
+	skip "sem shadercache da Steam"
+fi
+
+step "Snapshots"
+snapshots_deleted=0
+if have snapper && have fzf; then
+	configs=$(sudo snapper --csvout --no-headers list-configs --columns config)
+	keep=""
+	for config in $configs; do
+		# The number cleanup rotates this snapshot out like the pacman ones.
+		number=$(sudo snapper -c "$config" create -c number -d limpar-disco --print-number)
+		keep="$keep $config:$number"
+		printf '    novo snapshot: %s %s\n' "$config" "$number"
+	done
+	selected=$(
+		for config in $configs; do
+			sudo snapper --iso --csvout --no-headers -c "$config" list \
+				--columns number,type,date,used-space,description |
+				while IFS=, read -r number type date used description; do
+					# 0 is the live subvolume, not a snapshot.
+					[ "$number" = 0 ] && continue
+					case "$keep " in *" $config:$number "*) continue ;; esac
+					[ -n "$used" ] && used=$(human "$used")
+					printf '%-4s %5s  %-6s  %s  %10s  %s\n' \
+						"$config" "$number" "$type" "$date" "$used" "$description"
+				done
+		done | fzf --multi --reverse --header="$FZF_HEADER" --bind 'ctrl-a:select-all'
+	)
+	for config in $configs; do
+		numbers=$(printf '%s\n' "$selected" | awk -v c="$config" '$1 == c {print $2}' | tr '\n' ' ')
+		[ -n "$numbers" ] || continue
+		# shellcheck disable=SC2086 # one snapshot number per word
+		if sudo snapper -c "$config" delete $numbers; then
+			snapshots_deleted=1
+			printf '    apagados de %s: %s\n' "$config" "$numbers"
+		fi
+	done
+else
+	skip "snapper ou fzf não instalado"
+fi
+if [ "$snapshots_deleted" -eq 1 ]; then
+	# btrfs frees snapshot space in the background; wait so the report is true.
+	printf '    aguardando o btrfs liberar o espaço dos snapshots...\n'
+	sudo btrfs subvolume sync /
+fi
+
+step "Relatório"
+FREE_AFTER=$(avail_bytes)
+printf 'Espaço livre antes:  %s\n' "$(human "$FREE_BEFORE")"
+printf 'Espaço livre depois: %s\n' "$(human "$FREE_AFTER")"
+if [ "$FREE_AFTER" -gt "$FREE_BEFORE" ]; then
+	printf 'Recuperado:          %s\n' "$(human $((FREE_AFTER - FREE_BEFORE)))"
+fi
+if [ -d "$STEAM_DIR/steamapps/common" ]; then
+	printf '\nJogos da Steam (desinstale pela Steam):\n'
+	du -sh "$STEAM_DIR"/steamapps/common/* 2>/dev/null | sort -rh | head -n 10
+fi
+printf '\nMaiores diretórios em %s:\n' "$HOME"
+du -sh "$HOME"/* "$HOME"/.[!.]* 2>/dev/null | sort -rh | head -n 10
+printf '\nSe precisar de mais espaço:\n'
+printf '  git reflog expire --all --expire=now && git gc --prune=now --aggressive (nos repositórios)\n'
+printf '  pacman -Qtd mostra pacotes para desinstalar\n'
+printf '  ancient-packages mostra pacotes que não estão mais nos repositórios\n'
+printf '  btrfs-balance.sh devolve chunks vazios ao espaço não alocado\n'
+
+if have bleachbit && confirm "Abrir o bleachbit?"; then
+	bleachbit
+fi
+if have ncdu && confirm "Abrir o ncdu?"; then
+	$NCDU_CMD
+fi
