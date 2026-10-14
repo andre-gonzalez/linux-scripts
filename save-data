@@ -1,0 +1,518 @@
+#!/bin/sh
+# save-data — cut background data use on a metered network.
+#
+#   light       stops update/telemetry/container daemons, pauses insync,
+#               closes game launchers, lowers mpv quality and blocks autoplay
+#               in qutebrowser. The optional units (VPNs, nix-daemon, cron)
+#               are asked about, and kept running with -a.
+#   aggressive  light + the optional units, chat/music/feed apps and
+#               kdeconnect, a smaller mpv quality and cache, and asks whether
+#               to block images in qutebrowser.
+#
+# System units are stopped with `sudo -n systemctl`, which only works with the
+# sudoers drop-in (ansible: roles/base/files/sudoers_save_data, nix_os:
+# modules/nixos/base/users.nix). Units shared with save-battery are handed
+# over through services-guard.sh, so neither restore starts a unit the other
+# still wants stopped.
+#
+# mpv reads ~/.config/mpv/save-data.conf through an include= line at the end
+# of its config; --restore leaves that file empty instead of deleting it.
+#
+# Usage:
+#   save-data                       interactive menu, then prompt per action
+#   save-data -p aggressive -a      apply aggressive, no prompts
+#   save-data -p light              apply light, prompt per action
+#   save-data -p light -a -n        print what light would do, change nothing
+#   save-data -r                    restore normal state
+#   save-data -s                    show status
+
+CACHE_DIR="$HOME/.cache/save-data"
+STATE_FILE="$CACHE_DIR/profile"
+KILLED_APPS="$CACHE_DIR/killed-apps"
+STOPPED_SERVICES="$CACHE_DIR/stopped-services"
+STOPPED_USER_UNITS="$CACHE_DIR/stopped-user-units"
+INSYNC_PAUSED="$CACHE_DIR/insync-paused"
+LOG_FILE="/tmp/save-data.log"
+
+MPV_CONF="${XDG_CONFIG_HOME:-$HOME/.config}/mpv/save-data.conf"
+GUARD="$HOME/.scripts/services-guard.sh"
+
+# Stopped in both profiles. docker.socket goes before docker, or the socket
+# starts docker again on the next request.
+CORE_UNITS="clamav-freshclam clamav-freshclam.timer pkgstats.timer archlinux-keyring-wkd-sync.timer docker.socket docker containerd"
+# Asked about in light (kept with -a), stopped in aggressive. cronie is Arch;
+# NixOS runs the former cron jobs as user timers instead.
+OPTIONAL_UNITS="nix-daemon tailscaled awsvpnclient cronie"
+OPTIONAL_USER_UNITS="push-new-notes.timer"
+
+LIGHT_APPS="steam lutris"
+AGGRESSIVE_APPS="$LIGHT_APPS kdeconnectd spotify spotify_player newsboat discord Discord telegram-desktop"
+# Closed apps that --restore starts again; GUI apps are left to the user.
+BACKGROUND_APPS="kdeconnectd"
+
+# The sudoers drop-in matches the exact systemctl path.
+if [ -x /usr/bin/systemctl ]; then
+	SYSTEMCTL=/usr/bin/systemctl
+else
+	SYSTEMCTL=$(command -v systemctl)
+fi
+
+mkdir -p "$CACHE_DIR"
+
+[ -r "$GUARD" ] || {
+	printf 'error: %s not found\n' "$GUARD" >&2
+	exit 1
+}
+# shellcheck source=services-guard.sh
+. "$GUARD"
+
+log() {
+	printf '[%s] %s\n' "$(date '+%H:%M:%S')" "$1" | tee -a "$LOG_FILE"
+}
+
+err() {
+	printf 'error: %s\n' "$1" >&2
+	notify-send -u critical "Save data" "$1" 2>/dev/null || true
+	exit 1
+}
+
+# Run a command, or only log it in dry-run mode.
+run() {
+	if [ "$DRY_RUN" = "true" ]; then
+		log "dry-run: $*"
+		return 0
+	fi
+	"$@"
+}
+
+# Run a command with its output discarded (use as `run quiet cmd`, so the
+# dry-run log line is not discarded with it).
+quiet() {
+	"$@" >/dev/null 2>&1
+}
+
+# Append a line to a state file once; nothing is written in dry-run mode.
+record() {
+	[ "$DRY_RUN" = "true" ] && return 0
+	grep -qxF "$2" "$1" 2>/dev/null || printf '%s\n' "$2" >>"$1"
+}
+
+# Ask a yes/no question through dmenu. Returns 0 only on an explicit "Yes".
+confirm() {
+	[ "$(printf 'No\nYes' | dmenu -p "$1" 2>/dev/null)" = "Yes" ]
+}
+
+# In interactive mode ask first; in auto mode just run it.
+maybe() {
+	question="$1"
+	shift
+	if [ "$INTERACTIVE" = "true" ]; then
+		confirm "$question" || return 1
+	fi
+	"$@"
+}
+
+# Like maybe, but auto mode skips the action instead of running it.
+optional() {
+	question="$1"
+	shift
+	if [ "$INTERACTIVE" != "true" ]; then
+		log "kept (optional, auto mode): $question"
+		return 1
+	fi
+	confirm "$question" || return 1
+	"$@"
+}
+
+refresh_bar() {
+	pkill -RTMIN+13 dwmblocks 2>/dev/null # dwm_packages (also the indicator)
+	pkill -RTMIN+1 dwmblocks 2>/dev/null  # dwm_currency
+}
+
+# ------------------------------------------------------------------ services
+
+unit_active() {
+	"$SYSTEMCTL" is-active --quiet "$1" 2>/dev/null
+}
+
+stop_unit() {
+	if run sudo -n "$SYSTEMCTL" stop "$1" 2>/dev/null; then
+		log "stopped $1"
+		[ "$DRY_RUN" = "true" ] || {
+			guard_claim save-data "$1"
+			guard_record save-data "$1"
+		}
+	else
+		log "failed to stop $1 (is the sudoers drop-in installed?)"
+		FAILED="$FAILED $1"
+		return 1
+	fi
+}
+
+stop_user_unit() {
+	run systemctl --user stop "$1" 2>/dev/null || return 1
+	log "stopped user unit $1"
+	record "$STOPPED_USER_UNITS" "$1"
+}
+
+stop_services() {
+	profile="$1"
+
+	for unit in $CORE_UNITS; do
+		if ! unit_active "$unit"; then
+			# Already stopped (maybe by save-battery): still claim it, so a
+			# save-battery restore leaves it stopped.
+			[ "$DRY_RUN" = "true" ] || guard_claim save-data "$unit"
+			continue
+		fi
+		maybe "Stop $unit?" stop_unit "$unit"
+	done
+
+	for unit in $OPTIONAL_UNITS; do
+		if [ "$profile" = "aggressive" ]; then
+			if ! unit_active "$unit"; then
+				[ "$DRY_RUN" = "true" ] || guard_claim save-data "$unit"
+				continue
+			fi
+			maybe "Stop $unit?" stop_unit "$unit"
+		else
+			unit_active "$unit" || continue
+			optional "Stop $unit?" stop_unit "$unit"
+		fi
+	done
+
+	for unit in $OPTIONAL_USER_UNITS; do
+		systemctl --user is-active --quiet "$unit" 2>/dev/null || continue
+		if [ "$profile" = "aggressive" ]; then
+			maybe "Stop $unit?" stop_user_unit "$unit"
+		else
+			optional "Stop $unit?" stop_user_unit "$unit"
+		fi
+	done
+}
+
+# -------------------------------------------------------------------- apps
+
+# pgrep/pkill -x match the kernel's comm, which is cut to 15 characters
+# (telegram-desktop is "telegram-deskto").
+comm_name() {
+	printf '%.15s' "$1"
+}
+
+close_app() {
+	run pkill -TERM -x "$(comm_name "$1")" || return 1
+	log "closed $1"
+	record "$KILLED_APPS" "$1"
+}
+
+close_apps() {
+	if [ "$1" = "aggressive" ]; then
+		apps="$AGGRESSIVE_APPS"
+	else
+		apps="$LIGHT_APPS"
+	fi
+
+	for app in $apps; do
+		pgrep -x "$(comm_name "$app")" >/dev/null 2>&1 || continue
+		maybe "Close $app?" close_app "$app"
+	done
+}
+
+pause_insync() {
+	command -v insync >/dev/null 2>&1 || return 0
+	pgrep -x insync >/dev/null 2>&1 || return 0
+	run quiet insync pause || {
+		log "failed to pause insync"
+		return 1
+	}
+	log "paused insync"
+	record "$INSYNC_PAUSED" "paused"
+}
+
+# --------------------------------------------------------------------- mpv
+
+write_mpv_conf() {
+	case "$1" in
+	light) height=480 ahead=150MiB back=50MiB ;;
+	aggressive) height=360 ahead=50MiB back=20MiB ;;
+	*)
+		run_write_mpv "# Written by save-data. Empty while no profile is applied."
+		return
+		;;
+	esac
+	run_write_mpv "# Written by save-data (profile: $1). Emptied by \`save-data -r\`.
+ytdl-format=bestvideo[height<=?$height]+bestaudio/best[height<=?$height]
+demuxer-max-bytes=$ahead
+demuxer-max-back-bytes=$back"
+}
+
+run_write_mpv() {
+	if [ "$DRY_RUN" = "true" ]; then
+		log "dry-run: write $MPV_CONF:"
+		printf '%s\n' "$1" | sed 's/^/    /' | tee -a "$LOG_FILE"
+		return 0
+	fi
+	mkdir -p "${MPV_CONF%/*}"
+	printf '%s\n' "$1" >"$MPV_CONF"
+	log "wrote $MPV_CONF"
+}
+
+# -------------------------------------------------------------- qutebrowser
+
+# Print the --basedir of each running qutebrowser, or "-" for the default
+# one. Only the first two argv entries can be qutebrowser itself (directly or
+# through python), which leaves out QtWebEngineProcess children whose
+# arguments contain qutebrowser paths.
+qutebrowser_instances() {
+	for pid in $(pgrep -f qutebrowser); do
+		tr '\0' '\n' <"/proc/$pid/cmdline" 2>/dev/null | awk '
+			NR <= 2 && !found {
+				n = split($0, part, "/")
+				if (part[n] == "qutebrowser") found = 1
+				next
+			}
+			prev == "--basedir" { dir = $0 }
+			/^--basedir=/ { dir = substr($0, 11) }
+			{ prev = $0 }
+			END { if (found) print (dir == "" ? "-" : dir) }'
+	done | sort -u
+}
+
+# Send a command to every running instance. Nothing is started when none
+# runs: `qutebrowser :cmd` would otherwise open a new window.
+qute_send() {
+	qute_cmd="$1"
+	qutebrowser_instances | while read -r dir; do
+		if [ "$DRY_RUN" = "true" ]; then
+			log "dry-run: qutebrowser [basedir $dir] $qute_cmd"
+		elif [ "$dir" = "-" ]; then
+			qutebrowser "$qute_cmd" >/dev/null 2>&1 &
+			log "qutebrowser: $qute_cmd"
+		else
+			qutebrowser --basedir "$dir" "$qute_cmd" >/dev/null 2>&1 &
+			log "qutebrowser [basedir $dir]: $qute_cmd"
+		fi
+	done
+}
+
+configure_qutebrowser() {
+	qute_send ":set -t content.autoplay false"
+	[ "$1" = "aggressive" ] &&
+		optional "Block images in qutebrowser?" qute_send ":set -t content.images false"
+}
+
+# ------------------------------------------------------------------ actions
+
+current_profile() {
+	cat "$STATE_FILE" 2>/dev/null || echo "none"
+}
+
+apply_profile() {
+	profile="$1"
+	FAILED=""
+
+	current=$(current_profile)
+	if [ "$current" != "none" ] && [ "$current" != "$profile" ]; then
+		log "switching from $current: restoring first"
+		restore_normal quiet
+	fi
+
+	log "applying profile: $profile"
+	# Written first: services-guard.sh treats the profile file as "active".
+	[ "$DRY_RUN" = "true" ] || printf '%s\n' "$profile" >"$STATE_FILE"
+
+	stop_services "$profile"
+	maybe "Pause insync?" pause_insync
+	close_apps "$profile"
+	write_mpv_conf "$profile"
+	configure_qutebrowser "$profile"
+	refresh_bar
+
+	log "profile $profile applied"
+	if [ -n "$FAILED" ]; then
+		notify-send -u critical "Save data" \
+			"$profile applied, but could not stop:$FAILED
+Is the sudoers drop-in installed?"
+	elif [ "$DRY_RUN" != "true" ]; then
+		notify-send "Save data" "$profile profile applied."
+	fi
+}
+
+restore_normal() {
+	log "restoring normal state..."
+
+	if [ -f "$STOPPED_SERVICES" ]; then
+		while read -r unit; do
+			[ -n "$unit" ] || continue
+			if ! guard_release save-data "$unit"; then
+				log "left $unit stopped: save-battery still claims it"
+				continue
+			fi
+			if run sudo -n "$SYSTEMCTL" start "$unit" 2>/dev/null; then
+				log "started $unit"
+			else
+				log "failed to start $unit"
+			fi
+		done <"$STOPPED_SERVICES"
+	fi
+
+	if [ -f "$STOPPED_USER_UNITS" ]; then
+		while read -r unit; do
+			[ -n "$unit" ] || continue
+			run systemctl --user start "$unit" 2>/dev/null &&
+				log "started user unit $unit"
+		done <"$STOPPED_USER_UNITS"
+	fi
+
+	if [ -f "$INSYNC_PAUSED" ]; then
+		run quiet insync resume && log "resumed insync"
+	fi
+
+	if [ -f "$KILLED_APPS" ]; then
+		for app in $BACKGROUND_APPS; do
+			grep -qxF "$app" "$KILLED_APPS" || continue
+			pgrep -x "$(comm_name "$app")" >/dev/null 2>&1 && continue
+			command -v "$app" >/dev/null 2>&1 || continue
+			run quiet setsid -f "$app" && log "started $app"
+		done
+	fi
+
+	write_mpv_conf none
+	# --clear drops the temporary (-t) values too; config.py reloads autoconfig.
+	qute_send ":config-source --clear"
+
+	if [ "$DRY_RUN" != "true" ]; then
+		guard_forget save-data
+		rm -f "$STATE_FILE" "$STOPPED_SERVICES" "$STOPPED_USER_UNITS" \
+			"$INSYNC_PAUSED" "$KILLED_APPS"
+	fi
+	refresh_bar
+
+	log "normal state restored"
+	[ "$1" = "quiet" ] || [ "$DRY_RUN" = "true" ] ||
+		notify-send "Save data" "Normal state restored."
+}
+
+# Print a state file as a comma-separated list, or "-" when it is empty.
+list_of() {
+	if [ -s "$1" ]; then
+		paste -sd, "$1" | sed 's/,/, /g'
+	else
+		echo "-"
+	fi
+}
+
+show_status() {
+	profile=$(current_profile)
+	services=$(list_of "$STOPPED_SERVICES")
+	user_units=$(list_of "$STOPPED_USER_UNITS")
+	apps=$(list_of "$KILLED_APPS")
+	if [ -f "$INSYNC_PAUSED" ]; then insync="paused"; else insync="-"; fi
+
+	printf 'Profile          : %s\n' "$profile"
+	printf 'Stopped services : %s\n' "$services"
+	printf 'Stopped user     : %s\n' "$user_units"
+	printf 'Closed apps      : %s\n' "$apps"
+	printf 'insync           : %s\n' "$insync"
+
+	[ -t 1 ] || notify-send "Save data" \
+		"Profile: $profile
+Services: $services
+User units: $user_units
+Apps: $apps
+insync: $insync"
+}
+
+usage() {
+	cat <<EOF
+usage: save-data [OPTIONS]
+
+  -p, --profile PROFILE   light | aggressive
+  -a, --auto              apply without per-action prompts
+                          (light then keeps the optional units running)
+  -i, --interactive       prompt for each action (default)
+  -n, --dry-run           print the actions, change nothing
+  -r, --restore           restore normal state
+  -s, --status            show the current status
+  -h, --help              show this help
+EOF
+}
+
+# --------------------------------------------------------------------- main
+
+PROFILE=""
+INTERACTIVE="true"
+DRY_RUN="false"
+ACTION="apply"
+
+while [ $# -gt 0 ]; do
+	case "$1" in
+	-p | --profile)
+		PROFILE="$2"
+		shift 2
+		;;
+	-a | --auto)
+		INTERACTIVE="false"
+		shift
+		;;
+	-i | --interactive)
+		INTERACTIVE="true"
+		shift
+		;;
+	-n | --dry-run)
+		DRY_RUN="true"
+		shift
+		;;
+	-r | --restore)
+		ACTION="restore"
+		shift
+		;;
+	-s | --status)
+		ACTION="status"
+		shift
+		;;
+	-h | --help)
+		usage
+		exit 0
+		;;
+	*)
+		printf 'error: unknown option: %s\n' "$1" >&2
+		usage >&2
+		exit 2
+		;;
+	esac
+done
+
+case "$ACTION" in
+restore)
+	restore_normal
+	exit 0
+	;;
+status)
+	show_status
+	exit 0
+	;;
+esac
+
+if [ -z "$PROFILE" ]; then
+	choice=$(printf 'Light\nAggressive\nRestore normal\nStatus' |
+		dmenu -p "Save data [$(current_profile)]:")
+	case "$choice" in
+	"Light") PROFILE="light" ;;
+	"Aggressive") PROFILE="aggressive" ;;
+	"Restore normal")
+		restore_normal
+		exit 0
+		;;
+	"Status")
+		show_status
+		exit 0
+		;;
+	*) exit 0 ;;
+	esac
+fi
+
+case "$PROFILE" in
+light | aggressive) apply_profile "$PROFILE" ;;
+*) err "invalid profile: $PROFILE (expected light or aggressive)" ;;
+esac

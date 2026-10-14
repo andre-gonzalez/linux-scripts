@@ -37,6 +37,10 @@ TERMINAL="${TERMINAL:-st}"
 
 mkdir -p "$CACHE_DIR"
 
+# Shared with save-data: neither restore starts a unit the other still claims.
+# shellcheck source=services-guard.sh
+. "$HOME/.scripts/services-guard.sh"
+
 log() {
 	printf '[%s] %s\n' "$(date '+%H:%M:%S')" "$1" | tee -a "$LOG_FILE"
 }
@@ -272,10 +276,16 @@ stop_services() {
 	fi
 
 	for service in $services; do
-		systemctl is-active --quiet "$service" 2>/dev/null || continue
+		if ! systemctl is-active --quiet "$service" 2>/dev/null; then
+			# Already stopped (maybe by save-data): claim it all the same, so a
+			# save-data restore leaves it stopped.
+			guard_claim save-battery "$service"
+			continue
+		fi
 		if maybe "Stop service $service?" sudo systemctl stop "$service"; then
 			log "stopped service: $service"
-			printf '%s\n' "$service" >>"$STOPPED_SERVICES"
+			guard_claim save-battery "$service"
+			guard_record save-battery "$service"
 		fi
 	done
 }
@@ -365,11 +375,16 @@ restore_normal() {
 	if [ -f "$STOPPED_SERVICES" ]; then
 		while read -r service; do
 			[ -n "$service" ] || continue
+			if ! guard_release save-battery "$service"; then
+				log "left $service stopped: save-data still claims it"
+				continue
+			fi
 			sudo systemctl start "$service" 2>/dev/null &&
 				log "restored service: $service"
 		done <"$STOPPED_SERVICES"
 		rm -f "$STOPPED_SERVICES"
 	fi
+	guard_forget save-battery
 
 	dim_screen 100%
 	xset dpms 600 600 600 2>/dev/null
