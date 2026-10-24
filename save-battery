@@ -251,9 +251,9 @@ kill_applications() {
 	profile="$1"
 
 	if [ "$profile" = "maximum" ]; then
-		apps="insync spotify_player firefox chrome brave chromium discord slack telegram thunderbird evolution dropbox onedrive nextcloud vlc mpv obs steam lutris wine redshift newsboat unclutter helium-browser"
+		apps="insync spotify_player firefox chrome brave chromium discord slack telegram thunderbird evolution dropbox onedrive nextcloud vlc mpv obs steam lutris wine redshift newsboat unclutter helium-browser 1password applet.py"
 	else
-		apps="spotify_player discord slack steam lutris obs"
+		apps="spotify_player discord slack steam lutris obs 1password applet.py"
 	fi
 
 	log "scanning for applications to terminate..."
@@ -270,9 +270,9 @@ stop_services() {
 	profile="$1"
 
 	if [ "$profile" = "maximum" ]; then
-		services="tailscaled preload libvirtd docker docker.socket containerd awsvpnclient cronie ufw firewalld fail2ban"
+		services="tailscaled preload libvirtd docker docker.socket containerd awsvpnclient clamav-freshclam clamav-daemon.socket clamav-daemon snapper-timeline.timer snapper-cleanup.timer man-db.timer cups.path cups.socket cups.service cronie ufw firewalld fail2ban"
 	else
-		services="tailscaled preload libvirtd docker docker.socket containerd awsvpnclient"
+		services="tailscaled preload libvirtd docker docker.socket containerd awsvpnclient clamav-freshclam clamav-daemon.socket clamav-daemon snapper-timeline.timer snapper-cleanup.timer man-db.timer cups.path cups.socket cups.service"
 	fi
 
 	for service in $services; do

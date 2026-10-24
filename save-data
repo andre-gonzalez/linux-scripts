@@ -1,7 +1,7 @@
 #!/bin/sh
 # save-data — cut background data use on a metered network.
 #
-#   light       stops update/telemetry/container daemons, pauses insync,
+#   light       stops update/telemetry/container/print daemons, pauses insync,
 #               closes game launchers, lowers mpv quality and blocks autoplay
 #               in qutebrowser. The optional units (VPNs, nix-daemon, cron)
 #               are asked about, and kept running with -a.
@@ -37,9 +37,10 @@ LOG_FILE="/tmp/save-data.log"
 MPV_CONF="${XDG_CONFIG_HOME:-$HOME/.config}/mpv/save-data.conf"
 GUARD="$HOME/.scripts/services-guard.sh"
 
-# Stopped in both profiles. docker.socket goes before docker, or the socket
-# starts docker again on the next request.
-CORE_UNITS="clamav-freshclam clamav-freshclam.timer pkgstats.timer archlinux-keyring-wkd-sync.timer docker.socket docker containerd"
+# Stopped in both profiles. docker.socket goes before docker, and cups.path and
+# cups.socket before cups.service, or they start the service again on the next
+# request.
+CORE_UNITS="clamav-freshclam clamav-freshclam.timer pkgstats.timer archlinux-keyring-wkd-sync.timer docker.socket docker containerd cups.path cups.socket cups.service"
 # Asked about in light (kept with -a), stopped in aggressive. cronie is Arch;
 # NixOS runs the former cron jobs as user timers instead.
 OPTIONAL_UNITS="nix-daemon tailscaled awsvpnclient cronie"
