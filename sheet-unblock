@@ -1,0 +1,28 @@
+#!/bin/sh
+# Lift the Google Sheet block for a bounded window, then re-arm automatically.
+# Usage: sheet-unblock [duration]   (default 30m; systemd time syntax)
+set -eu
+
+DIR="$HOME/.config/qutebrowser/greasemonkey"
+LIVE="$DIR/block-sheet.js"
+OFF="$DIR/.block-sheet.js.off"
+DUR="${1:-30m}"
+
+reload() { qutebrowser ':greasemonkey-reload' >/dev/null 2>&1 || true; }
+
+# Clear any pending re-arm so a second call extends the window instead of
+# inheriting the first one's deadline.
+systemctl --user stop sheet-reblock.timer sheet-reblock.service 2>/dev/null || true
+
+if [ -f "$LIVE" ]; then
+	mv "$LIVE" "$OFF"
+	reload
+elif [ ! -f "$OFF" ]; then
+	printf 'sheet-unblock: block-sheet.js not found in %s\n' "$DIR" >&2
+	exit 1
+fi
+
+systemd-run --user --quiet --on-active="$DUR" --unit=sheet-reblock \
+	/bin/sh -c "mv '$OFF' '$LIVE' && qutebrowser ':greasemonkey-reload'"
+
+printf 'unblocked; re-arms in %s\n' "$DUR"
