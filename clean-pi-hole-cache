@@ -1,0 +1,23 @@
+#!/bin/sh
+
+status=0
+
+# Reload the DNS cache on the pi-hole container running on the server
+if ! ssh servarr 'docker exec pihole pihole reloaddns'; then
+	printf 'error: failed to reload pi-hole dns\n' >&2
+	status=1
+fi
+
+# Flush the local stub resolver cache on this machine
+if ! sudo resolvectl flush-caches; then
+	printf 'error: failed to flush local dns cache\n' >&2
+	status=1
+fi
+
+if [ $status -eq 0 ]; then
+	notify-send "Pi-hole" "Server DNS reloaded and local cache flushed"
+else
+	notify-send -u critical "Pi-hole" "DNS cache clean failed"
+fi
+
+exit $status

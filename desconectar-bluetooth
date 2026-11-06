@@ -1,0 +1,18 @@
+#!/bin/sh
+# Generic Bluetooth disconnect script: disconnect device and update dwmblocks.
+# Usage: desconectar-bluetooth <MAC>
+
+if [ -z "$1" ]; then
+    echo "Usage: $0 <device-mac>" >&2
+    exit 1
+fi
+
+DEVICE_MAC="$1"
+
+bluetoothctl disconnect "$DEVICE_MAC"
+
+# Update dwmblocks bluetooth
+kill -46 $(pidof dwmblocks) 2>/dev/null || true
+
+# Update dwmblocks audio output
+kill -44 $(pidof dwmblocks) 2>/dev/null || true

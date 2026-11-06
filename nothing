@@ -1,0 +1,3 @@
+#!/bin/sh
+
+something-x --device 2C:BE:EE:6A:52:5E --anc off

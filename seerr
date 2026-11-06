@@ -1,0 +1,1 @@
+helium-browser --profile-directory="Profile 1" --window-name="jellyfin" --app=https://seerr.franktech.dev/login

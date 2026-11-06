@@ -1,0 +1,3 @@
+#!/bin/sh
+
+scrcpy --video-bit-rate=8M --max-size=1920 --video-codec=h264 --max-fps=60 --no-audio

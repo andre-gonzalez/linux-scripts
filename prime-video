@@ -1,0 +1,1 @@
+chromium --widevine-path=/usr/lib/chromium/WidevineCdm/ --profile-directory="Profile 0" --window-name="Prime Video" --app=https://www.primevideo.com/
