@@ -1,77 +1,8 @@
 #!/bin/sh
 
-# To script works as root
-xhost +SI:localuser:root
-
-# Output names differ between machines (eDP-1 vs eDP, HDMI-1 vs HDMI-A-0), so
-# detect them at runtime instead of hardcoding.
-internal=$(xrandr --query | awk '/ connected/ && $1 ~ /^(eDP|LVDS)/ { print $1; exit }')
-external=$(xrandr --query | awk '/ connected/ && $1 ~ /^HDMI/    { print $1; exit }')
-
-if [ -z "$external" ] || [ -z "$internal" ]; then
-	printf 'error: need both the laptop panel and an HDMI screen connected\n' >&2
-	exit 1
-fi
-
-# Ultrawide external at 2560x1080@100 if available, otherwise its preferred mode.
-if xrandr --query | awk -v o="$external" '
-	$1 == o { f = 1; next }
-	/ connected/ || / disconnected/ { f = 0 }
-	f && /2560x1080/ && /100/ { found = 1 }
-	END { exit !found }'; then
-	ext_mode="--mode 2560x1080 --rate 100"
-else
-	ext_mode="--auto"
-fi
-
-# Laptop panel's native (preferred, "+") width, so the ultrawide starts right
-# where the panel ends.
-int_width=$(xrandr --query | awk -v o="$internal" '
-	$1 == o { f = 1; next }
-	/ connected/ || / disconnected/ { f = 0 }
-	f && /\+/ { split($1, m, "x"); print m[1]; exit }')
-
-# Side by side: laptop panel (native mode) on the left at 0x0, ultrawide as
-# primary to its right, shifted down 709px. One call so the outputs never
-# overlap mid-switch.
-# shellcheck disable=SC2086 # ext_mode is an intentional word split
-xrandr --output "$internal" --auto --pos 0x0 --rotate normal \
-	--output "$external" --primary $ext_mode --dpi 103 --scale 1x1 --pos "${int_width:-1920}x709" --rotate normal
-
-# dwm opens new windows on its selected monitor, and after a layout change it
-# selects the monitor under the pointer -- not the RandR primary. The panel
-# stays at 0x0, so the pointer usually stays on it. Put the pointer on the
-# ultrawide so dwm selects it.
-# Wait first so dwm handles the root resize before the pointer moves. Then
-# move via the panel: dwm switches monitor only when root motion crosses one.
-sleep 0.5
-ext_geom=$(xrandr --query | awk -v o="$external" '$1 == o {
-	for (i = 3; i <= NF; i++) if ($i ~ /^[0-9]+x[0-9]+\+[0-9]+\+[0-9]+$/) { print $i; exit } }')
-if [ -n "$ext_geom" ]; then
-	ext_w=${ext_geom%%x*}
-	ext_rest=${ext_geom#*x}
-	ext_h=${ext_rest%%+*}
-	ext_rest=${ext_rest#*+}
-	ext_x=${ext_rest%%+*}
-	ext_y=${ext_rest#*+}
-	xdotool mousemove $((${int_width:-1920} / 2)) 300
-	xdotool mousemove $((ext_x + ext_w / 2)) $((ext_y + ext_h / 2))
-fi
-
-setxkbmap -layout us -variant dvorak-intl && setxkbmap -option caps:escape
-
-# Show the same tag on both monitors. Do not send windows to the other monitor
-# (shift+super+period): open windows stay on the ultrawide, which is monitor 0
-# because it is the RandR primary.
-for i in $(seq 1 5); do
-	xdotool key super+period && xdotool key super+"$i" && xdotool key super+period && xdotool key super+"$i"
-done
-
-# dwm needs no help here: xrandr resizing the root window makes it re-run
-# updategeom(), which sets each monitor's ultra-wide margin from that monitor's
-# own width -- the ultrawide gets side margins for a lone window, the laptop
-# panel keeps full width. No rebuild, no restart.
-
-# Restart the status bar in the background so this script exits.
-pkill -x dwmblocks
-dwmblocks &
+# Laptop panel on the left, ultrawide (primary, 2560x1080@100) on its right.
+# The layout lives in the autorandr profile ~/.config/autorandr/dual; the
+# postswitch hook there does the rest (DPI, keyboard, wallpaper, status bar,
+# pointer on the primary). To change the layout, arrange the screens and run
+# `autorandr --save dual --force`.
+exec autorandr --load dual
