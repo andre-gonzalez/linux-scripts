@@ -24,26 +24,54 @@ else
 	ext_mode="--auto"
 fi
 
-# Ultrawide on top as primary at 0x0; laptop panel (native mode) centered below.
+# Laptop panel's native (preferred, "+") width, so the ultrawide starts right
+# where the panel ends.
+int_width=$(xrandr --query | awk -v o="$internal" '
+	$1 == o { f = 1; next }
+	/ connected/ || / disconnected/ { f = 0 }
+	f && /\+/ { split($1, m, "x"); print m[1]; exit }')
+
+# Side by side: laptop panel (native mode) on the left at 0x0, ultrawide as
+# primary to its right, shifted down 709px. One call so the outputs never
+# overlap mid-switch.
 # shellcheck disable=SC2086 # ext_mode is an intentional word split
-xrandr --output "$external" --primary $ext_mode --dpi 103 --scale 1x1 --pos 0x0 --rotate normal
-xrandr --output "$internal" --auto --pos 320x1080 --rotate normal
+xrandr --output "$internal" --auto --pos 0x0 --rotate normal \
+	--output "$external" --primary $ext_mode --dpi 103 --scale 1x1 --pos "${int_width:-1920}x709" --rotate normal
+
+# dwm opens new windows on its selected monitor, and after a layout change it
+# selects the monitor under the pointer -- not the RandR primary. The panel
+# stays at 0x0, so the pointer usually stays on it. Put the pointer on the
+# ultrawide so dwm selects it.
+# Wait first so dwm handles the root resize before the pointer moves. Then
+# move via the panel: dwm switches monitor only when root motion crosses one.
+sleep 0.5
+ext_geom=$(xrandr --query | awk -v o="$external" '$1 == o {
+	for (i = 3; i <= NF; i++) if ($i ~ /^[0-9]+x[0-9]+\+[0-9]+\+[0-9]+$/) { print $i; exit } }')
+if [ -n "$ext_geom" ]; then
+	ext_w=${ext_geom%%x*}
+	ext_rest=${ext_geom#*x}
+	ext_h=${ext_rest%%+*}
+	ext_rest=${ext_rest#*+}
+	ext_x=${ext_rest%%+*}
+	ext_y=${ext_rest#*+}
+	xdotool mousemove $((${int_width:-1920} / 2)) 300
+	xdotool mousemove $((ext_x + ext_w / 2)) $((ext_y + ext_h / 2))
+fi
 
 setxkbmap -layout us -variant dvorak-intl && setxkbmap -option caps:escape
 
+# Show the same tag on both monitors. Do not send windows to the other monitor
+# (shift+super+period): open windows stay on the ultrawide, which is monitor 0
+# because it is the RandR primary.
 for i in $(seq 1 5); do
-	xdotool key super+period && xdotool key super+"$i" && xdotool key super+period && xdotool key super+"$i" key shift+super+period
+	xdotool key super+period && xdotool key super+"$i" && xdotool key super+period && xdotool key super+"$i"
 done
 
-ISROOT=$(id -u)
+# dwm needs no help here: xrandr resizing the root window makes it re-run
+# updategeom(), which sets each monitor's ultra-wide margin from that monitor's
+# own width -- the ultrawide gets side margins for a lone window, the laptop
+# panel keeps full width. No rebuild, no restart.
 
-if [ "$ISROOT" = 0 ]; then
-	cd /home/frank/.config/dwm/ultra-wide-dwm/ && make clean install
-	xdotool key shift+super+q
-fi
-
-# When run as the normal user (e.g. from the hotplug watcher), switch dwm to
-# the ultra-wide build. Mirrors one-screen-layout's "cdwm laptop" tail.
-cdwm ultra
-
-dwmblocks
+# Restart the status bar in the background so this script exits.
+pkill -x dwmblocks
+dwmblocks &
