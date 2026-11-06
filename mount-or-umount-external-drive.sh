@@ -56,6 +56,8 @@ if [ "$1" = "mount" ]; then
 	check_and_mount "$MOUNT_POINT1" "$UUID1"
 	check_and_mount "$MOUNT_POINT2" "$UUID2"
 elif [ "$1" = "umount" ]; then
-	umount /mnt/hd-externo/
-	umount /mnt/ntfs-hd-externo/
+	sudo umount /mnt/hd-externo/
+	sudo umount /mnt/ntfs-hd-externo/
 fi
+
+lsblk

@@ -1,2 +1,3 @@
 #!/bin/sh
 /usr/local/bin/st -t terminal -e tmuxp load "$HOME"/.config/tmuxp/pessoal.yml
+# /usr/local/bin/st -t terminal -e herdr --session pessoal

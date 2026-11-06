@@ -28,5 +28,6 @@ fi
 xrandr --output "$external" --primary $mode_args --dpi 103 --scale 1x1
 [ -n "$internal" ] && xrandr --output "$internal" --off
 
-cdwm ultra
+# dwm picks up the ultra-wide margin on its own: xrandr resizing the root
+# window makes it re-run updategeom(). No rebuild, no restart.
 dwmblocks

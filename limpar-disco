@@ -21,6 +21,11 @@ NCDU_CMD="ncdu --exclude .snapshots --exclude-kernfs /"
 FZF_HEADER='Tab: marcar  ctrl-a: todos  Enter: apagar  Esc: nada'
 # Caches in ~/.cache below this size are not offered in fzf.
 CACHE_MIN_KB=102400
+# Docker volumes the cleanup never deletes, one name per line. They hold data
+# that exists nowhere else, and a stopped container does not protect them.
+DOCKER_KEEP_VOLUMES='
+main-challenge-ai-reviewer_mongodb_data
+'
 
 if [ "$(id -u)" -eq 0 ]; then
 	printf 'error: %s\n' "rode limpar-disco como usuário normal, sem sudo" >&2
@@ -140,7 +145,14 @@ done
 step "Docker"
 if have docker && docker info >/dev/null 2>&1; then
 	docker system prune -a -f
-	docker volume prune -a -f
+	# Not "volume prune -a": it takes every unused volume, the kept ones too.
+	docker volume ls -q -f dangling=true | while read -r volume; do
+		if printf '%s\n' "$DOCKER_KEEP_VOLUMES" | grep -qxF -- "$volume"; then
+			printf '    mantido: volume %s\n' "$volume"
+		elif docker volume rm -- "$volume" >/dev/null; then
+			printf '    apagado: volume %s\n' "$volume"
+		fi
+	done
 else
 	skip "docker não instalado ou parado"
 fi

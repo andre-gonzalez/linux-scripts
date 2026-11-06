@@ -11,7 +11,7 @@ run_if_not_running() {
 
 run_if_not_running "web-call" /usr/bin/dash "$HOME/.scripts/web-call"
 run_if_not_running "tmuxp load.*work" /usr/bin/dash "$HOME/.scripts/work-tmux"
-run_if_not_running "herdr --session code" /usr/local/bin/st -t code -e herdr --session code
+run_if_not_running "code" /usr/local/bin/st -t code -e ssh cc
 run_if_not_running "web-uberall"/usr/bin/dash "$HOME/.scripts/web-uberall"
 run_if_not_running "web-pessoal" /usr/bin/dash "$HOME/.scripts/web-pessoal"
 /usr/bin/bash "$HOME/.scripts/configure-trackball.sh" &
