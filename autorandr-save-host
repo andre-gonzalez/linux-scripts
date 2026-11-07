@@ -1,0 +1,80 @@
+#!/bin/sh
+# Save the current screen layout as an autorandr profile that only this host
+# detects, so one ~/.config/autorandr (dotfiles repo) serves every laptop.
+#
+#   autorandr-save-host NAME            -> NAME-<host>, picked on hotplug
+#   autorandr-save-host NAME --manual   -> NAME-<host>, never picked on hotplug;
+#                                          load it with autorandr --load NAME-<host>
+#
+# autorandr matches a profile only if the connected outputs and their EDIDs
+# are exactly the ones in its setup file. Output names and panels differ per
+# host, but the external monitor may not, so each profile gets a block script
+# that blocks it on every other host (a block script that exits 0 blocks).
+#
+# autorandr leaves a closed lid's panel out of the fingerprint. So when the
+# panel is off in the saved layout (e.g. docked), this also writes
+# NAME-lid-<host>: the same layout without the panel in its setup, picked when
+# the monitor is plugged in with the lid closed.
+set -eu
+
+usage() {
+	printf 'usage: %s NAME [--manual]\n' "${0##*/}" >&2
+	exit 2
+}
+
+[ $# -ge 1 ] || usage
+name=$1
+manual=0
+case "${2-}" in
+"") ;;
+--manual) manual=1 ;;
+*) usage ;;
+esac
+
+dir="${XDG_CONFIG_HOME:-$HOME/.config}/autorandr"
+host=$(uname -n)
+profile="$name-$host"
+
+# With the lid closed the panel would be missing from the fingerprint.
+if grep -qs close /proc/acpi/button/lid/*/state; then
+	printf 'error: open the lid first, so the panel is in the fingerprint\n' >&2
+	exit 1
+fi
+
+write_block() {
+	if [ "$manual" = 1 ]; then
+		cat >"$1/block" <<-EOF
+			#!/bin/sh
+			# Never picked on hotplug. Load it on purpose: autorandr --load ${1##*/}
+			exit 0
+		EOF
+	else
+		cat >"$1/block" <<-EOF
+			#!/bin/sh
+			# Only $host may pick this profile (written by autorandr-save-host).
+			[ "\$(uname -n)" != "$host" ]
+		EOF
+	fi
+	chmod +x "$1/block"
+}
+
+autorandr --save "$profile" --force
+write_block "$dir/$profile"
+printf 'saved %s\n' "$profile"
+
+[ "$manual" = 1 ] && exit 0
+
+# The laptop panel, if the saved layout turns it off.
+panel=$(awk '
+	$1 == "output" { o = ($2 ~ /^(eDP|LVDS)/) ? $2 : ""; next }
+	o != "" && $1 == "off" { print o }
+	{ o = "" }' "$dir/$profile/config")
+[ -n "$panel" ] || exit 0
+
+lid="$name-lid-$host"
+rm -rf "${dir:?}/$lid"
+mkdir "$dir/$lid"
+cp "$dir/$profile/config" "$dir/$lid/config"
+grep -v "^$panel " "$dir/$profile/setup" >"$dir/$lid/setup"
+write_block "$dir/$lid"
+printf 'saved %s (same layout, matches with the lid closed)\n' "$lid"
